@@ -29,6 +29,10 @@
                         <Button AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" 
                                 AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
                 </AnchorPane>
+                
+                <AnchorPane GridPane.columnIndex="0" GridPane.rowIndex="0" >
+                    <fx:include source="../minefiled/MineFiled.fxml"/>
+                </AnchorPane>
             </children>
         </GridPane>
     </children>
