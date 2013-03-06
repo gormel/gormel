@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import minesweeper.mainform.MainFormController;
 
 /**
  *
@@ -23,7 +24,7 @@ public class Minesweeper extends Application {
     
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("MainForm.fxml"));
+        Parent root = FXMLLoader.load(MainFormController.class.getResource("MainForm.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
