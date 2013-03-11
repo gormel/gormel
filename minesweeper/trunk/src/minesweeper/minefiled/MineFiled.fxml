@@ -6,10 +6,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" xmlns:fx="http://javafx.com/fxml" fx:controller="minesweeper.minefiled.MineFiledController"
-            AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" >
-    <GridPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" 
-                fx:id="pane">
+<fx:root type="AnchorPane" xmlns:fx="http://javafx.com/fxml">
+    <GridPane fx:id="grid">
+        <columnConstraints>
+            <ColumnConstraints />
+        </columnConstraints>
         
+        <rowConstraints>
+            <RowConstraints />
+        </rowConstraints>
+        
+        <children>
+            <AnchorPane GridPane.columnIndex="0" GridPane.rowIndex="0" > 
+                <Button AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
+                        AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" /> 
+            </AnchorPane>
+        </children>
     </GridPane>
-</AnchorPane>
+</fx:root>

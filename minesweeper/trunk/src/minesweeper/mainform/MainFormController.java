@@ -6,6 +6,8 @@ package minesweeper.mainform;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableMap;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 
@@ -15,12 +17,11 @@ import javafx.scene.layout.AnchorPane;
  * @author Tyulen
  */
 public class MainFormController implements Initializable {
-
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }    
 }

@@ -5,9 +5,11 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import minesweeper.minefiled.*?>
+<?import minesweeper.utils.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" 
-            xmlns:fx="http://javafx.com/fxml" fx:controller="minesweeper.MainFormController" >
+            xmlns:fx="http://javafx.com/fxml" fx:controller="minesweeper.mainform.MainFormController" >
     <children>
         <GridPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" >
             <columnConstraints>
@@ -21,19 +23,21 @@
             </rowConstraints>
             
             <children>
-                <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="0" >
-                        <Button AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" 
-                                AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
-                </AnchorPane>
-                <AnchorPane GridPane.columnIndex="0" GridPane.rowIndex="1" >
-                        <Button AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" 
-                                AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
-                </AnchorPane>
+                <Filler GridPane.columnIndex="1" GridPane.rowIndex="0" >
+                    <Button />
+                </Filler>
+                <Filler GridPane.columnIndex="0" GridPane.rowIndex="1" >
+                    <Button />
+                </Filler>
                 
-                <AnchorPane GridPane.columnIndex="0" GridPane.rowIndex="0" >
-                    <fx:include source="../minefiled/MineFiled.fxml"/>
-                </AnchorPane>
+                <Filler GridPane.columnIndex="0" GridPane.rowIndex="0" >
+                    <MineFiled />
+                </Filler>
             </children>
         </GridPane>
     </children>
+    
+    <properties>
+        
+    </properties>
 </AnchorPane>
