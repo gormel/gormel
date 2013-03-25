@@ -26,4 +26,8 @@ public class Scheme {
     public List<SchemeString> getStrings() {
         return strings;
     }
+    
+    public List<SchemeElement> getElements() {
+        return elements;
+    }
 }
