@@ -28,7 +28,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 //        try {
 //            // TODO code application logic here
 //
@@ -77,6 +77,10 @@ public class Main {
         SchemeElementC el = new SchemeElementC(s1, s2);
         ElementViewer v = new ElementViewer(el);
         
-        ImageIO.write(v.getPictupe(400, 300), "bmp", new File("file.bmp"));
+        Image image = v.getPictupe(400, 300);
+        BufferedImage im = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_BGR);
+        im.createGraphics().drawImage(image, 0, 0, null);
+        
+        ImageIO.write(im, "bmp", new File("file.bmp"));
     }
 }

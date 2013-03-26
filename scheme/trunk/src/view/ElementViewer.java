@@ -30,25 +30,33 @@ public class ElementViewer extends Viewer {
         Graphics2D g = image.createGraphics();
         int w = image.getWidth();
         int h = image.getHeight();
-        int thickness = (int) (w * Math.sqrt(2) / 16);
-        g.setStroke(new BasicStroke(5));
+        int thickness = (int) (w * Math.sqrt(2) / 8);
+        g.setStroke(new BasicStroke(thickness));
         g.setColor(Color.white);
-        g.fillRect(0, -thickness / 2, w, h);
+        g.fillRect(0, 0, w, h);
         
         g.setColor(element.getLeft().getColor());
-        g.drawLine(0, -thickness / 2, w / 2, h / 2);
+        g.drawLine(0, -w / 8, w / 2, h / 2);
         
         g.setColor(element.getRight().getColor());
-        g.drawLine(w, 0, w / 2, h / 2);
+        g.drawLine(w, -w / 8, w / 2, h / 2);
         
         g.setColor(element.getLeftOutput().getColor());
-        g.drawLine(0, h + thickness / 2, w / 2, h / 2);
+        g.drawLine(0, h + w / 8, w / 2, h / 2);
         
         g.setColor(element.getRightOutput().getColor());
-        g.drawLine(w, h + thickness / 2, w / 2, h / 2);
+        g.drawLine(w, h + w / 8, w / 2, h / 2);
         
+        int ovalX = w / 4;
+        int ovalY = h / 2 - w / 4;
+        int ovalW = w / 2;
+        int ovalH = w / 2;
         g.setColor(element.mainColor());
-        g.drawOval(w / 4, h / 4, w / 2, h / 2);
+        g.fillOval(ovalX, ovalY, ovalW, ovalH);
+        
+        g.setStroke(new BasicStroke(w / 40));
+        g.setColor(Color.black);
+        g.drawOval(ovalX, ovalY, ovalW, ovalH);
     }
 
     @Override
