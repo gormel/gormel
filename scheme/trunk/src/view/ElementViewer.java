@@ -57,6 +57,32 @@ public class ElementViewer extends Viewer {
         g.setStroke(new BasicStroke(w / 40));
         g.setColor(Color.black);
         g.drawOval(ovalX, ovalY, ovalW, ovalH);
+        
+        int arrowHVSize = (int) (w * Math.sqrt(2) / 10);
+        int arrowStartX = 0;
+        int arrowStartY = h / 2 - arrowHVSize;
+        
+        if (element.getLeft().getColor().equals(element.mainColor())) {
+            arrowStartX = w / 2 - arrowHVSize;
+        }
+        
+        if (element.getRight().getColor().equals(element.mainColor())) {
+            arrowStartX = w / 2 + arrowHVSize;
+        }
+        
+        int arrowEndX = 0;
+        int arrowEndY = h / 2 + arrowHVSize;
+        
+        if (element.getLeftOutput().getColor().equals(element.mainColor())) {
+            arrowEndX = w / 2 - arrowHVSize;
+        }
+        
+        if (element.getRightOutput().getColor().equals(element.mainColor())) {
+            arrowEndX = w / 2 + arrowHVSize;
+        }
+        
+        g.drawLine(arrowStartX, arrowStartY, w / 2, h / 2);
+        drawArrow(g, w / 2, h / 2, arrowEndX, arrowEndY, w / 20, w / 10);
     }
 
     @Override
