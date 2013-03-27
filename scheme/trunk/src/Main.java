@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import scheme.Scheme;
 import scheme.SchemeString;
+import scheme.elements.SchemeElementA;
 import scheme.elements.SchemeElementC;
 import view.ElementViewer;
 
@@ -74,7 +75,7 @@ public class Main {
         
         SchemeString s1 = new SchemeString(0, Color.yellow);
         SchemeString s2 = new SchemeString(1, Color.blue);
-        SchemeElementC el = new SchemeElementC(s1, s2);
+        SchemeElementA el = new SchemeElementA(s1, s2);
         ElementViewer v = new ElementViewer(el);
         
         Image image = v.getPictupe(400, 300);

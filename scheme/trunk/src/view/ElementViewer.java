@@ -82,7 +82,7 @@ public class ElementViewer extends Viewer {
         }
         
         g.drawLine(arrowStartX, arrowStartY, w / 2, h / 2);
-        drawArrow(g, w / 2, h / 2, arrowEndX, arrowEndY, w / 20, w / 10);
+        drawArrow(g, w / 2, h / 2, arrowEndX, arrowEndY, w / 40, w / 20);
     }
 
     @Override

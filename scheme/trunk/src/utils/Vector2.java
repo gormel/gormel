@@ -45,8 +45,8 @@ public class Vector2 {
     
     public Vector2 rot(double angle) {
         return new Vector2(
-                y * Math.cos(angle) + x * Math.sin(angle), 
-                y * Math.sin(angle) - x * Math.cos(angle));
+                y * Math.sin(angle) + x * Math.cos(angle), 
+                y * Math.cos(angle) - x * Math.sin(angle));
     }
     
     public double dot(Vector2 v) {
@@ -83,5 +83,10 @@ public class Vector2 {
     
     public Vector2 setY(double y) {
         return new Vector2(x, y);
+    }
+
+    @Override
+    public String toString() {
+	return String.format("{%s, %s}", x, y);
     }
 }
