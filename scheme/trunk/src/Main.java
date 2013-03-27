@@ -35,46 +35,42 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-//        try {
-//            // TODO code application logic here
-//
-//            BufferedImage im = ImageIO.read(Main.class.getResource("input.bmp"));
-//            BufferedImage t1b = ImageIO.read(Main.class.getResource("t1b.bmp"));
-//            BufferedImage t1w = ImageIO.read(Main.class.getResource("t1w.bmp"));
-//            BufferedImage t2b = ImageIO.read(Main.class.getResource("t2b.bmp"));
-//            BufferedImage t2w = ImageIO.read(Main.class.getResource("t2w.bmp"));
-//            BufferedImage result = new BufferedImage(im.getWidth() * t1b.getWidth() * 3 / 4, im.getHeight() * t1b.getHeight(), BufferedImage.TYPE_INT_RGB);
-//            Graphics resulGraphics = result.getGraphics();
-//            resulGraphics.fillRect(0, 0, result.getWidth(), result.getHeight());
-//            
-//            for (int y = 0; y < im.getHeight(); y++) {
-//                BufferedImage b = t2b;
-//                BufferedImage w = t1w;
-//                
-//                int x = 0;
-//                if (y % 2 == 1) {
-//                    x = 1;
-//                    b = t1b;
-//                    w = t2w;
-//                }
-//                for (; x < im.getWidth(); x += 2) {
-//                    Color pixel = new Color(im.getRGB(x, y));
-//                    BufferedImage icon = b;
-//                    if (pixel.equals(Color.white)) {
-//                        icon = w;
-//                    }
-//                    
-//                    int drawX = x * (icon.getWidth() * 3 / 4);
-//                    int drawY = y * (icon.getHeight());
-//                    resulGraphics.drawImage(icon, drawX, drawY, null);
-//                }
-//            }
-//            
-//            File outFile = new File("result.bmp");
-//            ImageIO.write(result, "bmp", outFile);
-//        } catch (IOException ex) {
-//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        // TODO code application logic here
+
+        BufferedImage im = ImageIO.read(Main.class.getResource("input.bmp"));
+        BufferedImage t1b = ImageIO.read(Main.class.getResource("t1b.bmp"));
+        BufferedImage t1w = ImageIO.read(Main.class.getResource("t1w.bmp"));
+        BufferedImage t2b = ImageIO.read(Main.class.getResource("t2b.bmp"));
+        BufferedImage t2w = ImageIO.read(Main.class.getResource("t2w.bmp"));
+        BufferedImage result = new BufferedImage(im.getWidth() * t1b.getWidth() * 3 / 4, im.getHeight() * t1b.getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics resulGraphics = result.getGraphics();
+        resulGraphics.fillRect(0, 0, result.getWidth(), result.getHeight());
+
+        for (int y = 0; y < im.getHeight(); y++) {
+            BufferedImage b = t2b;
+            BufferedImage w = t1w;
+
+            int x = 0;
+            if (y % 2 == 1) {
+                x = 1;
+                b = t1b;
+                w = t2w;
+            }
+            for (; x < im.getWidth(); x += 2) {
+                Color pixel = new Color(im.getRGB(x, y));
+                BufferedImage icon = b;
+                if (pixel.equals(Color.white)) {
+                    icon = w;
+                }
+
+                int drawX = x * (icon.getWidth() * 3 / 4);
+                int drawY = y * (icon.getHeight());
+                resulGraphics.drawImage(icon, drawX, drawY, null);
+            }
+        }
+
+        File outFile = new File("result.bmp");
+        ImageIO.write(result, "bmp", outFile);
                 
         Scheme s = new Scheme();
 	s.addString(Color.red);
@@ -119,6 +115,18 @@ public class Main {
         im.createGraphics().drawImage(image, 0, 0, null);
         
         ImageIO.write(im, "bmp", new File("file.bmp"));
+//        Scheme s = new Scheme();
+//        
+//        SchemeString s1 = new SchemeString(0, Color.yellow);
+//        SchemeString s2 = new SchemeString(1, Color.blue);
+//        SchemeElementC el = new SchemeElementC(s1, s2);
+//        ElementViewer v = new ElementViewer(el);
+//        
+//        Image image = v.getPictupe(400, 300);
+//        BufferedImage im = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_BGR);
+//        im.createGraphics().drawImage(image, 0, 0, null);
+//        
+//        ImageIO.write(im, "bmp", new File("file.bmp"));
 	
 	Image result = rv.getPicture();
         im = new BufferedImage(result.getWidth(null), result.getHeight(null), BufferedImage.TYPE_INT_BGR);
