@@ -5,7 +5,6 @@
 package scheme.elements;
 
 import java.awt.Color;
-import java.awt.Image;
 import scheme.SchemeString;
 
 /**
@@ -15,15 +14,20 @@ import scheme.SchemeString;
 public abstract class SchemeElement {
     protected SchemeString left;
     protected SchemeString right;
+    private int level;
+    private int leftIndex;
+    
     public SchemeElement(SchemeString left, SchemeString right) {
+        if (right.getIndex() - left.getIndex() != 1)
+            throw new RuntimeException("Wrong strings! they must be nearly.");
+	
         this.left = left;
         this.right = right;
         
-        if (right.getIndex() - left.getIndex() != 1)
-            throw new RuntimeException("Wrong strings! they must be nearly.");
-        
         left.addElement(this);
         right.addElement(this);
+	
+	leftIndex = left.getIndex();
     }
 
     public SchemeString getLeft() {
@@ -32,6 +36,19 @@ public abstract class SchemeElement {
 
     public SchemeString getRight() {
         return right;
+    }
+    
+    public void setLevel(int level) {
+	if (level > this.level)
+	    this.level = level;
+    }
+    
+    public int getLevel() {
+	return level;
+    }
+    
+    public int getIndex() {
+	return leftIndex;
     }
 
     public abstract SchemeString getLeftOutput();

@@ -17,19 +17,19 @@ import scheme.elements.SchemeElement;
  * @author User
  */
 public class ElementViewer extends Viewer {
-    BufferedImage image = new BufferedImage(400, 300, BufferedImage.TYPE_INT_RGB);
     SchemeElement element;
     
     public ElementViewer(SchemeElement element) {
+	super(400, 300);
         this.element = element;
         update();
     }
 
     @Override
     public final void update() {
-        Graphics2D g = image.createGraphics();
-        int w = image.getWidth();
-        int h = image.getHeight();
+        Graphics2D g = getImage().createGraphics();
+        int w = getImage().getWidth();
+        int h = getImage().getHeight();
         int thickness = (int) (w * Math.sqrt(2) / 8);
         g.setStroke(new BasicStroke(thickness));
         g.setColor(Color.white);
@@ -84,10 +84,4 @@ public class ElementViewer extends Viewer {
         g.drawLine(arrowStartX, arrowStartY, w / 2, h / 2);
         drawArrow(g, w / 2, h / 2, arrowEndX, arrowEndY, w / 40, w / 20);
     }
-
-    @Override
-    public Image getPictupe(int width, int height) {
-        return image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
-    }
-    
 }

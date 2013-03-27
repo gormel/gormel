@@ -18,6 +18,7 @@ import scheme.Scheme;
 import scheme.SchemeString;
 import scheme.elements.SchemeElementA;
 import scheme.elements.SchemeElementC;
+import scheme.elements.SchemeElementD;
 import view.ElementViewer;
 
 /**
@@ -70,9 +71,7 @@ public class Main {
 //        } catch (IOException ex) {
 //            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        
-        Scheme s = new Scheme();
-        
+                
         SchemeString s1 = new SchemeString(0, Color.yellow);
         SchemeString s2 = new SchemeString(1, Color.blue);
         SchemeElementA el = new SchemeElementA(s1, s2);

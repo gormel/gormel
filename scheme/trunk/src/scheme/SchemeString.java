@@ -45,6 +45,7 @@ public class SchemeString {
     }
     
     public void addElement(SchemeElement element) {
+	element.setLevel(elements.size());
         elements.add(element);
     }
 }
