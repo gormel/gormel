@@ -33,8 +33,10 @@ public class SchemeElementB extends SchemeElement {
     }
 
     @Override
-    public int getOffset() {
-        return -1;
+    public int getOffset(SchemeString s) {
+        if (s == left)
+	    return 1;
+	return -1;
     }
     
 }

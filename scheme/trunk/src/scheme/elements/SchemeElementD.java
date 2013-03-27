@@ -33,7 +33,7 @@ public class SchemeElementD extends SchemeElement {
     }
 
     @Override
-    public int getOffset() {
+    public int getOffset(SchemeString s) {
         return 0;
     }
     

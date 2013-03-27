@@ -11,6 +11,10 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import scheme.elements.SchemeElement;
+import scheme.elements.SchemeElementA;
+import scheme.elements.SchemeElementB;
+import scheme.elements.SchemeElementC;
+import scheme.elements.SchemeElementD;
 
 /**
  *
@@ -62,25 +66,25 @@ public class ElementViewer extends Viewer {
         int arrowStartX = 0;
         int arrowStartY = h / 2 - arrowHVSize;
         
-        if (element.getLeft().getColor().equals(element.mainColor())) {
+        int arrowEndX = 0;
+        int arrowEndY = h / 2 + arrowHVSize;
+	
+        if (element instanceof SchemeElementA || element instanceof SchemeElementC) {
             arrowStartX = w / 2 - arrowHVSize;
         }
         
-        if (element.getRight().getColor().equals(element.mainColor())) {
+        if (element instanceof SchemeElementB || element instanceof SchemeElementD) {
             arrowStartX = w / 2 + arrowHVSize;
         }
         
-        int arrowEndX = 0;
-        int arrowEndY = h / 2 + arrowHVSize;
-        
-        if (element.getLeftOutput().getColor().equals(element.mainColor())) {
-            arrowEndX = w / 2 - arrowHVSize;
-        }
-        
-        if (element.getRightOutput().getColor().equals(element.mainColor())) {
+        if (element instanceof SchemeElementA || element instanceof SchemeElementD) {
             arrowEndX = w / 2 + arrowHVSize;
         }
         
+        if (element instanceof SchemeElementB || element instanceof SchemeElementC) {
+            arrowEndX = w / 2 - arrowHVSize;
+        }
+	
         g.drawLine(arrowStartX, arrowStartY, w / 2, h / 2);
         drawArrow(g, w / 2, h / 2, arrowEndX, arrowEndY, w / 40, w / 20);
     }

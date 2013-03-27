@@ -23,11 +23,11 @@ public abstract class SchemeElement {
 	
         this.left = left;
         this.right = right;
+	
+	leftIndex = left.getIndex();
         
         left.addElement(this);
         right.addElement(this);
-	
-	leftIndex = left.getIndex();
     }
 
     public SchemeString getLeft() {
@@ -54,5 +54,5 @@ public abstract class SchemeElement {
     public abstract SchemeString getLeftOutput();
     public abstract SchemeString getRightOutput();
     public abstract Color mainColor();
-    public abstract int getOffset();
+    public abstract int getOffset(SchemeString s);
 }

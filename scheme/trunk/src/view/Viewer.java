@@ -24,8 +24,12 @@ public abstract class Viewer {
 	return image;
     }
     
-    public Image getPictupe(int width, int height) {
+    public Image getPicture(int width, int height) {
 	return image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+    }
+    
+    public Image getPicture() {
+	return image;
     }
     
     protected void drawArrow(Graphics2D g, int x1, int y1, int x2, int y2, int width, int length) {

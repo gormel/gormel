@@ -39,13 +39,24 @@ public class SchemeString {
     public int getIndex() {
         int index = startIndex;
         for (SchemeElement element : elements) {
-            index += element.getOffset();
+            index += element.getOffset(this);
         }
         return index;
     }
     
     public void addElement(SchemeElement element) {
-	element.setLevel(elements.size());
+	if (!elements.isEmpty())
+	    element.setLevel(elements.get(elements.size() - 1).getLevel() + 1);
+	else
+	    element.setLevel(0);
         elements.add(element);
+    }
+    
+    public SchemeElement getElement(int index) {
+	return elements.get(index);
+    }
+    
+    public int getElementCount() {
+	return elements.size();
     }
 }

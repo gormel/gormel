@@ -17,9 +17,13 @@ import javax.imageio.ImageIO;
 import scheme.Scheme;
 import scheme.SchemeString;
 import scheme.elements.SchemeElementA;
+import scheme.elements.SchemeElementB;
 import scheme.elements.SchemeElementC;
 import scheme.elements.SchemeElementD;
 import view.ElementViewer;
+import view.SchemeResultViewer;
+import view.SchemeViewer;
+import view.Viewer;
 
 /**
  *
@@ -72,15 +76,54 @@ public class Main {
 //            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
 //        }
                 
-        SchemeString s1 = new SchemeString(0, Color.yellow);
-        SchemeString s2 = new SchemeString(1, Color.blue);
-        SchemeElementA el = new SchemeElementA(s1, s2);
-        ElementViewer v = new ElementViewer(el);
-        
-        Image image = v.getPictupe(400, 300);
+        Scheme s = new Scheme();
+	s.addString(Color.red);
+	s.addString(Color.blue);
+	s.addString(Color.green);
+	s.addString(Color.green);
+	s.addString(Color.blue);
+	s.addString(Color.red);
+	
+	s.getElements().add(new SchemeElementA(s.getString(0), s.getString(1)));
+	s.getElements().add(new SchemeElementB(s.getString(2), s.getString(3)));
+	s.getElements().add(new SchemeElementA(s.getString(4), s.getString(5)));
+	
+	s.getElements().add(new SchemeElementC(s.getString(1), s.getString(2)));
+	s.getElements().add(new SchemeElementD(s.getString(3), s.getString(4)));
+	
+	s.getElements().add(new SchemeElementA(s.getString(0), s.getString(1)));
+	s.getElements().add(new SchemeElementB(s.getString(2), s.getString(3)));
+	s.getElements().add(new SchemeElementA(s.getString(4), s.getString(5)));
+	
+	s.getElements().add(new SchemeElementC(s.getString(1), s.getString(2)));
+	s.getElements().add(new SchemeElementD(s.getString(3), s.getString(4)));	
+	
+	s.getElements().add(new SchemeElementA(s.getString(0), s.getString(1)));
+	s.getElements().add(new SchemeElementB(s.getString(2), s.getString(3)));
+	s.getElements().add(new SchemeElementA(s.getString(4), s.getString(5)));
+	
+	s.getElements().add(new SchemeElementC(s.getString(1), s.getString(2)));
+	s.getElements().add(new SchemeElementD(s.getString(3), s.getString(4)));
+	
+	s.getElements().add(new SchemeElementA(s.getString(0), s.getString(1)));
+	s.getElements().add(new SchemeElementB(s.getString(2), s.getString(3)));
+	s.getElements().add(new SchemeElementA(s.getString(4), s.getString(5)));
+	
+	s.getElements().add(new SchemeElementC(s.getString(1), s.getString(2)));
+	s.getElements().add(new SchemeElementD(s.getString(3), s.getString(4)));
+	Viewer v = new SchemeViewer(s);
+	Viewer rv = new SchemeResultViewer(s);
+	
+        Image image = v.getPicture();
         BufferedImage im = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_BGR);
         im.createGraphics().drawImage(image, 0, 0, null);
         
         ImageIO.write(im, "bmp", new File("file.bmp"));
+	
+	Image result = rv.getPicture();
+        im = new BufferedImage(result.getWidth(null), result.getHeight(null), BufferedImage.TYPE_INT_BGR);
+        im.createGraphics().drawImage(result, 0, 0, null);
+        
+        ImageIO.write(im, "bmp", new File("result.bmp"));
     }
 }
