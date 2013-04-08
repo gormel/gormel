@@ -23,7 +23,22 @@ namespace OfflineRoomClient
 		{
 			get { return new Point(X, Y); }
 		}
+		public Cursor Mirror
+		{
+			get
+			{
+				int free = (int)Direction + 1;
+				Direction newDirection = (Direction)((free + 1) % 4);
+				int newX = X + Math.Abs(2 - free) - 1;
+				int newY = Y - Math.Abs(3 - free) + 1;
 
+				Cursor rv = new Cursor();
+				rv.X = newX;
+				rv.Y = newY;
+				rv.Direction = newDirection;
+				return rv;
+			}
+		}
 
 		public object Clone()
 		{

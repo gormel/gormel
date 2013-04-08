@@ -16,6 +16,7 @@ namespace OfflineRoomClient
 		private List<ServerPlayer> serverPlayers = new List<ServerPlayer>();
 		private List<ClientPlayer> clientPlayers = new List<ClientPlayer>();
 		private ServerFiled serverFiled;
+		private Brain brain;
 
 		private static int w = 10;
 		private static int h = 15;
@@ -31,6 +32,7 @@ namespace OfflineRoomClient
 			InitializeComponent();
 
 			serverFiled = new ServerFiled(w, h);
+			brain = new NormalBrain<ServerCell, ServerPlayer>(serverFiled);
 
 			InitializeUserComponents();
 			
@@ -64,7 +66,7 @@ namespace OfflineRoomClient
 		{
 			while (playerQueue.PlayingPlayer != me && !serverFiled.Complete)
 			{
-				Cursor cursor = GetBrainCursor();
+				Cursor cursor = brain.Step();
 				if (serverFiled.Step(playerQueue.PlayingPlayer, cursor))
 				{
 					playerQueue.Step();
@@ -75,173 +77,6 @@ namespace OfflineRoomClient
 				yield return new Point(cursor.X, cursor.Y - 1);
 				yield return new Point(cursor.X, cursor.Y + 1);
 			}
-		}
-
-		private Cursor GetBrainCursor()
-		{
-			Cursor cursor = new Cursor();
-			var freeCells = from x in Enumerable.Range(0, serverFiled.Width)
-							from y in Enumerable.Range(0, serverFiled.Height)
-							where !serverFiled[x, y].IsWall
-							select new Point(x, y);
-
-			foreach (var p in freeCells)
-			{
-				Direction direction;
-				if (OneLeft(p, out direction))
-				{
-					cursor.X = p.X;
-					cursor.Y = p.Y;
-					cursor.Direction = direction;
-					return cursor;
-				}
-			}
-
-			int willTake = freeCells.Count();
-			Cursor temp = cursor;
-			foreach (var p in freeCells)
-			{
-				for (int i = 0; i < 4; i++)
-				{
-					cursor.X = p.X;
-					cursor.Y = p.Y;
-					cursor.Direction = (Direction)i;
-					if (!Free(cursor))
-						continue;
-					int take = HowManyTake(cursor);
-					if (take == 0)
-						return cursor;
-					if (take < willTake)
-					{
-						willTake = take;
-						temp = (Cursor)cursor.Clone();
-					}
-				}
-			}
-
-			return temp;
-		}
-
-		private bool Free(Cursor cursor)
-		{
-			switch (cursor.Direction)
-			{
-				case Direction.Up:
-					return !serverFiled[cursor.X, cursor.Y - 1].Down;
-				case Direction.Left:
-					return !serverFiled[cursor.X - 1, cursor.Y].Right;
-				case Direction.Down:
-					return !serverFiled[cursor.Position].Down;
-				case Direction.Right:
-					return !serverFiled[cursor.Position].Right;
-				default:
-					return false;
-			}
-		}
-
-		private bool OneLeft(Point position, out Direction direction)
-		{
-			bool left = serverFiled[position.X - 1, position.Y].Right;
-			bool right = serverFiled[position].Right;
-			bool top = serverFiled[position.X, position.Y - 1].Down;
-			bool down = serverFiled[position].Down;
-
-			if (!left && right && top && down)
-			{
-				direction = Direction.Left;
-				return true;
-			}
-			else if (left && !right && top && down)
-			{
-				direction = Direction.Right;
-				return true;
-			}
-			else if (left && right && !top && down)
-			{
-				direction = Direction.Up;
-				return true;
-			}
-			else if (left && right && top && !down)
-			{
-				direction = Direction.Down;
-				return true;
-			}
-			direction = Direction.Down;
-			return false;
-		}
-
-		private int HowManyTake(Cursor cursor)
-		{
-			Cursor c = (Cursor)cursor.Clone();
-			Cursor c1 = MirrorCursor(c);
-
-			Point start = new[] { c.Position, c1.Position }.FirstOrDefault(p => NearCanGo(p).Count() < 3);
-			HashSet<Point> visited = new HashSet<Point>();
-			if (start != Point.Empty)
-				visited.Add(start);
-
-			foreach (var p in NearCanGo(start))
-			{
-				CalculateTake(visited, p);
-			}
-			return visited.Count;
-		}
-
-		private void CalculateTake(HashSet<Point> visited, Point watching)
-		{
-			if (visited.Contains(watching))
-				return;
-			var t = from n in NearCanGo(watching)
-					where !visited.Contains(n)
-					select n;
-			if (t.Count() > 1)
-				return;
-
-			visited.Add(watching);
-			foreach (var p in t)
-				CalculateTake(visited, p);
-		}
-
-		private IEnumerable<Point> NearCanGo(Point pos)
-		{
-			if (pos == Point.Empty)
-				yield break;
-
-			bool left = serverFiled[pos.X - 1, pos.Y].Right;
-			bool right = serverFiled[pos].Right;
-			bool top = serverFiled[pos.X, pos.Y - 1].Down;
-			bool down = serverFiled[pos].Down;
-
-			if (!left)
-			{
-				yield return new Point(pos.X - 1, pos.Y);
-			}
-			if (!right)
-			{
-				yield return new Point(pos.X + 1, pos.Y);
-			}
-			if (!top)
-			{
-				yield return new Point(pos.X, pos.Y - 1);
-			}
-			if (!down)
-			{
-				yield return new Point(pos.X, pos.Y + 1);
-			}
-		}
-		
-		private Cursor MirrorCursor(Cursor cursor)
-		{
-			int free = (int)cursor.Direction + 1;
-			Direction newDirection = (Direction)((free + 1) % 4 );
-			int newX = cursor.X + Math.Abs(2 - free) - 1;
-			int newY = cursor.Y - Math.Abs(3 - free) + 1;
-
-			Cursor rv = new Cursor();
-			rv.X = newX;
-			rv.Y = newY;
-			rv.Direction = newDirection;
-			return rv;
 		}
 
 		private IEnumerable<ClientPlayer> GeneratePlayers(IEnumerable<ServerPlayer> players)
@@ -285,7 +120,7 @@ namespace OfflineRoomClient
 
 		void t_Tick(object sender, EventArgs e)
 		{
-			Text = string.Format("{0}", playerQueue.PlayingPlayer.Name);
+			Text = string.Format("{0}: {1}", playerQueue.PlayingPlayer.Name, serverFiled.Score(me));
 		}
 	}
 }

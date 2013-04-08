@@ -75,6 +75,8 @@
     <Compile Include="SelfFiled\SelfFiledControl.Designer.cs">
       <DependentUpon>SelfFiledControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="ServerClient\Brain\Brain.cs" />
+    <Compile Include="ServerClient\Brain\NormalBrain.cs" />
     <Compile Include="ServerClient\Client\ClientCell.cs" />
     <Compile Include="ServerClient\Client\ClientCellControl.cs">
       <SubType>UserControl</SubType>
@@ -115,9 +117,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

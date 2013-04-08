@@ -36,13 +36,18 @@ namespace OfflineRoomClient
 		{
 			get
 			{
-				foreach (var cell in data)
+				foreach (var cell in from c in data where !c.IsWall select c)
 				{
 					if (EqualityComparer<TSymbol>.Default.Equals(cell.Symbol, default(TSymbol)))
 						return false;
 				}
 				return true;
 			}
+		}
+
+		public int Score(TSymbol symbol)
+		{
+			return data.Count(c => !c.IsWall && EqualityComparer<TSymbol>.Default.Equals(c.Symbol, symbol));
 		}
 	}
 }
