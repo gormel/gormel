@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OfflineRoomClient
@@ -11,7 +10,7 @@ namespace OfflineRoomClient
 	public class ClientFiledControl : UserControl
 	{
 		public ClientFiled Filed { get; private set; }
-		public event EventHandler<Cursor> Clicked;
+		public event EventHandler<ClickedEventArgs> Clicked;
 		private Cursor lastCursor = new Cursor();
 		private Dictionary<Point, ClientCellControl> cells = new Dictionary<Point, ClientCellControl>();
 
@@ -86,7 +85,7 @@ namespace OfflineRoomClient
 		void ClientFiledControl_MouseClick(object sender, MouseEventArgs e)
 		{
 			if (Clicked != null)
-				Clicked(this, Filed.Cursor);
+				Clicked(this, new ClickedEventArgs(Filed.Cursor));
 			RefreshNear(Filed.Cursor);
 		}
 

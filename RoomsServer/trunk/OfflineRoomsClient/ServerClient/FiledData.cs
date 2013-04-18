@@ -6,26 +6,26 @@ using System.Text;
 
 namespace OfflineRoomClient
 {
-	public class FiledData<TCell, TSymbol> where TCell : ICell<TSymbol>
+	public class FiledData<TSymbol>
 	{
 		public IEnumerable<Point> Points
 		{
 			get { return data.Keys; }
 		}
-		private Dictionary<Point, TCell> data = new Dictionary<Point, TCell>();
+		private Dictionary<Point, Cell<TSymbol>> data = new Dictionary<Point, Cell<TSymbol>>();
 
-		public void Add(Point p, TCell cell)
+		public void Add(Point p, Cell<TSymbol> cell)
 		{
 			if (!data.ContainsKey(p))
 				data.Add(p, cell);
 		}
 
-		public TCell Get(Point p)
+		public Cell<TSymbol> Get(Point p)
 		{
 			return data[p];
 		}
 
-		public TCell this[Point key]
+		public Cell<TSymbol> this[Point key]
 		{
 			get
 			{

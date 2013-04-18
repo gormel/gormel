@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace OfflineRoomClient
 {
-	public class ClientFiled : Filed<ClientCell, ClientPlayer>
+	public class ClientFiled : Filed<ClientPlayer>
 	{
 		public Cursor Cursor { get; private set; }
 		public bool Locked { get; private set; }
@@ -39,7 +38,7 @@ namespace OfflineRoomClient
 					s3.CrossZValue(p2) * s3.CrossZValue(s1.Negate()) > 0;
 		}
 
-		public void Update(FiledData<ClientCell, ClientPlayer> data)
+		public void Update(FiledData<ClientPlayer> data)
 		{
 			foreach (var p in data.Points)
 			{

@@ -5,7 +5,6 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OfflineRoomClient
@@ -18,8 +17,8 @@ namespace OfflineRoomClient
 		private ServerFiled serverFiled;
 		private Brain brain;
 
-		private static int w = 10;
-		private static int h = 15;
+		private static int w = 20;//30
+		private static int h = 18;//18
 		private static int k = 30;
 
 		private Random r = new Random();
@@ -32,7 +31,7 @@ namespace OfflineRoomClient
 			InitializeComponent();
 
 			serverFiled = new ServerFiled(w, h);
-			brain = new NormalBrain<ServerCell, ServerPlayer>(serverFiled);
+			brain = new NormalBrain(serverFiled);
 
 			InitializeUserComponents();
 			
@@ -47,7 +46,7 @@ namespace OfflineRoomClient
 		private void InitializeUserComponents()
 		{
 			ctrl = new ClientFiledControl(new ClientFiled(w, h));
-			this.SetBounds(Bounds.X, Bounds.Y, w * k, h * k);
+			this.SetClientSizeCore(w * k, h * k);
 			ctrl.Dock = DockStyle.Fill;
 			UpdateClientFiled(from x in Enumerable.Range(0, w)
 							  from y in Enumerable.Range(0, h)
@@ -62,11 +61,11 @@ namespace OfflineRoomClient
 			t.Start();
 		}
 
-		private IEnumerable<Point> DoSteps()
+		private IEnumerable<Point> DoSteps(Cursor playerStep)
 		{
 			while (playerQueue.PlayingPlayer != me && !serverFiled.Complete)
 			{
-				Cursor cursor = brain.Step();
+				Cursor cursor = brain.Step(playerStep);
 				if (serverFiled.Step(playerQueue.PlayingPlayer, cursor))
 				{
 					playerQueue.Step();
@@ -88,14 +87,15 @@ namespace OfflineRoomClient
 			}
 		}
 
-		void Filed_Clicked(object sender, Cursor e)
+		void Filed_Clicked(object sender, ClickedEventArgs e)
 		{
-			var where = new List<Point>() { new Point(e.X, e.Y), new Point(e.X - 1, e.Y), new Point(e.X, e.Y - 1), 
-				new Point(e.X + 1, e.Y), new Point(e.X, e.Y + 1) };
-			if (serverFiled.Step(playerQueue.PlayingPlayer, e))
+			Cursor c = e.Cursor;
+			var where = new List<Point>() { new Point(c.X, c.Y), new Point(c.X - 1, c.Y), new Point(c.X, c.Y - 1), 
+				new Point(c.X + 1, c.Y), new Point(c.X, c.Y + 1) };
+			if (serverFiled.Step(playerQueue.PlayingPlayer, c))
 			{
 				playerQueue.Step();
-				where.AddRange(DoSteps());
+				where.AddRange(DoSteps(c));
 			}
 			UpdateClientFiled(where);
 		}
@@ -103,7 +103,7 @@ namespace OfflineRoomClient
 		private void UpdateClientFiled(IEnumerable<Point> where)
 		{
 			var serverData = serverFiled.GetData(where);
-			FiledData<ClientCell, ClientPlayer> clientData = new FiledData<ClientCell, ClientPlayer>();
+			FiledData<ClientPlayer> clientData = new FiledData<ClientPlayer>();
 
 			foreach (var p in serverData.Points)
 			{
@@ -120,7 +120,7 @@ namespace OfflineRoomClient
 
 		void t_Tick(object sender, EventArgs e)
 		{
-			Text = string.Format("{0}: {1}", playerQueue.PlayingPlayer.Name, serverFiled.Score(me));
+			Text = string.Format("{0}: {1}", playerQueue.PlayingPlayer.Name, (from p in serverPlayers select serverFiled.Score(p).ToString()).Aggregate((s1, s2) => s1 + ", " + s2));
 		}
 	}
 }

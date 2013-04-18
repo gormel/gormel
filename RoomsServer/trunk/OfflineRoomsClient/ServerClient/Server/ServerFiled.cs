@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace OfflineRoomClient
 {
-	public class ServerFiled : Filed<ServerCell, ServerPlayer>
+	public class ServerFiled : Filed<ServerPlayer>
 	{
 		public ServerFiled(int width, int height)
 			: base(width, height)
@@ -151,14 +150,14 @@ namespace OfflineRoomClient
 
 		bool Check(int x, int y)
 		{
-			ServerCell lefter = this[x - 1, y];
-			ServerCell upper = this[x, y - 1];
+			Cell<ServerPlayer> lefter = this[x - 1, y];
+			Cell<ServerPlayer> upper = this[x, y - 1];
 			return this[x, y].Right && this[x, y].Down && lefter.Right && upper.Down && this[x, y].Symbol == null;
 		}
 
-		public FiledData<ServerCell, ServerPlayer> GetData(IEnumerable<Point> where)
+		public FiledData<ServerPlayer> GetData(IEnumerable<Point> where)
 		{
-			FiledData<ServerCell, ServerPlayer> data = new FiledData<ServerCell, ServerPlayer>();
+			FiledData<ServerPlayer> data = new FiledData<ServerPlayer>();
 			foreach (var p in where)
 			{
 				data.Add(p, this[p]);
@@ -166,7 +165,7 @@ namespace OfflineRoomClient
 			return data;
 		}
 
-		public FiledData<ServerCell, ServerPlayer> GetData()
+		public FiledData<ServerPlayer> GetData()
 		{
 			return GetData(
 				from x in Enumerable.Range(0, Width)

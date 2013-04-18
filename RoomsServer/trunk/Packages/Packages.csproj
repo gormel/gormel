@@ -59,12 +59,21 @@
     <Compile Include="Login\LoginSuccessPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Room\ExitedRoomPackage.cs" />
+    <Compile Include="Room\FiledDataUpdatedPackage.cs" />
     <Compile Include="Room\JoinedRoomPackage.cs" />
+    <Compile Include="Room\PlayerStepPackage.cs" />
     <Compile Include="Room\PrivateRoomMessagePackage.cs" />
     <Compile Include="Room\PublicMessagePackage.cs" />
     <Compile Include="Room\RoomSessionEndPackage.cs" />
+    <Compile Include="Room\StepPackage.cs" />
     <Compile Include="Room\TeamRoomMessagePackage.cs" />
     <Compile Include="Room\YouJoinedRoomPackage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gameplay\Gameplay.csproj">
+      <Project>{7ba126d4-0cf8-434d-80a0-e7a4122212ec}</Project>
+      <Name>Gameplay</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

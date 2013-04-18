@@ -10,8 +10,8 @@ namespace RoomsServer
 {
 	class Server
 	{
+		public Random Random { get; private set; }
 		private static Server inst = null;
-
 		public static Server Instance
 		{
 			get
@@ -27,6 +27,7 @@ namespace RoomsServer
 			LoginSession = new LoginSession();
 			LobbySession = new LobbySession();
 			Rooms = new List<RoomSession>();
+			Random = new Random();
 		}
 
 		static void Main(string[] args)

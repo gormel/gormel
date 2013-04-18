@@ -15,6 +15,11 @@ namespace Packages
 				return BitConverter.GetBytes((int)o);
 			}
 
+			if (o.GetType() == typeof(bool))
+			{
+				return BitConverter.GetBytes((bool)o);
+			}
+
 			if (o.GetType() == typeof(long))
 			{
 				return BitConverter.GetBytes((long)o);
@@ -79,6 +84,12 @@ namespace Packages
 			{
 				bytesReaded = sizeof(int);
 				return BitConverter.ToInt32(data, startIndex);
+			}
+
+			if (type == typeof(bool))
+			{
+				bytesReaded = sizeof(bool);
+				return BitConverter.ToBoolean(data, startIndex);
 			}
 
 			if (type == typeof(long))

@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OfflineRoomClient
 {
 	public class ClientCellControl : UserControl
 	{
-		public ClientCell Cell { get; set; }
-		public ClientCellControl(ClientCell cell)
+		public Cell<ClientPlayer> Cell { get; set; }
+		public ClientCellControl(Cell<ClientPlayer> cell)
 		{
 			Cell = cell;
 			DoubleBuffered = true;

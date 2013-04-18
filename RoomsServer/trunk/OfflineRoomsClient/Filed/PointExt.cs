@@ -33,5 +33,11 @@ namespace OfflineRoomClient
 		{
 			return a.Add(b.Negate());
 		}
+
+		public static double Distance(this Point a, Point b)
+		{
+			Point sub = b.Subtract(a);
+			return Math.Sqrt(sub.X * sub.X + sub.Y * sub.Y);
+		}
 	}
 }

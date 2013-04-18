@@ -3,20 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OfflineRoomClient
 {
-	public class ClientCell : ICell<ClientPlayer>
+	public class ClientCell : Cell<ClientPlayer>
 	{
-		public new bool Right { get; set; }
-		public bool Down { get; set; }
-		public bool IsWall { get; set; }
-		public ClientPlayer Symbol { get; set; }
-
-		public ClientCell()
-		{
-		}
 	}
 }

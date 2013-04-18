@@ -20,10 +20,36 @@ namespace RoomsClient
 
 	public partial class RoomPanel : StatePanel<RoomState>
 	{
+		public string PlayigPlayerName
+		{
+			get { return label1.Text; }
+			set 
+			{
+				if (label1.InvokeRequired)
+					label1.Invoke(new Action(() => { label1.Text = value; }));
+				else
+					label1.Text = value;
+			}
+		}
+
+		private ClientFiledControl filedControl;
 		public RoomPanel(RoomState state)
 			: base(state)
 		{
 			InitializeComponent();
+			filedControl = new ClientFiledControl(MyState.Filed);
+			filedControl.Dock = DockStyle.Fill;
+			filedControl.Clicked += filedControl_Clicked;
+			filedPanel.Controls.Add(filedControl);
+		}
+
+		void filedControl_Clicked(object sender, ClickedEventArgs e)
+		{
+			StepPackage sPack = new StepPackage();
+			sPack.X = e.Cursor.X;
+			sPack.Y = e.Cursor.Y;
+			sPack.Direction = e.Cursor.Direction;
+			ServerComunicator.Instance.Send(sPack);
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -67,6 +93,11 @@ namespace RoomsClient
 				}
 				textBox2.AppendText(outString);
 			}
+		}
+
+		public void UpdateFiled(IEnumerable<Point> where)
+		{
+			filedControl.UpdateCells(where);
 		}
 	}
 }

@@ -83,6 +83,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\ServerComunicator.cs" />
     <Compile Include="Core\StateManager.cs" />
+    <Compile Include="Room\Gameplay\ClickedEventArgs.cs" />
+    <Compile Include="Room\Gameplay\ClientCell.cs" />
+    <Compile Include="Room\Gameplay\ClientCellControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Room\Gameplay\ClientFiled.cs" />
+    <Compile Include="Room\Gameplay\ClientFiledControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Room\Gameplay\ClientPlayer.cs" />
     <Compile Include="Room\RoomClient.cs" />
     <Compile Include="Room\RoomPanel.cs">
       <SubType>UserControl</SubType>
@@ -124,10 +134,22 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Gameplay\Gameplay.csproj">
+      <Project>{7ba126d4-0cf8-434d-80a0-e7a4122212ec}</Project>
+      <Name>Gameplay</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Packages\Packages.csproj">
       <Project>{18473d11-f59b-43d1-8750-af18ae3ba0ca}</Project>
       <Name>Packages</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Room\Gameplay\Cross.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Room\Gameplay\Zero.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

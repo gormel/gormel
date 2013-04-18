@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Gameplay;
 
 namespace Packages
 {
@@ -14,5 +15,8 @@ namespace Packages
 
 		[Data(1, true, true)]
 		public string Team { get; set; }
+
+		[Data(2, true, true)]
+		public Images Image { get; set; }
 	}
 }

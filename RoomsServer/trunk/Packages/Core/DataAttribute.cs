@@ -17,5 +17,9 @@ namespace Packages
 			Read = read;
 			Write = write;
 		}
+		public DataAttribute(int number)
+			: this(number, true, true)
+		{
+		}
 	}
 }

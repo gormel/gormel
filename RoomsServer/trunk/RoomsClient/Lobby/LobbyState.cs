@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +39,14 @@ namespace RoomsClient
 					RoomClient me = new RoomClient();
 					me.Name = Me.Name;
 					me.Team = yjrPackage.Team;
-					RoomState room = new RoomState(this, me);
+
+					ClientPlayer player = new ClientPlayer(me.Name,
+						Image.FromFile(string.Format("Room//Gameplay//{0}.png", yjrPackage.Image.ToString())));
+					me.Player = player;
+
+					ClientFiled filed = new ClientFiled(yjrPackage.Width, yjrPackage.Height);
+
+					RoomState room = new RoomState(this, me, filed);
 					control.InQueue = false;
 					return room;
 				default:

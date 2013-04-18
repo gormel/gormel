@@ -10,6 +10,7 @@ namespace RoomsServer
 	{
 		public string Name { get; private set; }
 		public Team Team { get; private set; }
+		public ServerPlayer Player { get; set; }
 		public RoomClientInfo(Client c, string name, Team team)
 			: base(c)
 		{

@@ -10,5 +10,6 @@ namespace RoomsClient
 	{
 		public string Team { get; set; }
 		public string Name { get; set; }
+		public ClientPlayer Player { get; set; }
 	}
 }

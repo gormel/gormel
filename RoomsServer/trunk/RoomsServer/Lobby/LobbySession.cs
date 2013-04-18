@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Gameplay;
 using Packages;
 
 namespace RoomsServer
@@ -90,6 +91,17 @@ namespace RoomsServer
 					client.InRoom = true;
 				}
 			}
+
+			List<string> images = new List<string>(Enum.GetNames(typeof(Images)));
+			foreach (var c in roomClients)
+			{
+				int pictIndex = Server.Instance.Random.Next(images.Count);
+				Images image = (Images)Enum.Parse(typeof(Images), images[pictIndex]);
+				images.RemoveAt(pictIndex);
+				ServerPlayer player = new ServerPlayer(c.Name, image);
+				c.Player = player;
+			}
+
 			RoomSession room = new RoomSession(roomClients);
 			Server.Instance.Rooms.Add(room);
 		}
