@@ -8,8 +8,12 @@ namespace RoomsServer
 {
 	public class ClientQueue
 	{
-		private SortedSet<ClientsUnion> clients = 
-			new SortedSet<ClientsUnion>(Comparer<ClientsUnion>.Create((a, b) => a.Elo - b.Elo));
+		//private SortedSet<ClientsUnion> clients = 
+		//	new SortedSet<ClientsUnion>(Comparer<ClientsUnion>.Create((a, b) => a.Elo - b.Elo));
+
+		//private SortedList<int, ClientsUnion> clients = new SortedList<int, ClientsUnion>();
+
+		private List<ClientsUnion> clients = new List<ClientsUnion>();
 
 		public QueueInfo Info { get; private set; }
 		public ClientQueue(QueueInfo info)
@@ -20,6 +24,7 @@ namespace RoomsServer
 		public void Add(ClientsUnion union)
 		{
 			clients.Add(union);
+			clients.Sort(Comparer<ClientsUnion>.Create((a, b) => a.Elo - b.Elo));
 		}
 
 		private List<List<LobbyClientInfo>> GetTeams()
@@ -41,7 +46,10 @@ namespace RoomsServer
 			}
 			clients.Clear();
 			foreach (var item in copyClients)
+			{
 				clients.Add(item);
+				clients.Sort(Comparer<ClientsUnion>.Create((a, b) => a.Elo - b.Elo));
+			}
 
 			return teams;
 		}

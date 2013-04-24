@@ -17,6 +17,7 @@ namespace RoomsClient
 		{
 			InitializeComponent();
 			MyState = myState;
+			Dock = DockStyle.Fill;
 		}
 	}
 }

@@ -57,12 +57,24 @@ namespace RoomsServer
 						break;
 					var jqPackage = (JoinQueuePackage)pack;
 					var teamates = Clients.Where(i => jqPackage.Teammates.Contains(i.Name))
-						.Concat( new LobbyClientInfo[] { info } );
+						.Concat( new[] { info } );
 					queues[jqPackage.QueueType].Add(new ClientsUnion(teamates));
 					UpdateQueue(jqPackage.QueueType);
 					break;
 				case PackageType.ExitedRoom:
 					info.InRoom = false;
+					break;
+				case PackageType.GetPlayerInfo:
+					GetPlayerInfoPackage gpiPack = (GetPlayerInfoPackage)pack;
+
+					PlayerInfoPackage piPack = new PlayerInfoPackage();
+					piPack.Name = gpiPack.Name;
+					piPack.Elo = Clients.First(c => c.Name == piPack.Name).Elo;
+
+					info.Client.Send(piPack);
+					break;
+				case PackageType.Stats:
+					info.Client.Send(pack);
 					break;
 				default:
 					break;

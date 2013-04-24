@@ -24,7 +24,7 @@ namespace RoomsServer
 					{
 						info.Client.Send(new LoginSuccessPackage());
 						LobbyClientInfo newInfo = new LobbyClientInfo(info.Client, name);
-						newInfo.Elo = Server.Instance.LobbySession.Clients.Count;
+						newInfo.Elo = 1200;//TODO DB
 						Server.Instance.LobbySession.Clients.Add(newInfo);
 						Clients.Remove(info);
 					}

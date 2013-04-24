@@ -20,19 +20,32 @@ namespace RoomsServer
 
 		void Clients_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			if (e.NewItems != null)
-				foreach(var item in e.NewItems)
-				{
-					T info = (T)item;
-					info.Client.PackageRecive += Client_PackageRecive;
-				}
-
-			if (e.OldItems != null)
-				foreach (var item in e.OldItems)
-				{
-					T info = (T)item;
-					info.Client.PackageRecive -= Client_PackageRecive;
-				}
+			switch (e.Action)
+			{
+				case NotifyCollectionChangedAction.Add:
+					foreach(var item in e.NewItems)
+					{
+						T info = (T)item;
+						info.Client.PackageRecive += Client_PackageRecive;
+					}
+					break;
+				case NotifyCollectionChangedAction.Remove:
+					foreach (var item in e.OldItems)
+					{
+						T info = (T)item;
+						info.Client.PackageRecive -= Client_PackageRecive;
+					}
+					break;
+				case NotifyCollectionChangedAction.Reset:
+					foreach (var client in Clients)
+					{
+						T info = (T)client;
+						info.Client.PackageRecive -= Client_PackageRecive;
+					}
+					break;
+				default:
+					break;
+			}
 		}
 
 		void Client_PackageRecive(object sender, Package e)

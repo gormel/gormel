@@ -40,9 +40,11 @@ namespace RoomsClient
 					control.WriteMessge(newClient, "Joined room!", MessageType.Public);
 					break;
 				case PackageType.RoomSessionEnd:
+					RoomSessionEndPackage rsePack = (RoomSessionEndPackage)pack;
 					ExitedRoomPackage erPack = new ExitedRoomPackage();
 					ServerComunicator.Instance.Send(erPack);
-					return lobby;
+					StatsState stats = new StatsState(lobby, from c in clients select c.Name, rsePack.EloAdded);
+					return stats;
 				case PackageType.PublicRoomMessage:
 					PublicRoomMessagePackage prmPack = (PublicRoomMessagePackage)pack;
 					control.WriteMessge(clients.First(c => c.Name == prmPack.Name), prmPack.Text, MessageType.Public);

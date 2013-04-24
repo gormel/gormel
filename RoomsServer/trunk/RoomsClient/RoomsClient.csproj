@@ -101,6 +101,10 @@
       <DependentUpon>RoomPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Room\RoomState.cs" />
+    <Compile Include="Room\Stats\StatsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Room\Stats\StatsState.cs" />
     <EmbeddedResource Include="Lobby\LobbyPanel.resx">
       <DependentUpon>LobbyPanel.cs</DependentUpon>
     </EmbeddedResource>

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Packages
 {
-	[Package(PackageType.RoomSessionEnd)]
-	public class RoomSessionEndPackage : Package
+	[Package(PackageType.GetPlayerInfo)]
+	public class GetPlayerInfoPackage : Package
 	{
 		[Data(0)]
-		public int EloAdded { get; set; }
+		public string Name { get; set; }
 	}
 }

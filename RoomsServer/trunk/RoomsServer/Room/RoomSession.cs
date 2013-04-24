@@ -15,8 +15,8 @@ namespace RoomsServer
 		ServerPlayerQueue queue = null;
 		public RoomSession(IEnumerable<RoomClientInfo> clients)
 		{
-			int w = Server.Instance.Random.Next(10, 21);
-			int h = Server.Instance.Random.Next(10, 16);
+			int w = Server.Instance.Random.Next(5, 21);
+			int h = Server.Instance.Random.Next(5, 16);
 			foreach (var client in clients)
 			{
 				YouJoinedRoomPackage yjrPack = new YouJoinedRoomPackage();
@@ -100,10 +100,38 @@ namespace RoomsServer
 
 						if (filed.Complete)
 						{
-							RoomSessionEndPackage rsePack = new RoomSessionEndPackage();
-							foreach (var client in Clients)
-								client.Client.Send(rsePack);
+							var teams = Clients.GroupBy(c => c.Team);
+							Dictionary<Team, int> score = new Dictionary<Team, int>();
+							foreach (var team in teams)
+							{
+								int s = 0;
+								foreach (var client in team)
+								{
+									s += filed.Score(client.Player);
+								}
+								score.Add(team.Key, s);
+							}
+
+							int middle = 0;
+							foreach (var s in score.Values)
+								middle += s;
+							middle /= score.Count;
+
+							foreach (var team in teams)
+							{
+								RoomSessionEndPackage rsePack = new RoomSessionEndPackage();
+								rsePack.EloAdded = score[team.Key] - middle;
+								foreach (var client in team)
+								{
+									Server.Instance.LobbySession.Clients.First(c => c.Name == client.Name).Elo += rsePack.EloAdded;
+									client.Client.Send(rsePack);
+								}
+							}
 							Server.Instance.Rooms.Remove(this);
+							while (Clients.Any())
+							{
+								Clients.RemoveAt(0);
+							}
 						}
 					}
 					break;

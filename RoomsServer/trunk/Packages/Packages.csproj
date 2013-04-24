@@ -49,11 +49,14 @@
     <Compile Include="Core\Package.cs" />
     <Compile Include="Core\PackageAttribute.cs" />
     <Compile Include="Core\PackageType.cs" />
+    <Compile Include="Lobby\GetPlayerInfoPackage.cs" />
     <Compile Include="Lobby\JoinQueuePackage.cs" />
     <Compile Include="Lobby\LoggedInPackage.cs" />
     <Compile Include="Lobby\LoggedOutPackage.cs" />
     <Compile Include="Lobby\LogOutPaclkage.cs" />
+    <Compile Include="Lobby\PlayerInfoPackage.cs" />
     <Compile Include="Lobby\QueueType.cs" />
+    <Compile Include="Lobby\StatsPackage.cs" />
     <Compile Include="Login\LginFailedPackage.cs" />
     <Compile Include="Login\LoginPackage.cs" />
     <Compile Include="Login\LoginSuccessPackage.cs" />
