@@ -11,11 +11,6 @@ using RoomsServer;
 
 namespace Tests
 {
-	public class Foo
-	{
-		public event EventHandler Action;
-	}
-
 	class Program
 	{
 		static void Main(string[] args)

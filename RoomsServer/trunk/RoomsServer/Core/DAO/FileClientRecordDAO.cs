@@ -13,6 +13,8 @@ namespace RoomsServer
 		public FileClientRecordDAO(string path)
 		{
 			Path = path;
+			if (!Directory.Exists(Path))
+				Directory.CreateDirectory(Path);
 		}
 
 		private static object FromString(string value)
@@ -44,10 +46,15 @@ namespace RoomsServer
 			return value;
 		}
 
+		private string FilePath(string name)
+		{
+			return string.Format("{0}{1}{2}.xml",
+							Path, System.IO.Path.DirectorySeparatorChar, name);
+		}
+
 		public override ClientRecord GetClientRecord(string name)
 		{
-			string path = string.Format("{0}{1}{2}.xml",
-							Path, System.IO.Path.DirectorySeparatorChar, name);
+			string path = FilePath(name);
 			if (!File.Exists(path))
 				return null;
 			FileRecord file = new FileRecord(path);
@@ -66,9 +73,20 @@ namespace RoomsServer
 			{
 				file[prop.Name] = prop.GetValue(record).ToString();
 			}
-			file.Save(string.Format("{0}{1}{2}.xml",
-					Path, System.IO.Path.DirectorySeparatorChar, record.Name));
+			file.Save(FilePath(record.Name));
 			return true;
+		}
+
+		public override ClientRecord CreateClientRecord(string name, string passmd5)
+		{
+			if (File.Exists(FilePath(name)))
+				return null;
+			ClientRecord rec = new ClientRecord();
+			rec.Name = name;
+			rec.PasswordMD5 = passmd5;
+			rec.Rating = 1200;
+			SaveClientRecord(rec);
+			return rec;
 		}
 	}
 }

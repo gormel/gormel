@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Packages
 {
-	[Package(PackageType.Stats)]
-	public class StatsPackage : Package
+	[Package(PackageType.RegisterResult)]
+	public class RegisterResultPackage : Package
 	{
+		[Data(0)]
+		public bool Result { get; set; }
 	}
 }

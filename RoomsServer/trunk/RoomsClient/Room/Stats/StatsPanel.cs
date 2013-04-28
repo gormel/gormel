@@ -35,7 +35,7 @@ namespace RoomsClient
 
 		void exitButton_Click(object sender, EventArgs e)
 		{
-			ServerComunicator.Instance.Send(new StatsPackage());
+			MyState.Exit();
 		}
 
 		public void AddStats(string name, int elo)

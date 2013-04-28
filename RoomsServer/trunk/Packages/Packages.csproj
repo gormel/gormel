@@ -55,12 +55,13 @@
     <Compile Include="Lobby\LoggedOutPackage.cs" />
     <Compile Include="Lobby\LogOutPaclkage.cs" />
     <Compile Include="Lobby\PlayerInfoPackage.cs" />
-    <Compile Include="Lobby\QueueType.cs" />
-    <Compile Include="Lobby\StatsPackage.cs" />
+    <Compile Include="Core\QueueType.cs" />
     <Compile Include="Login\DisconnectedPackage.cs" />
     <Compile Include="Login\LginFailedPackage.cs" />
     <Compile Include="Login\LoginPackage.cs" />
     <Compile Include="Login\LoginSuccessPackage.cs" />
+    <Compile Include="Login\RegisterPackage.cs" />
+    <Compile Include="Login\RegisterResultPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Room\ExitedRoomPackage.cs" />
     <Compile Include="Room\FiledDataUpdatedPackage.cs" />

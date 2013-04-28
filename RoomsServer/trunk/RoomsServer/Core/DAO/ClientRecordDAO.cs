@@ -11,5 +11,7 @@ namespace RoomsServer
 		public abstract ClientRecord GetClientRecord(string name);
 
 		public abstract bool SaveClientRecord(ClientRecord record);
+
+		public abstract ClientRecord CreateClientRecord(string name, string passmd5);
 	}
 }

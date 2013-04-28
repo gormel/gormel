@@ -11,6 +11,8 @@ namespace RoomsServer
 	class Server
 	{
 		public Random Random { get; private set; }
+		public string Salt { get; private set; }
+
 		private static Server inst = null;
 		public static Server Instance
 		{
@@ -29,6 +31,7 @@ namespace RoomsServer
 			Rooms = new List<RoomSession>();
 			Random = new Random();
 			ClientStorage = new ClientStorage();
+			Salt = "salt_";
 		}
 
 		static void Main(string[] args)

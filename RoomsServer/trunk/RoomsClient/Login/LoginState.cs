@@ -22,11 +22,17 @@ namespace RoomsClient
 			switch (pack.ID)
 			{
 				case PackageType.LoginSuccess:
+					control.LoginResult(true);
 					LobbyClient me = new LobbyClient();
 					me.Name = control.MyName;
-					LobbyState lobby = new LobbyState(me);
+					LobbyState lobby = new LobbyState(me, this);
 					return lobby;
 				case PackageType.LoginFailed:
+					control.LoginResult(false);
+					break;
+				case PackageType.RegisterResult:
+					RegisterResultPackage rrPack = (RegisterResultPackage)pack;
+					control.RegistrationResult(rrPack.Result);
 					break;
 				default:
 					break;

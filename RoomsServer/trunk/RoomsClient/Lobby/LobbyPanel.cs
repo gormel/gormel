@@ -50,7 +50,7 @@ namespace RoomsClient
 		private void button1_Click(object sender, EventArgs e)
 		{
 			ServerComunicator.Instance.Send(new LogOutPackage());
-			ServerComunicator.Instance.Disconnect();
+			//ServerComunicator.Instance.Disconnect();
 		}
 
 		public void AddClient(LobbyClient client)

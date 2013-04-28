@@ -13,5 +13,10 @@ namespace RoomsClient
 		public abstract State HandlePackage(Package pack);
 		public abstract Control View { get; }
 		public event EventHandler<State> StateChanged;
+		protected void ChangeState(State state)
+		{
+			if (StateChanged != null)
+				StateChanged(this, state);
+		}
 	}
 }

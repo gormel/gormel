@@ -55,7 +55,8 @@ namespace RoomsServer
 			}
 			catch (SocketException e)
 			{
-				Disconnect();
+				if (PackageRecive != null)
+					PackageRecive(this, new LogOutPackage());
 				return;
 			}
 
@@ -71,13 +72,15 @@ namespace RoomsServer
 			StateData state = (StateData)ar.AsyncState;
 			if (!state.Socket.Connected)
 				return;
+			int readed = -1;
 			try
 			{
-				int readed = state.Socket.EndReceive(ar);
+				readed = state.Socket.EndReceive(ar);
 			}
 			catch (SocketException e)
 			{
-				Disconnect();
+				if (PackageRecive != null)
+					PackageRecive(this, new LogOutPackage());
 				return;
 			}
 
@@ -103,8 +106,8 @@ namespace RoomsServer
 
 		public void Disconnect()
 		{
-			if (PackageRecive != null)
-				PackageRecive(this, new DisconnectedPackage());
+			if (!sock.Connected)
+				return;
 			sock.Disconnect(false);
 		}
 	}

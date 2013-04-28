@@ -71,7 +71,6 @@
       <DependentUpon>LobbyPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Lobby\LobbyState.cs" />
-    <Compile Include="Lobby\ResourceManageryjrPackage.cs" />
     <Compile Include="Login\LoginPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

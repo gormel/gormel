@@ -13,6 +13,6 @@ namespace Packages
 		public string Name { get; set; }
 
 		[Data(1)]
-		public int Elo { get; set; }
+		public int Rating { get; set; }
 	}
 }

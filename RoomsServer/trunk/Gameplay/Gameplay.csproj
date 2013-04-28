@@ -38,6 +38,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Encrypter.cs" />
     <Compile Include="Filed\Cell.cs" />
     <Compile Include="Filed\Cursor.cs" />
     <Compile Include="Filed\Filed.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Filed\PointExt.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
   </ItemGroup>

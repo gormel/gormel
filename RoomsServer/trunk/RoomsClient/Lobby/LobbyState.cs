@@ -6,18 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Packages;
-using RoomsClient.Lobby;
 using Resources;
 
 namespace RoomsClient
 {
 	public class LobbyState : State
 	{
-		LobbyPanel control;
+		private LobbyPanel control;
+		private LoginState loginState;
 		public LobbyClient Me { get; private set; }
 
-		public LobbyState(LobbyClient me)
+		public LobbyState(LobbyClient me, LoginState loginState)
 		{
+			this.loginState = loginState;
 			Me = me;
 			control = new LobbyPanel(this);
 		}
@@ -34,6 +35,8 @@ namespace RoomsClient
 					break;
 				case Packages.PackageType.LoggedOut:
 					LoggedOutPackage loPackage = (LoggedOutPackage)pack;
+					if (loPackage.Name == Me.Name)
+						return loginState;
 					control.RemoveClient(control.Clients.First(c => c.Name == loPackage.Name));
 					break;
 				case PackageType.YouJoinedRoom:

@@ -15,8 +15,8 @@ namespace RoomsServer
 		ServerPlayerQueue queue = null;
 		public RoomSession(IEnumerable<RoomClientInfo> clients)
 		{
-			int w = Server.Instance.Random.Next(5, 21);
-			int h = Server.Instance.Random.Next(5, 16);
+			int w = Server.Instance.Random.Next(10, 15);
+			int h = Server.Instance.Random.Next(10, 15);
 			foreach (var client in clients)
 			{
 				YouJoinedRoomPackage yjrPack = new YouJoinedRoomPackage();
@@ -124,7 +124,7 @@ namespace RoomsServer
 						}
 					}
 					break;
-				case PackageType.Disconnected:
+				case PackageType.Logout:
 					var dTeams = Clients.GroupBy(c => c.Team);
 					Dictionary<Team, int> dScore = 
 						dTeams.ToDictionary(g => g.Key, g => g.Sum(c => filed.Score(c.Player)));
@@ -147,9 +147,6 @@ namespace RoomsServer
 					Server.Instance.Rooms.Remove(this);
 					while (Clients.Any())
 						Clients.RemoveAt(0);
-					
-					Server.Instance.LobbySession.Clients.First(i => i.Name == info.Name).InRoom = false;
-					info.Client.Disconnect();
 					break;
 				default:
 					break;

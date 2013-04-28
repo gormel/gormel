@@ -43,19 +43,16 @@ namespace RoomsServer
 			switch (pack.ID)
 			{
 				case PackageType.Logout:
-					info.Client.Disconnect();
-					break;
-				case PackageType.Disconnected:
-					if (info.InRoom)
-						break;
+					//if (info.InRoom)
+					//	break;
 					Server.Instance.ClientStorage.Save(info.Name);
-					Clients.Remove(info);
 					foreach (var i in Clients)
 					{
 						LoggedOutPackage p = new LoggedOutPackage();
 						p.Name = info.Name;
 						i.Client.Send(p);
 					}
+					Clients.Remove(info);
 					break;
 				case PackageType.JoinQueue:
 					if (info.InRoom)
@@ -74,12 +71,9 @@ namespace RoomsServer
 
 					PlayerInfoPackage piPack = new PlayerInfoPackage();
 					piPack.Name = gpiPack.Name;
-					piPack.Elo = Server.Instance.ClientStorage[piPack.Name].Rating;
+					piPack.Rating = Server.Instance.ClientStorage[piPack.Name].Rating;
 
 					info.Client.Send(piPack);
-					break;
-				case PackageType.Stats:
-					info.Client.Send(pack);
 					break;
 				default:
 					break;

@@ -22,13 +22,16 @@ namespace RoomsClient
 	{
 		public string PlayigPlayerName
 		{
-			get { return label1.Text; }
+			get 
+			{ 
+				return playingPlayerName.Text; 
+			}
 			set 
 			{
-				if (label1.InvokeRequired)
-					label1.Invoke(new Action(() => { label1.Text = value; }));
+				if (playingPlayerName.InvokeRequired)
+					playingPlayerName.Invoke(new Action(() => { playingPlayerName.Text = value; }));
 				else
-					label1.Text = value;
+					playingPlayerName.Text = value;
 			}
 		}
 
@@ -52,9 +55,9 @@ namespace RoomsClient
 			ServerComunicator.Instance.Send(sPack);
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void sendButton_Click(object sender, EventArgs e)
 		{
-			string rawMessage = textBox1.Text;
+			string rawMessage = messageTextBox.Text;
 			if (rawMessage.StartsWith("/team "))
 			{
 				TeamRoomMessagePackage pack = new TeamRoomMessagePackage();
@@ -68,6 +71,7 @@ namespace RoomsClient
 			pack1.Name = MyState.Me.Name;
 			pack1.Text = rawMessage;
 			ServerComunicator.Instance.Send(pack1);
+			messageTextBox.Text = "";
 		}
 
 		public void WriteMessge(RoomClient from, string text, MessageType messageType)
@@ -91,7 +95,7 @@ namespace RoomsClient
 					default:
 						break;
 				}
-				textBox2.AppendText(outString);
+				messagesTextBox.AppendText(outString);
 			}
 		}
 

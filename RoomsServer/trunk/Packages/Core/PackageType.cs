@@ -12,6 +12,8 @@ namespace Packages
 		LoginSuccess,
 		LoginFailed,
 		Disconnected,
+		Register,
+		RegisterResult,
 
 		LoggedIn,
 		LoggedOut,
@@ -31,6 +33,5 @@ namespace Packages
 		FiledDataUpdated,
 		PlayerStep,
 		Step,
-		Stats,
 	}
 }

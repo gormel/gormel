@@ -9,7 +9,7 @@ namespace RoomsServer
 	public class ClientStorage
 	{
 		private Dictionary<string, ClientRecord> clients = new Dictionary<string,ClientRecord>();
-		private ClientRecordDAO DAO;
+		public ClientRecordDAO DAO { get; private set; }
 		public ClientStorage()
 		{
 			DAO = new FileClientRecordDAO("Base");

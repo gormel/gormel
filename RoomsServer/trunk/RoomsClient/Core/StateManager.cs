@@ -10,33 +10,44 @@ namespace RoomsClient
 	{
 		public State CurrentState { get; private set; }
 		public event EventHandler<State> StateChaged;
+		private List<State> states = new List<State>();
 
 		public StateManager()
 		{
 			ServerComunicator.Instance.PackageRecive += Instance_PackageRecive;
 			CurrentState = new LoginState();
 			CurrentState.StateChanged += CurrentState_StateChanged;
+			states.Add(CurrentState);
 		}
 
 		void CurrentState_StateChanged(object sender, State e)
 		{
-			if (e != CurrentState)
-			{
-				CurrentState = e;
-				if (StateChaged != null)
-					StateChaged(this, CurrentState);
-			}
+			UpdateState(e);
 		}
 
 		void Instance_PackageRecive(object sender, PackageReciveEventArgs e)
 		{
-			var newState = CurrentState.HandlePackage(e.Data);
-			if (newState != CurrentState)
+			foreach (var state in states)
 			{
-				CurrentState = newState;
-				if (StateChaged != null)
-					StateChaged(this, CurrentState);
+				if (state != CurrentState)
+					state.HandlePackage(e.Data);
 			}
+			var newState = CurrentState.HandlePackage(e.Data);
+			UpdateState(newState);
+		}
+
+		private void UpdateState(State candidate)
+		{
+			if (candidate == CurrentState)
+				return;
+
+			CurrentState = candidate;
+			CurrentState.StateChanged += CurrentState_StateChanged;
+			if (!states.Contains(CurrentState))
+				states.Add(CurrentState);
+
+			if (StateChaged != null)
+				StateChaged(this, CurrentState);
 		}
 	}
 }

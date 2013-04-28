@@ -24,16 +24,19 @@ namespace RoomsClient
 			}
 		}
 
+		public void Exit()
+		{
+			ChangeState(lobby);
+		}
+
 		public override State HandlePackage(Package pack)
 		{
 			switch (pack.ID)
 			{
 				case PackageType.PlayerInfo:
 					PlayerInfoPackage piPack = (PlayerInfoPackage)pack;
-					control.AddStats(piPack.Name, piPack.Elo);
+					control.AddStats(piPack.Name, piPack.Rating);
 					break;
-				case PackageType.Stats:
-					return lobby;
 				default:
 					break;
 			}
