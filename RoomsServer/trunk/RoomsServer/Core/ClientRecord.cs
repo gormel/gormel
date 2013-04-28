@@ -4,15 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Packages
+namespace RoomsServer
 {
-	[Package(PackageType.Login)]
-	public class LoginPackage : Package
+	public class ClientRecord
 	{
-		[Data(0)]
-		public String Name { get; set; }
-
-		[Data(1)]
+		public string Name { get; set; }
+		public int Rating { get; set; }
 		public string PasswordMD5 { get; set; }
 	}
 }

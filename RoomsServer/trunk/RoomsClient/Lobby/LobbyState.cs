@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Packages;
+using RoomsClient.Lobby;
+using Resources;
 
 namespace RoomsClient
 {
@@ -41,7 +43,7 @@ namespace RoomsClient
 					me.Team = yjrPackage.Team;
 
 					ClientPlayer player = new ClientPlayer(me.Name,
-						Image.FromFile(string.Format("Room//Gameplay//{0}.png", yjrPackage.Image.ToString())));
+						ResourceManager.GetImage(yjrPackage.Image.ToString()));
 					me.Player = player;
 
 					ClientFiled filed = new ClientFiled(yjrPackage.Width, yjrPackage.Height);

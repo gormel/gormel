@@ -9,8 +9,10 @@ namespace RoomsServer
 	public class ClientInfo
 	{
 		public Client Client { get; private set; }
-		public ClientInfo(Client client)
+		public string Name { get; private set; }
+		public ClientInfo(string name, Client client)
 		{
+			Name = name;
 			Client = client;
 		}
 	}

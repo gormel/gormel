@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Packages;
 using Gameplay;
 using System.Drawing;
+using Resources;
 
 namespace RoomsClient
 {
@@ -34,8 +35,8 @@ namespace RoomsClient
 					RoomClient newClient = new RoomClient();
 					newClient.Name = jrPack.Name;
 					newClient.Team = jrPack.Team;
-					newClient.Player = new ClientPlayer(newClient.Name, 
-						Image.FromFile(string.Format("Room//Gameplay//{0}.png", jrPack.Image.ToString())));
+					newClient.Player = new ClientPlayer(newClient.Name,
+						ResourceManager.GetImage(jrPack.Image.ToString()));
 					clients.Add(newClient);
 					control.WriteMessge(newClient, "Joined room!", MessageType.Public);
 					break;

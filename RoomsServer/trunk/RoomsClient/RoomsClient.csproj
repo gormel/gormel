@@ -71,6 +71,7 @@
       <DependentUpon>LobbyPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Lobby\LobbyState.cs" />
+    <Compile Include="Lobby\ResourceManageryjrPackage.cs" />
     <Compile Include="Login\LoginPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -146,14 +147,10 @@
       <Project>{18473d11-f59b-43d1-8750-af18ae3ba0ca}</Project>
       <Name>Packages</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Room\Gameplay\Cross.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Room\Gameplay\Zero.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <ProjectReference Include="..\Resources\Resources.csproj">
+      <Project>{7ba3a44d-0f82-4514-ac70-b29fa58e4c5f}</Project>
+      <Name>Resources</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -37,9 +37,19 @@ namespace RoomsClient
 
 		public void UpdateCells(IEnumerable<Point> where)
 		{
+			foreach (var c in cells.Values)
+			{
+				if (c.Marked)
+				{
+					c.Marked = false;
+					c.Invalidate();
+				}
+
+			}
 			foreach (var p in where)
 			{
 				cells[p].Cell = Filed[p];
+				cells[p].Marked = true;
 				cells[p].Invalidate();
 			}
 		}

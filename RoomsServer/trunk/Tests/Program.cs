@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Packages;
+using RoomsServer;
 
 namespace Tests
 {
@@ -26,27 +28,28 @@ namespace Tests
 
 			JoinQueuePackage pack = (JoinQueuePackage)ByteConverter.FromBytes(data);
 
-			Foo foo = new Foo();
-			foo.Action += foo_Action;
+			FileRecord record = new FileRecord();
+			record["aaa"] = "bbb";
+			record["hhhh"] = "lop";
+			record.Save("record.xml");
+			record["aaa"] = "ttt";
+			record.Save("record.xml");
 
-			Type type = typeof(Foo);
-			var fields = type.GetFields();
-			var methods = type.GetMethods();
-			var propertys = type.GetProperties();
-			var events = type.GetEvents();
-			var members = type.GetMembers();
-			var metods = events[0].GetOtherMethods();
-			var runtimeEvents = type.GetRuntimeEvents();
-			var runtimeFields = type.GetRuntimeFields();
-			var actionHandler = runtimeFields.First().GetValue(foo) as EventHandler;
-			actionHandler.Invoke(foo, null);
+			record = new FileRecord("record.xml");
+
+			Directory.CreateDirectory("Base");
+			FileClientRecordDAO dao = new FileClientRecordDAO("Base");
+			ClientRecord rec = new ClientRecord();
+			foreach (var name in new[] { "foo", "bar", "bax", "player", "admin" })
+			{
+				rec.Name = name;
+				rec.PasswordMD5 = "md5";
+				rec.Rating = 1200;
+				dao.SaveClientRecord(rec);
+			}
+
 			
 			int a = 7;
-		}
-
-		static void foo_Action(object sender, EventArgs e)
-		{
-			int x = 6;
 		}
 	}
 }

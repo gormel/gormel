@@ -101,29 +101,18 @@ namespace RoomsServer
 						if (filed.Complete)
 						{
 							var teams = Clients.GroupBy(c => c.Team);
-							Dictionary<Team, int> score = new Dictionary<Team, int>();
-							foreach (var team in teams)
-							{
-								int s = 0;
-								foreach (var client in team)
-								{
-									s += filed.Score(client.Player);
-								}
-								score.Add(team.Key, s);
-							}
+							Dictionary<Team, int> score = 
+								teams.ToDictionary(g => g.Key, g => g.Sum(c => filed.Score(c.Player)));
 
-							int middle = 0;
-							foreach (var s in score.Values)
-								middle += s;
-							middle /= score.Count;
-
+							int middle = score.Values.Sum() / score.Count;
+							
 							foreach (var team in teams)
 							{
 								RoomSessionEndPackage rsePack = new RoomSessionEndPackage();
 								rsePack.EloAdded = score[team.Key] - middle;
 								foreach (var client in team)
 								{
-									Server.Instance.LobbySession.Clients.First(c => c.Name == client.Name).Elo += rsePack.EloAdded;
+									Server.Instance.ClientStorage[client.Name].Rating += rsePack.EloAdded;
 									client.Client.Send(rsePack);
 								}
 							}
@@ -134,6 +123,33 @@ namespace RoomsServer
 							}
 						}
 					}
+					break;
+				case PackageType.Disconnected:
+					var dTeams = Clients.GroupBy(c => c.Team);
+					Dictionary<Team, int> dScore = 
+						dTeams.ToDictionary(g => g.Key, g => g.Sum(c => filed.Score(c.Player)));
+					int dMiddle = dScore.Sum(p => p.Value) / dScore.Count;
+					Team loosers = info.Team;
+					foreach (var team in dTeams)
+					{
+						RoomSessionEndPackage rsePack = new RoomSessionEndPackage();
+						rsePack.EloAdded = dScore[team.Key];
+						int toAdd = dScore[team.Key];
+						if (team.Key == loosers)
+							rsePack.EloAdded = -rsePack.EloAdded;
+
+						foreach (var client in team)
+						{
+							Server.Instance.ClientStorage[client.Name].Rating += rsePack.EloAdded;
+							client.Client.Send(rsePack);
+						}
+					}
+					Server.Instance.Rooms.Remove(this);
+					while (Clients.Any())
+						Clients.RemoveAt(0);
+					
+					Server.Instance.LobbySession.Clients.First(i => i.Name == info.Name).InRoom = false;
+					info.Client.Disconnect();
 					break;
 				default:
 					break;

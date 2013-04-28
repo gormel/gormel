@@ -8,14 +8,11 @@ namespace RoomsServer
 {
 	public class LobbyClientInfo : ClientInfo
 	{
-		public string Name { get; private set; }
-		public int Elo { get; set; }
 		public bool InRoom { get; set; }
 		public LobbyClientInfo(Client c, string name)
-			: base(c)
+			: base(name, c)
 		{
 			InRoom = false;
-			Name = name;
 		}
 	}
 }

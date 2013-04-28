@@ -24,6 +24,7 @@ namespace RoomsClient
 		{
 			LoginPackage package = new LoginPackage();
 			package.Name = textBox1.Text;
+			package.PasswordMD5 = "md5";
 			ServerComunicator.Instance.Send(package);
 			MyName = textBox1.Text;
 		}

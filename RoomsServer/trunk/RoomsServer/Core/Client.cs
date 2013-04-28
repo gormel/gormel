@@ -49,7 +49,15 @@ namespace RoomsServer
 			StateData state = (StateData)ar.AsyncState;
 			if (!state.Socket.Connected)
 				return;
-			int readed = state.Socket.EndReceive(ar);
+			try
+			{
+				int readed = state.Socket.EndReceive(ar);
+			}
+			catch (SocketException e)
+			{
+				Disconnect();
+				return;
+			}
 
 			int size = BitConverter.ToInt32(state.Buffer, 0);
 			StateData newState = new StateData(state.Socket, size);
@@ -63,7 +71,15 @@ namespace RoomsServer
 			StateData state = (StateData)ar.AsyncState;
 			if (!state.Socket.Connected)
 				return;
-			int readed = state.Socket.EndReceive(ar);
+			try
+			{
+				int readed = state.Socket.EndReceive(ar);
+			}
+			catch (SocketException e)
+			{
+				Disconnect();
+				return;
+			}
 
 			Package p = ByteConverter.FromBytes(state.Buffer);
 
@@ -77,6 +93,8 @@ namespace RoomsServer
 
 		public void Send(Package p)
 		{
+			if (!sock.Connected)
+				return;
 			byte[] data = ByteConverter.ToBytes(p);
 			byte[] size = BitConverter.GetBytes(data.Length);
 			sock.Send(size);
@@ -85,6 +103,8 @@ namespace RoomsServer
 
 		public void Disconnect()
 		{
+			if (PackageRecive != null)
+				PackageRecive(this, new DisconnectedPackage());
 			sock.Disconnect(false);
 		}
 	}

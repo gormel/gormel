@@ -28,14 +28,17 @@ namespace RoomsServer
 			LobbySession = new LobbySession();
 			Rooms = new List<RoomSession>();
 			Random = new Random();
+			ClientStorage = new ClientStorage();
 		}
 
 		static void Main(string[] args)
 		{
 			Socket server = new Socket(SocketType.Stream, ProtocolType.IP);
-			server.Bind(new IPEndPoint(IPAddress.Any, 4000));
+			int port = 4000;
+			server.Bind(new IPEndPoint(IPAddress.Any, port));
 			server.Listen(1);
 
+			Console.WriteLine("Server started at port {0}.", port);
 			server.BeginAccept(new AsyncCallback(AcceptCallback), server);
 
 			while (true) ;
@@ -46,7 +49,7 @@ namespace RoomsServer
 			Socket server = (Socket)ar.AsyncState;
 			Socket client = server.EndAccept(ar);
 
-			Console.WriteLine(string.Format("connected new client from {0}", client));
+			Console.WriteLine(string.Format("Connected new client from {0}.", client.LocalEndPoint));
 			Instance.LoginSession.Clients.Add(new LoginClientInfo(new Client(client)));
 
 			server.BeginAccept(new AsyncCallback(AcceptCallback), server);
@@ -57,5 +60,7 @@ namespace RoomsServer
 		public LobbySession LobbySession { get; private set; }
 
 		public List<RoomSession> Rooms { get; private set; }
+
+		public ClientStorage ClientStorage { get; private set; }
 	}
 }

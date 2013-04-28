@@ -10,7 +10,7 @@ namespace RoomsServer
 	{
 		public int Elo
 		{
-			get { return Premades.Sum(i => i.Elo) / Premades.Count; }
+			get { return Premades.Sum(i => Server.Instance.ClientStorage[i.Name].Rating) / Premades.Count; }
 		}
 		public List<LobbyClientInfo> Premades { get; private set; }
 		public ClientsUnion(IEnumerable<LobbyClientInfo> clients)

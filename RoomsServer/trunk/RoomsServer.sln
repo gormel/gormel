@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfflineRoomsClient", "Offli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gameplay", "Gameplay\Gameplay.csproj", "{7BA126D4-0CF8-434D-80A0-E7A4122212EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resources", "Resources\Resources.csproj", "{7BA3A44D-0F82-4514-AC70-B29FA58E4C5F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{7BA126D4-0CF8-434D-80A0-E7A4122212EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BA126D4-0CF8-434D-80A0-E7A4122212EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BA126D4-0CF8-434D-80A0-E7A4122212EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BA3A44D-0F82-4514-AC70-B29FA58E4C5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BA3A44D-0F82-4514-AC70-B29FA58E4C5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BA3A44D-0F82-4514-AC70-B29FA58E4C5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BA3A44D-0F82-4514-AC70-B29FA58E4C5F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

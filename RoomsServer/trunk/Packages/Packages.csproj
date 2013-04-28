@@ -57,6 +57,7 @@
     <Compile Include="Lobby\PlayerInfoPackage.cs" />
     <Compile Include="Lobby\QueueType.cs" />
     <Compile Include="Lobby\StatsPackage.cs" />
+    <Compile Include="Login\DisconnectedPackage.cs" />
     <Compile Include="Login\LginFailedPackage.cs" />
     <Compile Include="Login\LoginPackage.cs" />
     <Compile Include="Login\LoginSuccessPackage.cs" />

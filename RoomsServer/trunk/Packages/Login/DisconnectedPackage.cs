@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoomsServer
+namespace Packages
 {
-	public class LoginClientInfo : ClientInfo
+	[Package(PackageType.Disconnected)]
+	public class DisconnectedPackage : Package
 	{
-		public LoginClientInfo(Client c)
-			: base("", c)
-		{
-		}
 	}
 }
