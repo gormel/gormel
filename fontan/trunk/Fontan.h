@@ -40,7 +40,8 @@ protected:
 			float y = sqrt(2 * Gravity * Height);
 			float x = Gravity * Radius / (2 * y);
 
-			x = x * (float)rand() / RAND_MAX - x / 2;
+			x = x * (float)rand() / RAND_MAX / 2 + x / 2;
+			//y = (float)rand() / RAND_MAX * y / 2 + y / 2;
 			float angle = (float)rand() / RAND_MAX * 360;
 			
 			p.Velocity = Rotation(0, 1, 0, angle).ToQuternion().Transform(Vector3(x, y, 0));
