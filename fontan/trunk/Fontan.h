@@ -16,6 +16,7 @@ class Fontan : public BaseObject
 private:
 	std::vector<Part> parts;
 	int partCount;
+	long lastCreation;
 	float partSize;
 	mutable Geosphere model;
 protected:
@@ -32,10 +33,10 @@ protected:
 
 	void update(long timeSpend)
 	{
-		int i = 0;
-		if (parts.size() < partCount)
+		lastCreation += timeSpend;
+		if (parts.size() < partCount && lastCreation > 1000 / CreationSpeed)
 		{
-			i++;
+			lastCreation = 0;
 			Part p(Gravity);
 			float y = sqrt(2 * Gravity * Height);
 			float x = Gravity * Radius / (2 * y);
@@ -65,10 +66,10 @@ public:
 	static const float Gravity;
 	float Radius;
 	float Height;
-	float Speed;
+	int CreationSpeed;
 
-	Fontan(int pCount, float pSize, float radius, float height, float speed)
-		: partCount(pCount), partSize(pSize), model(2), Radius(radius), Height(height), Speed(speed)
+	Fontan(int pCount, float pSize, int creationSpeed, float radius, float height)
+		: partCount(pCount), partSize(pSize), model(2), Radius(radius), Height(height), lastCreation(0), CreationSpeed(creationSpeed)
 	{
 		model.Scale = Vector3(pSize);
 	}

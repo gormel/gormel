@@ -43,7 +43,7 @@ private:
 	Program()
 	{
 		Position -= Vector3(0, 30, 100);
-		f = new Fontan(1000, 1, 15, 15, 100);
+		f = new Fontan(1000, 1, 100, 15, 15);
 	}
 public:
 	static Program *Instance()
