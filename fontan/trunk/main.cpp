@@ -44,6 +44,7 @@ void CALLBACK display(void)
 	{
 		long time = GetTickCount();
 		spendTime += time - lastTime;
+		std::cout << spendTime << std::endl;
 		Program::Instance()->Update(time - lastTime);
 		lastTime = time;
 		//std::cout << "Update" << std::endl;
