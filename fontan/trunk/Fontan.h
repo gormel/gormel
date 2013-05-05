@@ -33,6 +33,8 @@ protected:
 
 	void update(long timeSpend)
 	{
+		if (Height <= 0 || Radius <= 0)
+			return;
 		lastCreation += timeSpend;
 		if (parts.size() < partCount && lastCreation > 1000 / CreationSpeed)
 		{

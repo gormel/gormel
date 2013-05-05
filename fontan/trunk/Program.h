@@ -25,13 +25,13 @@ protected:
 		KeyboardState kb = KeyboardState::Current();
 
 		if (kb.IsKeyDown(VK_UP))
-			f->Height += 1 * timeSpend / 1000;
+			f->Height += 10.0 * timeSpend / 1000;
 		if (kb.IsKeyDown(VK_DOWN))
-			f->Height -= 1 * timeSpend / 1000;
+			f->Height -= 10.0 * timeSpend / 1000;
 		if (kb.IsKeyDown(VK_LEFT))
-			Rotations *= Rotation(0, 1, 0, -45 * timeSpend / 1000).ToQuternion();
+			Rotations *= Rotation(0, 1, 0, -90.0 * timeSpend / 1000).ToQuternion();
 		if (kb.IsKeyDown(VK_RIGHT))
-			Rotations *= Rotation(0, 1, 0, 45 * timeSpend / 1000).ToQuternion();
+			Rotations *= Rotation(0, 1, 0, 90.0 * timeSpend / 1000).ToQuternion();
 
 		f->Update(timeSpend);
 	}
