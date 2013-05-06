@@ -2,7 +2,6 @@
 #define my_multilist
 
 const int SUBLIST_COUNT = 3;
-
 class MultiList
 {
 private:
@@ -17,6 +16,7 @@ private:
 
 	Node *last[SUBLIST_COUNT];
 	int count[SUBLIST_COUNT];
+	Node *FindBefore(int sublist, int element);
 public:
 	const static int POSITIVE_SUBLIST;
 	const static int NONPOSITIVE_SUBLIST;
@@ -26,14 +26,16 @@ public:
 	MultiList &operator =(const MultiList &obj);
 	~MultiList();
 
-	void Add(int sublist, int element);
-	void Remove(int element);
-	void Remove(int sublist, int element);
+	void Add(int element);
+	int Add(int sublist, int element);
+	int Remove(int element);
+	int Remove(int sublist, int element);
 	void RemoveAt(int sublist, int position);
-	int Get(int sublist, int index);
-	int Find(int element);
+	void Clear();
+	int &Get(int sublist, int position);
+	int Find(int sublist, int element) const;
 
-	int Count(int sublist);
+	int Count(int sublist) const;
 };
 
 #endif

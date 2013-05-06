@@ -3,29 +3,41 @@
 #include <time.h>
 #include "intlist.h"
 #include "cyclist.h"
+#include "mullist.h"
 
 int main()
 {
 	srand(time(0));
-	IntSingleList list;
-    int elementCount = 20;
-	for (int i = 0; i < elementCount; i++)
-		list.Add(rand() % 60);
 
-	for (i = 0; i < elementCount; i++)
-		cout << list.Get(i) << " ";
-    cout << endl;
+	MultiList list;
 
-    IntSingleList list1;
-    IntSingleList list2(list1 = list);
+	int elementCount = 20;
 
-	for (i = 0; i < elementCount; i++)
-		cout << list1.Get(i) << " ";
-    cout << endl;
+	for (int i = 0; i < elementCount; ++i)
+	{
+		int value = rand() % 20 - 10;
+		cout << value << ", ";
+		list.Add(value);
+		if (value > 0)
+			list.Add(MultiList::POSITIVE_SUBLIST, value);
+		else
+			list.Add(MultiList::NONPOSITIVE_SUBLIST, value);
+	}
+	cout << endl;
 
-    for (i = 0; i < elementCount; i++)
-		cout << list2.Get(i) << " ";
-    cout << endl;
+	cout << "positive:" << endl;
+	for (i = 0; i < list.Count(MultiList::POSITIVE_SUBLIST); ++i)
+	{
+		cout << list.Get(MultiList::POSITIVE_SUBLIST, i) << " ";
+	}
+	cout << endl;
+
+	cout << "non-positive:" << endl;
+	for (i = 0; i < list.Count(MultiList::NONPOSITIVE_SUBLIST); ++i)
+	{
+		cout << list.Get(MultiList::NONPOSITIVE_SUBLIST, i) << " ";
+	}
+	cout << endl;
 
     cout << "lol!!!";
 

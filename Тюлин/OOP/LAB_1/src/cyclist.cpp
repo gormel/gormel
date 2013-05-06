@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <iostream.h>
 #include "cyclist.h"
 
 IntCycleList::Node::Node(int value)
@@ -52,17 +53,16 @@ void IntCycleList::Add(int value)
 	last = newNode;
 }
 
-int IntCycleList::Get(int position)
+int &IntCycleList::Get(int position)
 {
 	assert(position >= 0 && position < count);
 	Node *p = last->next;
 	for (int i = 0; i < position; i++)
 		p = p->next;
-
 	return p->value;
 }   
 
-int IntCycleList::Find(int value)
+int IntCycleList::Find(int value) const
 {
 	Node *p = last->next;
 	for (int i = 0; i < count; i++)
@@ -86,17 +86,24 @@ void IntCycleList::Remove(int value)
 	Node *deleting = p->next;
 	p->next = p->next->next;
 	delete deleting;
+	last = p;
+	count--;
 }
 
 void IntCycleList::RemoveAt(int position)
 {
 	assert(position >= 0 && position < count);
-	Node *p = last->next;
+	Node *p = last;
 	for (int i = 0; i < position; i++)
 		p = p->next;
+	Node *deleting = p->next;
+	p->next = deleting->next;
+	delete deleting;
+	last = p;
+	count--;
 }
 
-int IntCycleList::Count()
+int IntCycleList::Count() const
 {
 	return count;
 }
@@ -111,5 +118,6 @@ void IntCycleList::Clear()
 			delete deleting;
 		
 	}
-	first = last = 0;
+	last = 0;
+	count = 0;
 }

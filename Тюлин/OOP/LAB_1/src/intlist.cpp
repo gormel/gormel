@@ -82,7 +82,7 @@ void IntSingleList::Remove(int value)
     }
 }
 
-int IntSingleList::Find(int value)
+int IntSingleList::Find(int value) const
 {
 	int position = 0;
 	Node *c = first;
@@ -97,12 +97,12 @@ int IntSingleList::Find(int value)
     return -1;
 }
 
-int IntSingleList::Count()
+int IntSingleList::Count() const
 {
 	return count;
 }
 
-int IntSingleList::Get(int position)
+int &IntSingleList::Get(int position)
 {
 	assert(position >= 0 && position < count);
 	int currentPosition = 0;

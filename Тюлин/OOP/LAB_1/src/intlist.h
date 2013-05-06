@@ -23,11 +23,11 @@ public:
 	~IntSingleList();
 
 	void Add(int value);
-	int Get(int position);
-    int Find(int value);
+	int &Get(int position);
+    int Find(int value) const;
 	void Remove(int value);
 	void RemoveAt(int position);
-	int Count();
+	int Count() const;
 	void Clear();
 };
 
