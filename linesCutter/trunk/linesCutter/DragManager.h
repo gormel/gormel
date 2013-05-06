@@ -2,22 +2,31 @@
 #define my_dragmanager
 
 #include <vector>
+#include <functional>
 #include "Core\Vector3.h"
 #include "IO\MouseState.h"
+#include "DragItem.h"
 
 class DragManager
 {
 private:
-	std::vector<Vector3 *> drags;
+	std::vector<IDragItem *> drags;
 	MouseState lms;
 public:
 	DragManager()
 	{
 	}
 
-	void StartDrag(Vector3 &v)
+	~DragManager()
 	{
-		drags.push_back(&v);
+		for (auto i : drags)
+			delete i;
+	}
+
+	template<class T>
+	void StartDrag(T &value, std::function<void(T &, double, double)> func)
+	{
+		drags.push_back(new DragItem<T>(value, func));
 	}
 
 	void StopDrag()
@@ -34,8 +43,7 @@ public:
 
 		for (auto v : drags)
 		{
-			v->X += dx;
-			v->Y += dy;
+			v->Add(dx, dy);
 		}
 
 		lms = ms;

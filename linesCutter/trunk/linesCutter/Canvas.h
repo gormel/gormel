@@ -8,35 +8,16 @@
 #include "Core\Vector3.h"
 #include "Multiline.h"
 #include "IO\Event.h"
+#include "DrawingArea.h"
 
-class Canvas : public BaseObject
+class Canvas : public DrawingArea
 {
 protected:
-	virtual void draw(long timeSpend) 
-	{
-		glColor3d(1, 1, 1);
-		glBegin(GL_LINE_LOOP);
-			glVertex2d(0, 0);
-			glVertex2d(Width, 0);
-			glVertex2d(Width, Height);
-			glVertex2d(0, Height);
-		glEnd();
-
-		for (auto p : polys)
-		{
-			algoritms[cutterAlg](p);
-		}
-	}
-
 	virtual void update(long timeSpend)
 	{
 	}
-private:
-	std::vector<Multiline> polys;
-	int cutterAlg;
-	std::hash_map<int, std::function<void(Multiline &)>> algoritms;
 
-	void KSClip(Multiline &poly)
+	virtual void clipDraw(Multiline &poly)
 	{
 		glColor3d(poly.Color.X / 255, poly.Color.Y / 255, poly.Color.Z / 255);
 		glBegin(GL_LINES);
@@ -80,13 +61,13 @@ private:
 				}
 				else if (code1 & 2)
 				{
-					v1.Y = v1.Y + dydx * (Width - v1.X);
-					v1.X = Width;
+					v1.Y = v1.Y + dydx * (Corners.at(2).X - v1.X);
+					v1.X = Corners.at(2).X;
 				}
 				else if (code1 & 4)
 				{
-					v1.X = v1.X + dxdy * (Height - v1.Y);
-					v1.Y = Height;
+					v1.X = v1.X + dxdy * (Corners.at(2).Y - v1.Y);
+					v1.Y = Corners.at(2).Y;
 				}
 				else if (code1 & 8)
 				{
@@ -105,9 +86,9 @@ private:
 		char code = 0;
 		if (v.X < 0)
 			code += 1;
-		if (v.X > Width)
+		if (v.X > Corners.at(2).X)
 			code += 2;
-		if (v.Y > Height)
+		if (v.Y > Corners.at(2).Y)
 			code += 4;
 		if (v.Y < 0)
 			code += 8;
@@ -122,41 +103,37 @@ private:
 		b = t;
 	}
 public:
-	const static int KS_CLIP = 0;
-	const static int KB_CLIP = 1;
-
-	float Width;
-	float Height;
-
-	Vector3 InnerPosition;
-
-	Event<double, double> Drag;
 	Canvas(float width, float height)
-		: Width(width), Height(height), cutterAlg(KS_CLIP)
 	{
-		algoritms[KS_CLIP] = [&](Multiline &poly) { KSClip(poly); };
+		Corners.push_back(Vector3());
+		Corners.push_back(Vector3(width, 0, 0));
+		Corners.push_back(Vector3(width, height, 0));
+		Corners.push_back(Vector3(0, height, 0));
 	}
 
-	void Clear()
+	double GetWidth()
 	{
-		polys.clear();
+		return Corners.at(2).X;
 	}
 
-	void AddLine(const Vector3 &v1, const Vector3 &v2, const Vector3 &color)
+	void SetWidth(double value)
 	{
-		Vector3 verts[] = { v1, v2 };
-		polys.push_back(Multiline(verts, 2, color));
+		Corners.at(1).X = value;
+		Corners.at(2).X = value;
 	}
 
-	void AddPolygon(Vector3 *vertices, int vertCount, const Vector3 &color)
+	double GetHeight()
 	{
-		polys.push_back(Multiline(vertices, vertCount, color));
+		return Corners.at(2).Y;
 	}
 
-	void SetCutterAlgoritm(int algoritm)
+	void SetHeight(double value)
 	{
-		cutterAlg = algoritm;
+		Corners.at(2).Y = value;
+		Corners.at(3).Y = value;
 	}
+
+	virtual ~Canvas() {}
 };
 
 #endif

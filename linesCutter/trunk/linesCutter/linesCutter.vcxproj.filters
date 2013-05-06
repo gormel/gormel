@@ -75,6 +75,15 @@
     <ClInclude Include="DragManager.h">
       <Filter>Заголовочные файлы\Program</Filter>
     </ClInclude>
+    <ClInclude Include="DragItem.h">
+      <Filter>Заголовочные файлы\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawingArea.h">
+      <Filter>Заголовочные файлы\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="CurveCanvas.h">
+      <Filter>Заголовочные файлы\Program</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

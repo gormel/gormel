@@ -10,6 +10,7 @@
 #include "IO\MouseState.h"
 #include "IO\KeyboardState.h"
 #include "Canvas.h"
+#include "DragManager.h"
 
 class Program : public BaseObject
 {
@@ -27,79 +28,52 @@ protected:
 
 		if (!lms.Left && ms.Left)
 		{
-			if (ms.X > c.Position.X && ms.X < c.Position.X + c.Width &&
-				ms.Y > c.Position.Y && ms.Y < c.Position.Y + c.Height)
-				pictDragMode = true;
+			if (ms.X > c.Position.X && ms.X < c.Position.X + c.GetWidth() &&
+				ms.Y > c.Position.Y && ms.Y < c.Position.Y + c.GetHeight())
+				dragManager.StartDrag<Vector3>(c.InnerPosition, [&](Vector3 &v, double dx, double dy) { v += Vector3(dx, dy, 0); });
 			else
 			{
 				bool notX = false;
 				if (abs(ms.X - c.Position.X) < quanlily)
-					leftDragMode = true;
-				else if (abs(ms.X - c.Position.X - c.Width) < quanlily)
-					rightDragMode = true;
-				else
-					notX = true;
+				{
+					dragManager.StartDrag<Canvas>(c, [&](Canvas &c, double dx, double dy) { c.SetWidth(c.GetWidth() - dx); });
+					dragManager.StartDrag<double>(c.Position.X, [&](double &v, double dx, double dy) { v += dx; });
+				}
+				else if (abs(ms.X - c.Position.X - c.GetWidth()) < quanlily)
+					dragManager.StartDrag<Canvas>(c, [&](Canvas &c, double dx, double dy) { c.SetWidth(c.GetWidth() + dx); });
+
 				if (abs(ms.Y - c.Position.Y) < quanlily)
-					topDragMode = true;
-				else if (abs(ms.Y - c.Position.Y - c.Height) < quanlily)
-					botDragMode = true;
-				else if (notX)
-					fullDragMode = true;
+				{
+					dragManager.StartDrag<Canvas>(c, [&](Canvas &c, double dx, double dy) { c.SetHeight(c.GetHeight() - dy); });
+					dragManager.StartDrag<double>(c.Position.Y, [&](double &v, double dx, double dy) { v += dy; });
+				}
+				else if (abs(ms.Y - c.Position.Y - c.GetHeight()) < quanlily)
+					dragManager.StartDrag<Canvas>(c, [&](Canvas &c, double dx, double dy) { c.SetHeight(c.GetHeight() + dy); });
 			}
 		}
 
+		if (!lms.Right && ms.Right)
+		{
+			if (ms.X > c.Position.X && ms.X < c.Position.X + c.GetWidth() &&
+				ms.Y > c.Position.Y && ms.Y < c.Position.Y + c.GetHeight())
+				dragManager.StartDrag<Vector3>(c.Position, [&](Vector3 &v, double dx, double dy) { v += Vector3(dx, dy, 0); });
+		}
+
 		if (lms.Left && !ms.Left)
-			DisableDragModes();
+			dragManager.StopDrag();
 
-		if (pictDragMode)
-		{
-			c.InnerPosition += Vector3(dx, dy, 0);
-		}
+		if (lms.Right && !ms.Right)
+			dragManager.StopDrag();
 
-		if (leftDragMode)
-		{
-			c.Width -= dx;
-			c.Position.X += dx;
-		}
-
-		if (rightDragMode)
-		{
-			c.Width += dx;
-		}
-
-		if (topDragMode)
-		{
-			c.Height -= dy;
-			c.Position.Y += dy;
-		}
-
-		if (botDragMode)
-		{
-			c.Height += dy;
-		}
-
-		if (fullDragMode)
-		{
-			c.Position += Vector3(dx, dy, 0);
-		}
-
+		dragManager.Update(timeSpend);
+		
 		lms = ms;
 	}
 private:
 	MouseState lms;
-	bool pictDragMode;
-	bool leftDragMode;
-	bool rightDragMode;
-	bool topDragMode;
-	bool botDragMode;
-	bool fullDragMode;
+	DragManager dragManager;
 
 	const static int quanlily = 4;
-
-	void DisableDragModes()
-	{
-		fullDragMode = topDragMode = botDragMode = leftDragMode = rightDragMode = pictDragMode = false;
-	}
 
 	static Program *inst;
 
@@ -110,7 +84,6 @@ private:
 	{
 		c.AddLine(Vector3(-10, 10, 0), Vector3(50, 50, 0), Vector3(255, 255, 255));
 		c.Position += Vector3(50, 50, 0);
-		DisableDragModes();
 	}
 public:
 	static Program *Instance()

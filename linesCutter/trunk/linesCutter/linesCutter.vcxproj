@@ -69,7 +69,10 @@
     <ClInclude Include="Core\Vector3.h" />
     <ClInclude Include="Core\Vertex.h" />
     <ClInclude Include="Core\VertexObject.h" />
+    <ClInclude Include="CurveCanvas.h" />
+    <ClInclude Include="DragItem.h" />
     <ClInclude Include="DragManager.h" />
+    <ClInclude Include="DrawingArea.h" />
     <ClInclude Include="IO\Event.h" />
     <ClInclude Include="IO\Font.h" />
     <ClInclude Include="IO\KeyboardState.h" />
