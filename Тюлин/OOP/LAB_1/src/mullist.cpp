@@ -15,7 +15,7 @@ MultiList::Node::Node(int value)
 	}
 }
 
-Node *MultiList::FindBefore(int sublist, int element)
+MultiList::Node *MultiList::FindBefore(int sublist, int element)
 {
 	//cout << "FindBefore(" << sublist << ", " << element << ");" << endl;
 	Node *p1 = last[sublist];
@@ -96,7 +96,6 @@ int MultiList::Add(int sublist, int element)
 {
 	cout << "Add(" << sublist << ", " << element << ");" << endl;
 	Node *newNode = 0;
-	count[sublist]++;
 
 	if (sublist != MAIN_SUBLIST)
 	{
@@ -109,6 +108,7 @@ int MultiList::Add(int sublist, int element)
 
 	if (!newNode)
 		return 0;
+	count[sublist]++;
 
 	if (!last[sublist])
 	{
@@ -137,11 +137,12 @@ int MultiList::Remove(int element)
 int MultiList::Remove(int sublist, int element)
 {
 	Node *before = FindBefore(sublist, element);
-	if (!before || !before->next)
+	if (!before)
 		return 0;
 	Node *del = before->next[sublist];
 	before->next[sublist] = del->next[sublist];
-
+	if (del == last[sublist])
+		last[sublist] = before;
 	delete del;
 	count[sublist]--;
 	return 1;

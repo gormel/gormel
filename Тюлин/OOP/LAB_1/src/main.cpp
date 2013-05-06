@@ -14,7 +14,7 @@ int main()
 
 	MultiList list;
 
-	int elementCount = 20;
+	int elementCount = 19;
 
 	for (int i = 0; i < elementCount; ++i)
 	{
@@ -42,7 +42,7 @@ int main()
 	}
 	cout << endl;
 
-    cout << "lol!!!";
+	cout << "lol!!!";
 
-    return 0;
+	return 0;
 }

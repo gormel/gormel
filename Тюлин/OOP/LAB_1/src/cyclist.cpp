@@ -98,8 +98,9 @@ void IntCycleList::RemoveAt(int position)
 		p = p->next;
 	Node *deleting = p->next;
 	p->next = deleting->next;
+	if (deleting == last)
+		last = p;
 	delete deleting;
-	last = p;
 	count--;
 }
 
