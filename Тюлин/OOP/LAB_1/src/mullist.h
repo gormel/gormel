@@ -29,10 +29,12 @@ public:
 
 	void Add(int element);
 	int Add(int sublist, int element);
+
 	int Remove(int element);
 	int Remove(int sublist, int element);
 	void RemoveAt(int sublist, int position);
 	void Clear();
+	
 	int &Get(int sublist, int position);
 	int Find(int sublist, int element) const;
 

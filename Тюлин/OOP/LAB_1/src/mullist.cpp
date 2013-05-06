@@ -110,7 +110,7 @@ void MultiList::Add(int element)
 
 int MultiList::Add(int sublist, int element)
 {
-	cout << "Add(" << sublist << ", " << element << ");" << endl;
+	//cout << "Add(" << sublist << ", " << element << ");" << endl;
 	Node *newNode = 0;
 
 	if (sublist != MAIN_SUBLIST)
