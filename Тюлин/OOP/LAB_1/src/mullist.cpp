@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <iostream.h>
 #include "mullist.h"
 
 const int MultiList::MAIN_SUBLIST = 0;
@@ -16,6 +17,7 @@ MultiList::Node::Node(int value)
 
 Node *MultiList::FindBefore(int sublist, int element)
 {
+	//cout << "FindBefore(" << sublist << ", " << element << ");" << endl;
 	Node *p1 = last[sublist];
 	Node *p = p1->next[sublist];
 	for (int i = 0; i < count[sublist]; ++i)
@@ -24,6 +26,7 @@ Node *MultiList::FindBefore(int sublist, int element)
 			return p1;
 		p1 = p;
 		p = p->next[sublist];
+		//cout << "    step!" << endl;
 	}
 	return 0;
 }
@@ -91,27 +94,30 @@ void MultiList::Add(int element)
 
 int MultiList::Add(int sublist, int element)
 {
+	cout << "Add(" << sublist << ", " << element << ");" << endl;
 	Node *newNode = 0;
-	Node *mainLast = last[sublist];
 	count[sublist]++;
 
 	if (sublist != MAIN_SUBLIST)
-		newNode = FindBefore(MAIN_SUBLIST, element)
-							->next[MAIN_SUBLIST];
+	{
+		newNode = FindBefore(MAIN_SUBLIST, element)->next[MAIN_SUBLIST];
+		//cout << "Found: " << newNode->value;
+	}
 	else
 		newNode = new Node(element);
+
 
 	if (!newNode)
 		return 0;
 
-	if (!mainLast)
+	if (!last[sublist])
 	{
 		last[sublist] = newNode;
-		mainLast->next[sublist] = newNode;
+		newNode->next[sublist] = newNode;
 		return 1;
 	}
 
-	Node *first = mainLast->next[sublist];
+	Node *first = last[sublist]->next[sublist];
 	last[sublist]->next[sublist] = newNode;
 	newNode->next[sublist] = first;
 	last[sublist] = newNode;
@@ -142,7 +148,7 @@ int MultiList::Remove(int sublist, int element)
 }
 
 void MultiList::RemoveAt(int sublist, int position)
-{
+{	
 	assert(position >= 0 && position < count[sublist]);
 	Node *p = last[sublist];
 	for (int i = 0; i < position; ++i)

@@ -9,6 +9,9 @@ int main()
 {
 	srand(time(0));
 
+	MultiList *ml = new MultiList();
+	delete ml;
+
 	MultiList list;
 
 	int elementCount = 20;
@@ -16,14 +19,14 @@ int main()
 	for (int i = 0; i < elementCount; ++i)
 	{
 		int value = rand() % 20 - 10;
-		cout << value << ", ";
 		list.Add(value);
 		if (value > 0)
 			list.Add(MultiList::POSITIVE_SUBLIST, value);
 		else
 			list.Add(MultiList::NONPOSITIVE_SUBLIST, value);
 	}
-	cout << endl;
+	//cout << endl;
+	//return 0;
 
 	cout << "positive:" << endl;
 	for (i = 0; i < list.Count(MultiList::POSITIVE_SUBLIST); ++i)
