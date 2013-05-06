@@ -1,9 +1,17 @@
 #include <stdlib.h>
-#include <iostream.h>
+#ifdef BORLAND
+	#include <iostream.h>
+#else
+	#include <iostream>
+#endif
 #include <time.h>
 #include "intlist.h"
 #include "cyclist.h"
 #include "mullist.h"
+
+#ifndef BORLAND
+	using namespace std;
+#endif
 
 int main()
 {
@@ -15,8 +23,8 @@ int main()
 	MultiList list;
 
 	int elementCount = 19;
-
-	for (int i = 0; i < elementCount; ++i)
+	int i;
+	for (i = 0; i < elementCount; ++i)
 	{
 		int value = rand() % 20 - 10;
 		list.Add(value);

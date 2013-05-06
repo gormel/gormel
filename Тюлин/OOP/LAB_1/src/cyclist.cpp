@@ -1,5 +1,9 @@
 #include <assert.h>
-#include <iostream.h>
+#ifdef BORLAND
+	#include <iostream.h>
+#else
+	#include <iostream>
+#endif
 #include "cyclist.h"
 
 IntCycleList::Node::Node(int value)
@@ -39,7 +43,7 @@ IntCycleList::~IntCycleList()
 void IntCycleList::Add(int value)
 {
 	Node *newNode = new Node(value);
-    count++;
+	count++;
 	if (!last)
 	{
 		last = newNode;

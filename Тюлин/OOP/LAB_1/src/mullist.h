@@ -16,7 +16,8 @@ private:
 
 	Node *last[SUBLIST_COUNT];
 	int count[SUBLIST_COUNT];
-	Node *FindBefore(int sublist, int element);
+	Node *FindBefore(Node *from, int sublist, int element);
+	Node *RemoveNoDelete(int sublist, int element);
 public:
 	const static int POSITIVE_SUBLIST;
 	const static int NONPOSITIVE_SUBLIST;

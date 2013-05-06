@@ -1,6 +1,14 @@
 #include <assert.h>
-#include <iostream.h>
+#ifdef BORLAND
+	#include <iostream.h>
+#else
+	#include <iostream>
+#endif
 #include "mullist.h"
+
+#ifndef BORLAND
+	using namespace std;
+#endif
 
 const int MultiList::MAIN_SUBLIST = 0;
 const int MultiList::POSITIVE_SUBLIST = 1;
@@ -15,11 +23,12 @@ MultiList::Node::Node(int value)
 	}
 }
 
-MultiList::Node *MultiList::FindBefore(int sublist, int element)
+MultiList::Node *MultiList::FindBefore(Node *from, int sublist, int element)
 {
 	//cout << "FindBefore(" << sublist << ", " << element << ");" << endl;
-	Node *p1 = last[sublist];
+	Node *p1 = from;
 	Node *p = p1->next[sublist];
+	//Node *toRet = 0;
 	for (int i = 0; i < count[sublist]; ++i)
 	{
 		if (p->value == element)
@@ -29,6 +38,21 @@ MultiList::Node *MultiList::FindBefore(int sublist, int element)
 		//cout << "    step!" << endl;
 	}
 	return 0;
+}
+
+MultiList::Node *MultiList::RemoveNoDelete(int sublist, int element)
+{
+	Node *before = FindBefore(last[sublist], sublist, element);
+	if (!before)
+		return 0;
+	Node *del = before->next[sublist];
+	before->next[sublist] = del->next[sublist];
+	if (del == last[sublist])
+		last[sublist] = before;
+	if (del->next[sublist] == del)
+		last[sublist] = 0;
+	count[sublist]--;
+	return del;
 }
 
 MultiList::MultiList()
@@ -42,13 +66,12 @@ MultiList::MultiList()
 
 MultiList::MultiList(const MultiList &obj)
 {
-	Node *p = obj.last[MAIN_SUBLIST]->next[MAIN_SUBLIST];
-	for (int i = 0; i < obj.Count(MAIN_SUBLIST); ++i)
+	int i;
+	for (i = 0; i < SUBLIST_COUNT; ++i)
 	{
-		Add(p->value);
-		p = p->next[MAIN_SUBLIST];
+		last[i] = 0;
+		count[i] = 0;
 	}
-
 	for (i = 0; i < SUBLIST_COUNT; ++i)
 	{
 		Node *pp = obj.last[i]->next[i];
@@ -63,14 +86,7 @@ MultiList::MultiList(const MultiList &obj)
 MultiList &MultiList::operator =(const MultiList &obj)
 {
 	Clear();
-	Node *p = obj.last[MAIN_SUBLIST]->next[MAIN_SUBLIST];
-	for (int i = 0; i < obj.Count(MAIN_SUBLIST); ++i)
-	{
-		Add(p->value);
-		p = p->next[MAIN_SUBLIST];
-	}
-
-	for (i = 0; i < SUBLIST_COUNT; ++i)
+	for (int i = 0; i < SUBLIST_COUNT; ++i)
 	{
 		Node *pp = obj.last[i]->next[i];
 		for (int j = 0; j < obj.Count(i); ++j)
@@ -99,16 +115,21 @@ int MultiList::Add(int sublist, int element)
 
 	if (sublist != MAIN_SUBLIST)
 	{
-		newNode = FindBefore(MAIN_SUBLIST, element)->next[MAIN_SUBLIST];
-		//cout << "Found: " << newNode->value;
+		newNode = last[MAIN_SUBLIST];
+		do
+		{
+			newNode = FindBefore(newNode, MAIN_SUBLIST, element)->next[MAIN_SUBLIST];
+		}
+		while (newNode->next[sublist]);
 	}
 	else
 		newNode = new Node(element);
 
-
 	if (!newNode)
 		return 0;
 	count[sublist]++;
+
+assert(!newNode->next[sublist]);
 
 	if (!last[sublist])
 	{
@@ -129,23 +150,21 @@ int MultiList::Remove(int element)
 	int result = 0;
 	for (int i = 0; i < SUBLIST_COUNT; ++i)
 	{
-		result = Remove(i, element);
+		if (i == MAIN_SUBLIST)
+			continue;
+		if (!result)
+			result = Remove(i, element);
+		else
+			Remove(i, element);
 	}
+
+	delete RemoveNoDelete(MAIN_SUBLIST, element);
 	return result;
 }
 
 int MultiList::Remove(int sublist, int element)
 {
-	Node *before = FindBefore(sublist, element);
-	if (!before)
-		return 0;
-	Node *del = before->next[sublist];
-	before->next[sublist] = del->next[sublist];
-	if (del == last[sublist])
-		last[sublist] = before;
-	delete del;
-	count[sublist]--;
-	return 1;
+	return (int)RemoveNoDelete(sublist, element);
 }
 
 void MultiList::RemoveAt(int sublist, int position)
@@ -156,7 +175,10 @@ void MultiList::RemoveAt(int sublist, int position)
 		p = p->next[sublist];
 	Node *del = p->next[sublist];
 	p->next[sublist] = del->next[sublist];
-	delete del;
+	if (del == last[sublist])
+		last[sublist] = p;
+	if (del->next[sublist] == del)
+		last[sublist] = 0;
 	count[sublist]--;
 }
 
@@ -176,7 +198,10 @@ int &MultiList::Get(int sublist, int position)
 	assert(position >= 0 && position < count[sublist]);
 	Node *p = last[sublist]->next[sublist];
 	for (int i = 0; i < position; ++i)
+	{
+		assert(p);
 		p = p->next[sublist];
+	}
 	return p->value;
 }
 
