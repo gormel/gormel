@@ -17,6 +17,12 @@ protected:
 				glVertex2d(v.X, v.Y);
 		glEnd();
 
+		glPointSize(3);
+		glBegin(GL_POINTS);
+			for (auto v : Corners)
+				glVertex2d(v.X, v.Y);
+		glEnd();
+
 		for (auto p : polys)
 			clipDraw(p);
 	}
