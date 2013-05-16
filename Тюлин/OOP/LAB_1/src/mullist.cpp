@@ -110,7 +110,6 @@ void MultiList::Add(int element)
 
 int MultiList::Add(int sublist, int element)
 {
-	//cout << "Add(" << sublist << ", " << element << ");" << endl;
 	Node *newNode = 0;
 
 	if (sublist != MAIN_SUBLIST)
@@ -128,8 +127,6 @@ int MultiList::Add(int sublist, int element)
 	if (!newNode)
 		return 0;
 	count[sublist]++;
-
-assert(!newNode->next[sublist]);
 
 	if (!last[sublist])
 	{

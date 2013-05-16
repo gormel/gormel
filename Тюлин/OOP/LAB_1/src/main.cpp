@@ -7,7 +7,6 @@
 #include <time.h>
 #include <string.h>
 #include "intlist.h"
-#include "cyclist.h"
 #include "mullist.h"
 
 #ifndef BORLAND

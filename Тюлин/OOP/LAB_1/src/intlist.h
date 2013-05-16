@@ -27,8 +27,8 @@ public:
     int Find(int value) const;
 	void Remove(int value);
 	void RemoveAt(int position);
-	int Count() const;
 	void Clear();
+	int Count() const;
 };
 
 #endif
