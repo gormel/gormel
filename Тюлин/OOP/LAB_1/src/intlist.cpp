@@ -1,15 +1,33 @@
 #include "intlist.h"
 #include <assert.h>
 
+#ifdef TALKY
+	#include <iostream.h>
+#endif
+
 IntSingleList::Node::Node(int value)
-	: value(value), next(0) {}
+	: value(value), next(0) 
+{
+#ifdef TALKY
+	cout << "IntSingleList::Node created!" << endl;
+#endif
+}
 
 IntSingleList::IntSingleList()
-	: first(0), last(0), count(0) {}
+	: first(0), last(0), count(0) 
+{
+#ifdef TALKY
+	cout << "IntSingleList created!" << endl;
+#endif
+}
 
 IntSingleList::IntSingleList(const IntSingleList &obj)
 	: count(0), first(0), last(0)
 {
+#ifdef TALKY
+	cout << "IntSingleList created!" << endl;
+#endif
+
 	Node *p = obj.first;
 	while (p)
 	{
@@ -32,6 +50,9 @@ IntSingleList &IntSingleList::operator =(const IntSingleList &obj)
 
 IntSingleList::~IntSingleList()
 {
+#ifdef TALKY
+	cout << "IntSingleList deleted!" << endl;
+#endif
 	while (first)
 	{
 		Node *deleting = first;

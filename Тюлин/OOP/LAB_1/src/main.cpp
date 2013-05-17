@@ -1,13 +1,26 @@
+//#define PART_ONE
+
 #include <stdlib.h>
 #ifdef BORLAND
 	#include <iostream.h>
+	#include <strstream.h>
+	typedef istrstream istringstream;
 #else
 	#include <iostream>
+	#include <sstream>
 #endif
 #include <time.h>
 #include <string.h>
-#include "intlist.h"
-#include "mullist.h"
+#ifdef PART_ONE
+	#include "intlist.h"
+	#include "mullist.h"
+	typedef int Type;
+#else
+	#include "point.h"
+	#include "slist.h"
+	#include "mlist.h"
+	typedef Point Type;
+#endif
 
 #ifndef BORLAND
 	using namespace std;
@@ -21,10 +34,17 @@ const int SHOW_MULTILIST = 4;
 const int EXIT = 5;
 const int HELP = 6;
 
-IntSingleList list;
-MultiList multilist;
+#ifdef PART_ONE
+	IntSingleList list;
+	typedef MultiList MultiListType;
+#else
+	SingleList<Type> list;
+	typedef MultiList<Type> MultiListType;
+#endif
 
-int ProcessCommand(int command, int *args, int arglLen);
+MultiListType multilist;
+
+int ProcessCommand(int command, Type *args, int arglLen);
 void ShowList(ostream &os);
 void CreateMultilist();
 void ShowMultilist(ostream &os);
@@ -35,30 +55,31 @@ int main()
 {
 	srand(time(0));
 	ShowHelp(cout);
-	int *args = new int[4];
+	Type *args = new Type[4];
 	int argsSize = 4;
 	int lastArg = 0;
 	while (1)
 	{
 		char line[255];
 		cin.getline(line, 255);
-		int command = atoi(line);
-		char *tLine = line;
+		istringstream str(line);
+		int command = 0;
+		str >> command;
 		lastArg = 0;
-		tLine = strchr(tLine, ' ') + 1;
-		while (*tLine && tLine)
+		Type arg;
+		str >> arg;
+		while (!str.eof())
 		{
-			int arg = atoi(tLine);
 			if (lastArg == argsSize)
 			{
-				int *newArgs = new int[argsSize * 2];
-				memcpy(newArgs, args, argsSize);
+				Type *newArgs = new Type[argsSize * 2];
+				memcpy(newArgs, args, argsSize * sizeof(Type));
 				argsSize *= 2;
 				delete[] args;
 				args = newArgs;
 			}
 			args[lastArg++] = arg;
-			tLine = strchr(tLine, ' ') + 1;
+			str >> arg;
 		}
 		if (!ProcessCommand(command, args, lastArg))
 			break;
@@ -68,7 +89,7 @@ int main()
 	return 0;
 }
 
-int ProcessCommand(int command, int *args, int arglLen)
+int ProcessCommand(int command, Type *args, int arglLen)
 {
 	int i;
 	switch(command)
@@ -124,12 +145,12 @@ void CreateMultilist()
 	multilist.Clear();
 	for (int i = 0; i < list.Count(); ++i)
 	{
-		int value = list.Get(i);
+		Type value = list.Get(i);
 		multilist.Add(value);
 		if (value > 0)
-			multilist.Add(MultiList::POSITIVE_SUBLIST, value);
+			multilist.Add(MultiListType::POSITIVE_SUBLIST, value);
 		else
-			multilist.Add(MultiList::NONPOSITIVE_SUBLIST, value);
+			multilist.Add(MultiListType::NONPOSITIVE_SUBLIST, value);
 	}
 }
 
@@ -137,9 +158,9 @@ void ShowMultilist(ostream &os)
 {
 	os << "{ " << endl;
 	os << "positive: ";
-	ShowSubList(os, MultiList::POSITIVE_SUBLIST);
+	ShowSubList(os, MultiListType::POSITIVE_SUBLIST);
 	os << "non-positive: ";
-	ShowSubList(os, MultiList::NONPOSITIVE_SUBLIST);
+	ShowSubList(os, MultiListType::NONPOSITIVE_SUBLIST);
 	os << "}" << endl;
 }
 

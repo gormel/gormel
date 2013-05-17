@@ -1,24 +1,16 @@
-#include <assert.h>
-#ifdef BORLAND
-	#include <iostream.h>
-#else
-	#include <iostream>
-#endif
-#include "mullist.h"
+template<class T>
+const int MultiList<T>::MAIN_SUBLIST = 0;
+template<class T>
+const int MultiList<T>::POSITIVE_SUBLIST = 1;
+template<class T>
+const int MultiList<T>::NONPOSITIVE_SUBLIST = 2;
 
-#ifndef BORLAND
-	using namespace std;
-#endif
-
-const int MultiList::MAIN_SUBLIST = 0;
-const int MultiList::POSITIVE_SUBLIST = 1;
-const int MultiList::NONPOSITIVE_SUBLIST = 2;
-
-MultiList::Node::Node(int value)
+template<class T>
+MultiNode<T>::MultiNode(const T &value)
 	: value(value)
 {
 #ifdef TALKY
-	cout << "MultiList::Node created!" << endl;
+	cout << "MultiNode created!" << endl;
 #endif
 	for (int i = 0; i < SUBLIST_COUNT; ++i)
 	{
@@ -26,29 +18,28 @@ MultiList::Node::Node(int value)
 	}
 }
 
-MultiList::Node *MultiList::FindBefore(Node *from, int sublist, int element)
+template<class T>
+MultiNode<T> *MultiList<T>::FindBefore(MultiNode<T> *from, int sublist, const T &element)
 {
-	//cout << "FindBefore(" << sublist << ", " << element << ");" << endl;
-	Node *p1 = from;
-	Node *p = p1->next[sublist];
-	//Node *toRet = 0;
+	MultiNode<T> *p1 = from;
+	MultiNode<T> *p = p1->next[sublist];
 	for (int i = 0; i < count[sublist]; ++i)
 	{
 		if (p->value == element)
 			return p1;
 		p1 = p;
 		p = p->next[sublist];
-		//cout << "    step!" << endl;
 	}
 	return 0;
 }
 
-MultiList::Node *MultiList::RemoveNoDelete(int sublist, int element)
+template<class T>
+MultiNode<T> *MultiList<T>::RemoveNoDelete(int sublist, const T &element)
 {
-	Node *before = FindBefore(last[sublist], sublist, element);
+	MultiNode<T> *before = FindBefore(last[sublist], sublist, element);
 	if (!before)
 		return 0;
-	Node *del = before->next[sublist];
+	MultiNode<T> *del = before->next[sublist];
 	before->next[sublist] = del->next[sublist];
 	if (del == last[sublist])
 		last[sublist] = before;
@@ -58,7 +49,8 @@ MultiList::Node *MultiList::RemoveNoDelete(int sublist, int element)
 	return del;
 }
 
-MultiList::MultiList()
+template<class T>
+MultiList<T>::MultiList()
 {
 #ifdef TALKY
 	cout << "MultiList created!" << endl;
@@ -70,7 +62,8 @@ MultiList::MultiList()
 	}
 }
 
-MultiList::MultiList(const MultiList &obj)
+template<class T>
+MultiList<T>::MultiList(const MultiList<T> &obj)
 {
 #ifdef TALKY
 	cout << "MultiList created!" << endl;
@@ -83,7 +76,7 @@ MultiList::MultiList(const MultiList &obj)
 	}
 	for (i = 0; i < SUBLIST_COUNT; ++i)
 	{
-		Node *pp = obj.last[i]->next[i];
+		MultiNode<T> *pp = obj.last[i]->next[i];
 		for (int j = 0; j < obj.Count(i); ++j)
 		{
 			Add(i, pp->value);
@@ -92,12 +85,13 @@ MultiList::MultiList(const MultiList &obj)
 	}
 }
 
-MultiList &MultiList::operator =(const MultiList &obj)
+template<class T>
+MultiList<T> &MultiList<T>::operator =(const MultiList<T> &obj)
 {
 	Clear();
 	for (int i = 0; i < SUBLIST_COUNT; ++i)
 	{
-		Node *pp = obj.last[i]->next[i];
+		MultiNode<T> *pp = obj.last[i]->next[i];
 		for (int j = 0; j < obj.Count(i); ++j)
 		{
 			Add(i, pp->value);
@@ -107,7 +101,8 @@ MultiList &MultiList::operator =(const MultiList &obj)
 	return *this;
 }
 
-MultiList::~MultiList()
+template<class T>
+MultiList<T>::~MultiList()
 {
 #ifdef TALKY
 	cout << "MultiList deleted!" << endl;
@@ -115,14 +110,16 @@ MultiList::~MultiList()
 	Clear();
 }
 
-void MultiList::Add(int element)
+template<class T>
+void MultiList<T>::Add(const T &element)
 {
 	Add(MAIN_SUBLIST, element);
 }
 
-int MultiList::Add(int sublist, int element)
+template<class T>
+int MultiList<T>::Add(int sublist, const T &element)
 {
-	Node *newNode = 0;
+	MultiNode<T> *newNode = 0;
 
 	if (sublist != MAIN_SUBLIST)
 	{
@@ -134,7 +131,7 @@ int MultiList::Add(int sublist, int element)
 		while (newNode->next[sublist]);
 	}
 	else
-		newNode = new Node(element);
+		newNode = new MultiNode<T>(element);
 
 	if (!newNode)
 		return 0;
@@ -147,14 +144,15 @@ int MultiList::Add(int sublist, int element)
 		return 1;
 	}
 
-	Node *first = last[sublist]->next[sublist];
+	MultiNode<T> *first = last[sublist]->next[sublist];
 	last[sublist]->next[sublist] = newNode;
 	newNode->next[sublist] = first;
 	last[sublist] = newNode;
 	return 1;
 }
 
-int MultiList::Remove(int element)
+template<class T>
+int MultiList<T>::Remove(const T &element)
 {
 	int result = 0;
 	for (int i = 0; i < SUBLIST_COUNT; ++i)
@@ -171,18 +169,20 @@ int MultiList::Remove(int element)
 	return result;
 }
 
-int MultiList::Remove(int sublist, int element)
+template<class T>
+int MultiList<T>::Remove(int sublist, const T &element)
 {
 	return (int)RemoveNoDelete(sublist, element);
 }
 
-void MultiList::RemoveAt(int sublist, int position)
+template<class T>
+void MultiList<T>::RemoveAt(int sublist, int position)
 {	
 	assert(position >= 0 && position < count[sublist]);
-	Node *p = last[sublist];
+	MultiNode<T> *p = last[sublist];
 	for (int i = 0; i < position; ++i)
 		p = p->next[sublist];
-	Node *del = p->next[sublist];
+	MultiNode<T> *del = p->next[sublist];
 	p->next[sublist] = del->next[sublist];
 	if (del == last[sublist])
 		last[sublist] = p;
@@ -191,7 +191,8 @@ void MultiList::RemoveAt(int sublist, int position)
 	count[sublist]--;
 }
 
-void MultiList::Clear()
+template<class T>
+void MultiList<T>::Clear()
 {
 	for (int i = 0; i < SUBLIST_COUNT; ++i)
 	{
@@ -202,10 +203,11 @@ void MultiList::Clear()
 	}
 }
 
-int &MultiList::Get(int sublist, int position)
+template<class T>
+T &MultiList<T>::Get(int sublist, int position)
 {
 	assert(position >= 0 && position < count[sublist]);
-	Node *p = last[sublist]->next[sublist];
+	MultiNode<T> *p = last[sublist]->next[sublist];
 	for (int i = 0; i < position; ++i)
 	{
 		assert(p);
@@ -214,9 +216,10 @@ int &MultiList::Get(int sublist, int position)
 	return p->value;
 }
 
-int MultiList::Find(int sublist, int element) const
+template<class T>
+int MultiList<T>::Find(int sublist, const T &element) const
 {
-	Node *p = last[sublist]->next[sublist];
+	MultiNode<T> *p = last[sublist]->next[sublist];
 	for (int i = 0; i < count[sublist]; ++i)
 	{
 		if (p->value == element)
@@ -226,7 +229,8 @@ int MultiList::Find(int sublist, int element) const
 	return -1;
 }
 
-int MultiList::Count(int sublist) const
+template<class T>
+int MultiList<T>::Count(int sublist) const
 {
 	return count[sublist];
 }
