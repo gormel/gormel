@@ -33,31 +33,39 @@ const int CREATE_MULTILIST = 3;
 const int SHOW_MULTILIST = 4;
 const int EXIT = 5;
 const int HELP = 6;
+const int SELECT_TYPE = 7;
+const int CLEAN = 8;
 
 #ifdef PART_ONE
 	IntSingleList list;
+	MultiList multilist;
 	typedef MultiList MultiListType;
 #else
-	SingleList<Type> list;
-	typedef MultiList<Type> MultiListType;
+	SingleList<int> iList;
+	MultiList<int> iMultilist;
+	SingleList<Point> pList;
+	MultiList<Point> pMultilist;
+	typedef MultiList<int> MultiListType;
+
+	int selectedType = 0;
+	const int INT = 0;
+	const int POINT = 1;
 #endif
 
-MultiListType multilist;
-
-int ProcessCommand(int command, Type *args, int arglLen);
+int ProcessCommand(int command, istream &args);
 void ShowList(ostream &os);
 void CreateMultilist();
 void ShowMultilist(ostream &os);
 void ShowSubList(ostream &os, int sublist);
 void ShowHelp(ostream &os);
+void AddToList(istream &is);
+void RemoveFromList(istream &is);
+
 
 int main()
 {
 	srand(time(0));
 	ShowHelp(cout);
-	Type *args = new Type[4];
-	int argsSize = 4;
-	int lastArg = 0;
 	while (1)
 	{
 		char line[255];
@@ -65,55 +73,32 @@ int main()
 		istringstream str(line);
 		int command = 0;
 		str >> command;
-		lastArg = 0;
-		Type arg;
-		str >> arg;
-		while (!str.eof())
-		{
-			if (lastArg == argsSize)
-			{
-				Type *newArgs = new Type[argsSize * 2];
-				memcpy(newArgs, args, argsSize * sizeof(Type));
-				argsSize *= 2;
-				delete[] args;
-				args = newArgs;
-			}
-			args[lastArg++] = arg;
-			str >> arg;
-		}
-		if (!ProcessCommand(command, args, lastArg))
+
+		if (!ProcessCommand(command, str))
 			break;
 	}
-
-	delete[] args;
 	return 0;
 }
 
-int ProcessCommand(int command, Type *args, int arglLen)
+int ProcessCommand(int command, istream &args)
 {
 	int i;
 	switch(command)
 	{
 	case ADD_TO_LIST:
-		for (i = 0; i < arglLen; ++i)
-		{
-			list.Add(args[i]);
-		}
-		cout << arglLen << " elements successfully added." << endl;
+		AddToList(args);
+		cout << "elements successfully added." << endl;
 		break;
 	case REMOVE_FROM_LIST:
-		for (i = 0; i < arglLen; ++i)
-		{
-			list.Remove(args[i]);
-		}
-		cout << arglLen << " elements successfully removed" << endl;
+		RemoveFromList(args);
+		cout << "elements successfully removed." << endl;
 		break;
 	case SHOW_LIST:
 		ShowList(cout);
 		break;
 	case CREATE_MULTILIST:
 		CreateMultilist();
-		cout << "multilist successfully created" << endl;
+		cout << "multilist successfully created." << endl;
 		break;
 	case SHOW_MULTILIST:
 		ShowMultilist(cout);
@@ -123,8 +108,25 @@ int ProcessCommand(int command, Type *args, int arglLen)
 	case HELP:
 		ShowHelp(cout);
 		break;
+#ifndef PART_ONE
+	case SELECT_TYPE:
+		int type = -1;
+		args >> type;
+		selectedType = type;
+		cout << "type successfully selected.";
+		break;
+#endif
+	case CLEAN:
+#ifdef PART_ONE
+		list.Clear();
+#else
+		iList.Clear();
+		pList.Clear();
+#endif
+		cout << "list successfully cleaned." << endl;
+		break;
 	default:
-		cout << "Wrong command, try '6'." << endl;
+		cout << "wrong command, try '6'." << endl;
 		break;
 	};
 	return 1;
@@ -133,25 +135,84 @@ int ProcessCommand(int command, Type *args, int arglLen)
 void ShowList(ostream &os)
 {
 	os << "{ ";
-	for (int i = 0; i < list.Count(); ++i)
+	int count = -1;
+
+#ifdef PART_ONE	
+	count = list.Count();
+#else
+	switch (selectedType)
 	{
+	case INT:
+		count = iList.Count();
+		break;
+	case POINT:
+		count = pList.Count();
+		break;
+	}
+#endif
+
+	for (int i = 0; i < count; ++i)
+	{
+#ifdef PART_ONE	
 		os << list.Get(i) << " ";
+#else
+		switch (selectedType)
+		{
+		case INT:
+			os << iList.Get(i) << " ";
+			break;
+		case POINT:
+			os << pList.Get(i) << " ";
+			break;
+		}
+#endif
 	}
 	os << "}" << endl;
 }
 
 void CreateMultilist()
 {
+#ifdef PART_ONE	
 	multilist.Clear();
 	for (int i = 0; i < list.Count(); ++i)
 	{
-		Type value = list.Get(i);
+		int value = list.Get(i);
 		multilist.Add(value);
 		if (value > 0)
 			multilist.Add(MultiListType::POSITIVE_SUBLIST, value);
 		else
 			multilist.Add(MultiListType::NONPOSITIVE_SUBLIST, value);
 	}
+#else
+	int i = -1;
+	switch (selectedType)
+	{
+	case INT:
+		iMultilist.Clear();
+		for (i = 0; i < iList.Count(); ++i)
+		{
+			int value = iList.Get(i);
+			iMultilist.Add(value);
+			if (value > 0)
+				iMultilist.Add(MultiListType::POSITIVE_SUBLIST, value);
+			else
+				iMultilist.Add(MultiListType::NONPOSITIVE_SUBLIST, value);
+		}
+		break;
+	case POINT:
+		pMultilist.Clear();
+		for (i = 0; i < pList.Count(); ++i)
+		{
+			Point value = pList.Get(i);
+			pMultilist.Add(value);
+			if (value > 0)
+				pMultilist.Add(MultiListType::POSITIVE_SUBLIST, value);
+			else
+				pMultilist.Add(MultiListType::NONPOSITIVE_SUBLIST, value);
+		}
+		break;
+	}
+#endif
 }
 
 void ShowMultilist(ostream &os)
@@ -167,9 +228,37 @@ void ShowMultilist(ostream &os)
 void ShowSubList(ostream &os, int sublist)
 {
 	os << "{ ";
-	for (int i = 0; i < multilist.Count(sublist); ++i)
+	int count = -1;
+
+#ifdef PART_ONE	
+		count = multilist.Count(sublist);
+#else
+		switch (selectedType)
+		{
+		case INT:
+			count = iMultilist.Count(sublist);
+			break;
+		case POINT:
+			count = pMultilist.Count(sublist);
+			break;
+		}
+#endif
+
+	for (int i = 0; i < count; ++i)
 	{
+#ifdef PART_ONE	
 		os << multilist.Get(sublist, i) << " ";
+#else
+		switch (selectedType)
+		{
+		case INT:
+			os << iMultilist.Get(sublist, i) << " ";
+			break;
+		case POINT:
+			os << pMultilist.Get(sublist, i) << " ";
+			break;
+		}
+#endif
 	}
 	os << "}" << endl;
 }
@@ -182,5 +271,67 @@ void ShowHelp(ostream &os)
 	   << "3 - create multilist" << endl
 	   << "4 - show mutilist" << endl
 	   << "5 - exit" << endl
-	   << "6 - show this message" << endl;
+	   << "6 - show this message" << endl
+#ifndef PART_ONE
+	   << "7 - select working type (0 - int, 1 - point)" << endl
+#endif
+	   << "8 - clean list" << endl;
+}
+
+void AddToList(istream &is)
+{
+	while (1)
+	{
+#ifdef PART_ONE
+		int arg;
+		if (!(is >> arg))
+			return;
+		list.Add(arg);
+#else
+		switch (selectedType)
+		{
+		case INT:
+			int iArg;
+			if (!(is >> iArg))
+				return;
+			iList.Add(iArg);
+			break;
+		case POINT:
+			Point pArg;
+			if (!(is >> pArg))
+				return;
+			pList.Add(pArg);
+			break;
+		}
+#endif
+	}
+}
+
+void RemoveFromList(istream &is)
+{
+	while (!is.eof())
+	{
+#ifdef PART_ONE
+		int arg;
+		if (!(is >> arg))
+			return;
+		list.Remove(arg);
+#else
+		switch (selectedType)
+		{
+		case INT:
+			int iArg;
+			if (!(is >> iArg))
+				return;
+			iList.Remove(iArg);
+			break;
+		case POINT:
+			Point pArg;
+			if (!(is >> pArg))
+				return;
+			pList.Remove(pArg);
+			break;
+		}
+#endif
+	}
 }
