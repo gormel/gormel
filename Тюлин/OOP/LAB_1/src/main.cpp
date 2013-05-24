@@ -113,7 +113,7 @@ int ProcessCommand(int command, istream &args)
 		int type = -1;
 		args >> type;
 		selectedType = type;
-		cout << "type successfully selected.";
+		cout << " type successfully selected." << endl;
 		break;
 #endif
 	case CLEAN:
@@ -280,11 +280,12 @@ void ShowHelp(ostream &os)
 
 void AddToList(istream &is)
 {
-	while (1)
+	while (!is.eof())
 	{
 #ifdef PART_ONE
 		int arg;
-		if (!(is >> arg))
+		is >> arg;
+		if (is.eof())
 			return;
 		list.Add(arg);
 #else
@@ -292,14 +293,17 @@ void AddToList(istream &is)
 		{
 		case INT:
 			int iArg;
-			if (!(is >> iArg))
+			is >> iArg;
+			if (is.eof())
 				return;
 			iList.Add(iArg);
 			break;
 		case POINT:
 			Point pArg;
-			if (!(is >> pArg))
+			is >> pArg;
+			if (is.eof())
 				return;
+			//cout << pArg << " added.";
 			pList.Add(pArg);
 			break;
 		}
