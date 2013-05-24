@@ -1,3 +1,8 @@
+//file: main.cpp
+//entery point
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 //#define PART_ONE
 
 #include <stdlib.h>

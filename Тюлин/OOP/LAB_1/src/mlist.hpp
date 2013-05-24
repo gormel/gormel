@@ -1,3 +1,8 @@
+//file: mlist.cpp
+//multilist class realisation
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 template<class T>
 const int MultiList<T>::MAIN_SUBLIST = 0;
 template<class T>

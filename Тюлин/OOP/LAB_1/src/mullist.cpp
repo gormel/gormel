@@ -1,3 +1,8 @@
+//file: mullist.cpp
+//multilist class realisation
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #include <assert.h>
 #ifdef BORLAND
 	#include <iostream.h>

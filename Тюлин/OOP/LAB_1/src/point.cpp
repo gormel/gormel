@@ -1,3 +1,8 @@
+//file: point.cpp
+//point class realisation
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #include "point.h"
 #include <ctype.h>
 

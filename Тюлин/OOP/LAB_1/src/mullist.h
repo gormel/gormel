@@ -1,3 +1,8 @@
+//file: mullist.h
+//multilist class header
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #ifndef my_multilist
 #define my_multilist
 

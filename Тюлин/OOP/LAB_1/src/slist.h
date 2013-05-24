@@ -1,3 +1,8 @@
+//file: slist.h
+//template list class header
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #ifndef my_slist
 #define my_slist
 

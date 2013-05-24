@@ -1,3 +1,8 @@
+//file: intlist.h
+//list class header
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #ifndef my_list
 #define my_list
 

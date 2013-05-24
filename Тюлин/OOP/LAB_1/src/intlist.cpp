@@ -1,3 +1,8 @@
+//file: intlist.cpp
+//list class realisation
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #include "intlist.h"
 #include <assert.h>
 

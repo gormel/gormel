@@ -1,3 +1,8 @@
+//file: slist.hpp
+//template list class realisation
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 template<class T>
 SingleListNode<T>::SingleListNode(const T &value)
 	: value(value), next(0) 

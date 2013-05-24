@@ -1,3 +1,8 @@
+//file: point.h
+//point class header
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #ifndef my_point
 #define my_point
 

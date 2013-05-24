@@ -1,3 +1,8 @@
+//file: mlist.h
+//template class multilist header
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #ifndef my_multilist
 #define my_multilist
 #include <assert.h>
