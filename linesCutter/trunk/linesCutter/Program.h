@@ -108,23 +108,24 @@ private:
 	Program()
 		: c(100, 100)
 	{
-		Vector3 poly1[4];
-		Vector3 poly2[4];
+		//Vector3 poly1[4];
+		//Vector3 poly2[4];
 
-		poly1[0] = Vector3(0, 30, 0);
-		poly1[1] = Vector3(30, 0, 0);
-		poly1[2] = Vector3(60, 90, 0);
-		poly1[3] = Vector3(90, 60, 0);
-		
-		poly2[0] = Vector3(60, 0, 0);
-		poly2[1] = Vector3(90, 30, 0);
-		poly2[2] = Vector3(0, 60, 0);
-		poly2[3] = Vector3(30, 90, 0);
+		//poly1[0] = Vector3(0, 30, 0);
+		//poly1[1] = Vector3(30, 0, 0);
+		//poly1[2] = Vector3(60, 90, 0);
+		//poly1[3] = Vector3(90, 60, 0);
+		//
+		//poly2[0] = Vector3(60, 0, 0);
+		//poly2[1] = Vector3(90, 30, 0);
+		//poly2[2] = Vector3(0, 60, 0);
+		//poly2[3] = Vector3(30, 90, 0);
 
 		Vector3 color(255, 255, 255);
 
-		c.AddPolygon(poly1, 4, color);
-		c.AddPolygon(poly2, 4, color);
+		//c.AddPolygon(poly1, 4, color);
+		//c.AddPolygon(poly2, 4, color);
+		c.AddLine(Vector3(10, 10, 0), Vector3(90, 90, 0), color);
 		c.Position += Vector3(50, 50, 0);
 
 		cc.Corners.push_back(Vector3(-30, 0, 0));
@@ -133,8 +134,8 @@ private:
 		cc.Corners.push_back(Vector3(60, 180, 0));
 		cc.Corners.push_back(Vector3(-10, 120, 0));
 		
-		cc.AddPolygon(poly1, 4, color);
-		cc.AddPolygon(poly2, 4, color);
+		
+		cc.AddLine(Vector3(10, 10, 0), Vector3(90, 90, 0), color);
 		cc.Position += Vector3(200, 200, 0);
 	}
 public:
