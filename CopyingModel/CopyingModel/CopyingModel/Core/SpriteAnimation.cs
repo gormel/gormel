@@ -81,7 +81,7 @@ namespace CopyingModel
 		/// <param name="width">количество плиток по горизонтали</param>
 		/// <param name="height">количество плиток по вертикали</param>
 		/// <param name="count">количество значимых плиток</param>
-		/// <returns\/returns>
+		/// <returns>плитки</returns>
 		public static IEnumerable<Texture2D> Cut(Texture2D tex, int width, int height, int count, int start)
 		{
 			int i = 0;
@@ -91,7 +91,9 @@ namespace CopyingModel
 			{
 				for (int y = 0; y < height; y++)
 				{
-					if (i++ >= count)
+					if (i++ < start)
+						continue;
+					if (i >= start + count + 1)
 						yield break;
 					int w = tex.Width / width;
 					int h = tex.Height / height;

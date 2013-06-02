@@ -14,12 +14,12 @@ namespace CopyingModel
 		public int Life { get; set; }
 
 		private TimeSpan lastCreation;
-		private static TimeSpan creationTimeout = TimeSpan.FromMilliseconds(1000);
+		private static TimeSpan creationTimeout = TimeSpan.FromMilliseconds(2000);
 
 		public Monster(Point pos)
 			: base(pos)
 		{
-			Radius = 2;
+			Radius = 4;
 		}
 
 		public override void Update(GameTime time)

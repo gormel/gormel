@@ -19,6 +19,8 @@ namespace CopyingModel
 		Land land;
 		LandView lView;
 
+		//SpriteAnimation anim;
+
 		public Game1()
 		{
 			graphics = new GraphicsDeviceManager(this);
@@ -30,8 +32,8 @@ namespace CopyingModel
 			base.Initialize();
 			ContentManager.Initialize(Content);
 
-			land = new Land(50, 50);
-			lView = new LandView(land, spriteBatch, land.Width * 10, land.Height * 10);
+			land = new Land(20, 20);
+			lView = new LandView(land, spriteBatch, land.Width * 30, land.Height * 30);
 
 			graphics.PreferredBackBufferWidth = (int)lView.Width;
 			graphics.PreferredBackBufferHeight = (int)lView.Height;

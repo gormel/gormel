@@ -14,9 +14,11 @@ namespace CopyingModel
 			PartTexture = content.Load<Texture2D>("Part");
 			CursorTexture = content.Load<Texture2D>("Cursor");
 			DebugFont = content.Load<SpriteFont>("Debug");
+			MonsterAnimations = content.Load<Texture2D>("Monster");
 		}
 		public static Texture2D PartTexture { get; private set; }
 		public static Texture2D CursorTexture { get; private set; }
 		public static SpriteFont DebugFont { get; private set; }
+		public static Texture2D MonsterAnimations { get; private set; }
 	}
 }

@@ -116,7 +116,7 @@
     <Compile Include="Core\StateChangedEventArgs.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="CursorView.cs" />
-    <Compile Include="LandView.cs" />
+    <Compile Include="TowerDefence\LandView.cs" />
     <Compile Include="TowerDefence\LandEntery.cs" />
     <Compile Include="TowerDefence\Monster.cs" />
     <Compile Include="TowerDefence\Tower.cs" />

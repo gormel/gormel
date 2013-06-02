@@ -33,15 +33,19 @@ namespace CopyingModel
 			{
 				case Land.States.MonsterCreated:
 					var pos = (Point)e.Args[1];
+					var sprites = SpriteAnimation.Cut(ContentManager.MonsterAnimations, 10, 10, 6, 10);
+
 					DrawSettings settings = new DrawSettings();
-					settings.Texture = ContentManager.PartTexture;
-					settings.Scale = new Vector2(enteryWidth / settings.Texture.Width, 
-						enteryHeight / settings.Texture.Height);
+					settings.Scale = new Vector2(enteryWidth / sprites.First().Width, 
+												enteryHeight / sprites.First().Height);
 					settings.Origin = settings.Scale / 2;
 					settings.Position = new Vector2(pos.X * enteryWidth, pos.Y * enteryHeight);
 
-					MovingAnimation anim = new MovingAnimation(spriteBatch, settings, 
-						settings.Position, settings.Position, TimeSpan.FromMilliseconds(0));
+					SpriteAnimation anim = new SpriteAnimation(spriteBatch, settings, sprites, TimeSpan.FromMilliseconds(250 * 6));
+					anim.AnimationEnd += (s, ev) =>
+						{
+							((Animation)s).Start();
+						};
 					anim.Start();
 
 					Animations.Add(anim);
