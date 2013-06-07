@@ -10,7 +10,6 @@ namespace CopyingModel
 	public class SpriteAnimation : Animation
 	{
 		private SpriteBatch spriteBatch;
-		DrawSettings settings;
 
 		private TimeSpan processeTime;
 		private TimeSpan animationTime;
@@ -20,11 +19,11 @@ namespace CopyingModel
 
 		public SpriteAnimation(SpriteBatch spriteBatch, DrawSettings settings, 
 			IEnumerable<Texture2D> sprites, TimeSpan animationTime)
+			: base(settings)
 		{
 			this.sprites.AddRange(sprites);
 			this.spriteBatch = spriteBatch;
 			this.animationTime = animationTime;
-			this.settings = settings;
 		}
 
 		public override void Start()
@@ -65,11 +64,11 @@ namespace CopyingModel
 
 		public override void Draw(GameTime time)
 		{
-			settings.Texture = sprites[currentSprite];
+			DrawSettings.Texture = sprites[currentSprite];
 
 			spriteBatch.Begin();
 
-			spriteBatch.Draw(settings);
+			spriteBatch.Draw(DrawSettings);
 
 			spriteBatch.End();
 		}

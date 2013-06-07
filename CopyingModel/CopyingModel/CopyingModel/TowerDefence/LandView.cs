@@ -15,6 +15,9 @@ namespace CopyingModel
 		private float enteryWidth;
 		private float enteryHeight;
 
+		private Dictionary<LandEntery, Animation> animations = new Dictionary<LandEntery,Animation>();
+		private List<Animation> otherAnimations = new List<Animation>();
+
 		public LandView(Land land, SpriteBatch spriteBatch, float width, float height)
 			: base(land, spriteBatch)
 		{
@@ -32,8 +35,10 @@ namespace CopyingModel
 			switch (e.State)
 			{
 				case Land.States.MonsterCreated:
+					//TODO: анимация появления монстра
 					var pos = (Point)e.Args[1];
-					var sprites = SpriteAnimation.Cut(ContentManager.MonsterAnimations, 10, 10, 6, 10);
+					var mon = (Monster)e.Args[0];
+					var sprites = ContentManager.MonsterStandAnimation;
 
 					DrawSettings settings = new DrawSettings();
 					settings.Scale = new Vector2(enteryWidth / sprites.First().Width, 
@@ -45,13 +50,58 @@ namespace CopyingModel
 					anim.AnimationEnd += (s, ev) =>
 						{
 							((Animation)s).Start();
-						};
+						};	
 					anim.Start();
 
-					Animations.Add(anim);
+					animations.Add(mon, anim);
+					break;
+				case Land.States.TowerCreated:
+					var tow = (Tower)e.Args[0];
+					var tPos = (Point)e.Args[1];
+					//TODO башенки, нарисовать анимацию и добавить в список
+					DrawSettings settings1 = new DrawSettings();
+					settings1.Texture = ContentManager.TowerStandAnimation;
+					settings1.Position = new Vector2(tPos.X * enteryWidth, tPos.Y * enteryHeight);
+					settings1.Scale = new Vector2(enteryWidth / settings1.Texture.Width, 
+												enteryHeight / settings1.Texture.Height);
+					settings1.Origin = settings1.Scale / 2;
+					Animation towerAnimation = new StaticAnimation(spriteBatch, settings1);
+
+					animations.Add(tow, towerAnimation);
+					break;
+				case Land.States.TowerShoot:
+					var tower = (Tower)e.Args[0];
+					var towPos = (Point)e.Args[1];
+					//TODO: анимация выстрела
+					Vector2 scaleFrom = new Vector2(enteryWidth / ContentManager.ShootTexture.Width,
+													enteryHeight / ContentManager.ShootTexture.Height);
+					Vector2 scaleTo = scaleFrom * tower.Radius * 2;
+
+					DrawSettings settings2 = new DrawSettings();
+					settings2.Texture = ContentManager.ShootTexture;
+					settings2.Position = new Vector2(towPos.X * enteryWidth, towPos.Y * enteryHeight);
+					settings2.Origin = scaleFrom / 2;
+					Animation shootAnim = 
+						new ScaleAnimation(spriteBatch, settings2, scaleFrom, scaleTo, Tower.shootTimeout);
 					break;
 				default:
 					break;
+			}
+		}
+
+		public override void Update(GameTime time)
+		{
+			foreach (var anim in animations.Values)
+			{
+				anim.Update(time);
+			}
+		}
+
+		public override void Draw(GameTime time)
+		{
+			foreach (var anim in animations.Values)
+			{
+				anim.Draw(time);
 			}
 		}
 	}

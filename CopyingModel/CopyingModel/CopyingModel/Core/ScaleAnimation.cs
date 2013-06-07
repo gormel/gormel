@@ -11,7 +11,6 @@ namespace CopyingModel
 	{
 		private TimeSpan animationTime;
 		private TimeSpan spendTime;
-		private DrawSettings drawSettings;
 		private Vector2 scaleFrom;
 		private Vector2 scaleTo;
 		private Vector2 currentScale;
@@ -19,11 +18,11 @@ namespace CopyingModel
 		private SpriteBatch spriteBatch;
 
 		public ScaleAnimation(SpriteBatch spriteBatch, DrawSettings settings, Vector2 from, Vector2 to, TimeSpan time)
+			: base(settings)
 		{
 			animationTime = time;
 			scaleFrom = from;
 			scaleTo = to;
-			drawSettings = settings;
 			velocity = (to - from) / (float)time.TotalMilliseconds;
 			this.spriteBatch = spriteBatch;
 		}
@@ -66,8 +65,8 @@ namespace CopyingModel
 		{
 			spriteBatch.Begin();
 
-			drawSettings.Scale = currentScale;
-			spriteBatch.Draw(drawSettings);
+			DrawSettings.Scale = currentScale;
+			spriteBatch.Draw(DrawSettings);
 
 			spriteBatch.End();
 		}

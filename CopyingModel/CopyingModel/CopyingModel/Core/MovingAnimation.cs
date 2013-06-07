@@ -15,18 +15,17 @@ namespace CopyingModel
 		public Vector2 Velocity { get; private set; }
 
 		private SpriteBatch spriteBatch;
-		private DrawSettings settings;
 
 		TimeSpan processedTime;
 		TimeSpan animationTime;
 
 		public MovingAnimation(SpriteBatch spriteBatch, DrawSettings settings, Vector2 from, Vector2 to, TimeSpan time)
+			: base(settings)
 		{
 			Pos = from;
 			this.To = to;
 			this.From = from;
 			this.spriteBatch = spriteBatch;
-			this.settings = settings;
 			this.animationTime = time;
 			processedTime = TimeSpan.FromMilliseconds(0);
 
@@ -73,8 +72,8 @@ namespace CopyingModel
 		{
 			spriteBatch.Begin();
 
-			settings.Position = Pos;
-			spriteBatch.Draw(settings);
+			DrawSettings.Position = Pos;
+			spriteBatch.Draw(DrawSettings);
 
 			spriteBatch.End();
 		}

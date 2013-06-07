@@ -9,7 +9,14 @@ namespace CopyingModel
 	public abstract class Animation
 	{
 		public bool InProcess { get; protected set; }
+		public DrawSettings DrawSettings { get; private set; }
 		public event EventHandler AnimationEnd;
+
+		public Animation(DrawSettings settings)
+		{
+			DrawSettings = settings;
+		}
+
 		protected void FireAnimationEnd()
 		{
 			if (AnimationEnd != null)

@@ -10,7 +10,7 @@ namespace CopyingModel
 	{
 		public enum Status { }
 
-		public int Radius { get; private set; }
+		public int Radius { get; set; }
 		public int Life { get; set; }
 
 		private TimeSpan lastCreation;

@@ -11,6 +11,7 @@ namespace CopyingModel
 		public enum State
 		{
 			MonsterCreated,
+			TowerShoot,
 		}
 
 		public Point Position { get; private set; }

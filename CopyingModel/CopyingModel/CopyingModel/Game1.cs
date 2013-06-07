@@ -19,6 +19,9 @@ namespace CopyingModel
 		Land land;
 		LandView lView;
 
+		LandCursor cursor;
+		LandCursorView cursorView;
+
 		//SpriteAnimation anim;
 
 		public Game1()
@@ -32,12 +35,34 @@ namespace CopyingModel
 			base.Initialize();
 			ContentManager.Initialize(Content);
 
-			land = new Land(20, 20);
-			lView = new LandView(land, spriteBatch, land.Width * 30, land.Height * 30);
+			float cellWidth = 50;
+			float cellHeight = 50;
+
+			land = new Land(10, 10);
+			lView = new LandView(land, spriteBatch, land.Width * cellWidth, land.Height * cellHeight);
+
+			cursor = new LandCursor(cellWidth, cellHeight);
+			cursor.StateChanged += cursor_StateChanged;
+			cursorView = new LandCursorView(spriteBatch, cursor);
 
 			graphics.PreferredBackBufferWidth = (int)lView.Width;
 			graphics.PreferredBackBufferHeight = (int)lView.Height;
 			graphics.ApplyChanges();
+		}
+
+		void cursor_StateChanged(object sender, StateChangedEventArgs<LandCursor.State> e)
+		{
+			switch (e.State)
+			{
+				case LandCursor.State.CursorDown:
+					var dPos = (Point)e.Args[1];
+					land.PlaceTower(dPos);
+					break;
+				case LandCursor.State.CursorUp:
+					break;
+				default:
+					break;
+			}
 		}
 
 		protected override void LoadContent()
@@ -59,6 +84,9 @@ namespace CopyingModel
 			land.Update(gameTime);
 			lView.Update(gameTime);
 
+			cursor.Update(gameTime);
+			cursorView.Update(gameTime);
+
 			base.Update(gameTime);
 		}
 
@@ -67,6 +95,8 @@ namespace CopyingModel
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
 			lView.Draw(gameTime);
+
+			cursorView.Draw(gameTime);
 
 			base.Draw(gameTime);
 		}
