@@ -11,7 +11,9 @@ namespace CopyingModel
 		public enum States
 		{
 			MonsterCreated,
+			MonsterDied,
 			TowerCreated,
+			TowerDied,
 			TowerShoot,
 		}
 
@@ -21,8 +23,6 @@ namespace CopyingModel
 		public MonsterFactory MonsterFactory { get; private set; }
 		public TowerFactory TowerFactory { get; private set; }
 
-		private TimeSpan stepTimeout;
-		private TimeSpan spendTime;
 		private Random rand = new Random();
 
 		public Land(int w, int h)
@@ -96,6 +96,35 @@ namespace CopyingModel
 					var tow = (Tower)e.Args[0];
 					var tWhere = (Point)e.Args[1];
 					//TODO: логика выстрела башни
+
+					int xStart = Math.Max(tWhere.X - tow.Radius, 0);
+					int yStart = Math.Max(tWhere.Y - tow.Radius, 0);
+					int xEnd = Math.Min(tWhere.X + tow.Radius, Width - 1);
+					int yEnd = Math.Min(tWhere.Y + tow.Radius, Height - 1);
+
+					for (int x = xStart; x <= xEnd; x++)
+					{
+						for (int y = yStart; y <= yEnd; y++)
+						{
+							if (data[x, y] == null)
+								continue;
+							var monster = data[x, y] as Monster;
+							if (monster == null)
+								continue;
+
+							if (--monster.Life <= 0)
+							{
+								FireStateChanged(States.MonsterDied, data[x, y], new Point(x, y));
+								data[x, y] = null;
+							}
+						}
+					}
+
+					if (--tow.Energy <= 0)
+					{
+						FireStateChanged(States.TowerDied, tow, tWhere);
+						data[tWhere.X, tWhere.Y] = null;
+					}
 
 					FireStateChanged(States.TowerShoot, tow, tWhere);
 					break;

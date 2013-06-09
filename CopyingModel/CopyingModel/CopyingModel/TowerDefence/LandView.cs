@@ -17,6 +17,7 @@ namespace CopyingModel
 
 		private Dictionary<LandEntery, Animation> animations = new Dictionary<LandEntery,Animation>();
 		private List<Animation> otherAnimations = new List<Animation>();
+		private List<Animation> removing = new List<Animation>();
 
 		public LandView(Land land, SpriteBatch spriteBatch, float width, float height)
 			: base(land, spriteBatch)
@@ -43,8 +44,8 @@ namespace CopyingModel
 					DrawSettings settings = new DrawSettings();
 					settings.Scale = new Vector2(enteryWidth / sprites.First().Width, 
 												enteryHeight / sprites.First().Height);
-					settings.Origin = settings.Scale / 2;
-					settings.Position = new Vector2(pos.X * enteryWidth, pos.Y * enteryHeight);
+					settings.Origin = new Vector2(sprites.First().Width, sprites.First().Height) / 2;
+					settings.Position = new Vector2(pos.X * enteryWidth + enteryWidth / 2, pos.Y * enteryHeight + enteryHeight / 2);
 
 					SpriteAnimation anim = new SpriteAnimation(spriteBatch, settings, sprites, TimeSpan.FromMilliseconds(250 * 6));
 					anim.AnimationEnd += (s, ev) =>
@@ -61,10 +62,10 @@ namespace CopyingModel
 					//TODO башенки, нарисовать анимацию и добавить в список
 					DrawSettings settings1 = new DrawSettings();
 					settings1.Texture = ContentManager.TowerStandAnimation;
-					settings1.Position = new Vector2(tPos.X * enteryWidth, tPos.Y * enteryHeight);
+					settings1.Position = new Vector2(tPos.X * enteryWidth + enteryWidth / 2, tPos.Y * enteryHeight + enteryHeight / 2);
 					settings1.Scale = new Vector2(enteryWidth / settings1.Texture.Width, 
 												enteryHeight / settings1.Texture.Height);
-					settings1.Origin = settings1.Scale / 2;
+					settings1.Origin = new Vector2(settings1.Texture.Width, settings1.Texture.Height) / 2;
 					Animation towerAnimation = new StaticAnimation(spriteBatch, settings1);
 
 					animations.Add(tow, towerAnimation);
@@ -79,10 +80,22 @@ namespace CopyingModel
 
 					DrawSettings settings2 = new DrawSettings();
 					settings2.Texture = ContentManager.ShootTexture;
-					settings2.Position = new Vector2(towPos.X * enteryWidth, towPos.Y * enteryHeight);
-					settings2.Origin = scaleFrom / 2;
+					settings2.Position = new Vector2(towPos.X * enteryWidth + enteryWidth / 2, towPos.Y * enteryHeight + enteryHeight / 2);
+					settings2.Origin = new Vector2(settings2.Texture.Width, settings2.Texture.Height) / 2;
 					Animation shootAnim = 
-						new ScaleAnimation(spriteBatch, settings2, scaleFrom, scaleTo, Tower.shootTimeout);
+						new ScaleAnimation(spriteBatch, settings2, scaleFrom, scaleTo, 
+							TimeSpan.FromMilliseconds(Tower.shootTimeout.TotalMilliseconds / 4));
+					shootAnim.Start();
+					shootAnim.AnimationEnd += (s, ev) => removing.Add((Animation)s);
+
+					otherAnimations.Add(shootAnim);
+					break;
+				case Land.States.TowerDied:
+				case Land.States.MonsterDied:
+					var monster = (LandEntery)e.Args[0];
+					var mWhere = (Point)e.Args[1];
+
+					animations.Remove(monster);
 					break;
 				default:
 					break;
@@ -91,7 +104,18 @@ namespace CopyingModel
 
 		public override void Update(GameTime time)
 		{
+			foreach (var anim in removing)
+			{
+				otherAnimations.Remove(anim);
+			}
+			removing.Clear();
+
 			foreach (var anim in animations.Values)
+			{
+				anim.Update(time);
+			}
+
+			foreach (var anim in otherAnimations)
 			{
 				anim.Update(time);
 			}
@@ -100,6 +124,11 @@ namespace CopyingModel
 		public override void Draw(GameTime time)
 		{
 			foreach (var anim in animations.Values)
+			{
+				anim.Draw(time);
+			}
+
+			foreach (var anim in otherAnimations)
 			{
 				anim.Draw(time);
 			}
