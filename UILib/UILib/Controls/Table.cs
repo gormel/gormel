@@ -20,25 +20,47 @@ namespace UILib.Controls
 
 		public float GetHeight(RowItem row)
 		{
-			float exceptedHeight = -1;
-			if (row.ProcentHeight != -1)
-				exceptedHeight = Height * row.ProcentHeight;
-			else if (row.ValueHeight != -1)
-				exceptedHeight = row.ValueHeight;
-			else
-			{
-				var setted = from r in Rows where r.ProcentHeight != -1 || r.ValueHeight != -1 select r;
-				exceptedHeight = (Height - setted.Sum(r => r.Height)) / (Rows.Count - setted.Count());
-			}
-			return Math.Max(0, Math.Min(exceptedHeight, Y + Height - row.Y));
+			return GetSize(row, r => r.Height, r => r.ValueHeight, r => r.ProcentHeight, Height, Y, Rows);
 		}
 
 		public float GetY(RowItem row)
 		{
-			var before = from c in Rows
-						 where c.Index < row.Index
+			return GetOffset(row, r => r.Height, Y, Rows);
+		}
+
+		public float GetWidth(ColItem col)
+		{
+			return GetSize(col, c => c.Width, c => c.ValueWidth, c => c.ProcentWidth, Width, X, Cols);
+		}
+
+		public float GetX(ColItem col)
+		{
+			return GetOffset(col, c => c.Width, X, Cols);
+		}
+
+		private float GetSize<T>(T item, Func<T, float> itemSizeSelector, Func<T, float> itemValueSizeSelector
+			, Func<T, float> itemProcentSizeSelector, float size, float offset, IEnumerable<T> items) where T : TableItem
+		{
+			float exceptedSize = -1;
+			if (itemProcentSizeSelector(item) != -1)
+				exceptedSize = size * itemProcentSizeSelector(item);
+			else if (itemValueSizeSelector(item) != -1)
+				exceptedSize = itemValueSizeSelector(item);
+			else
+			{
+				var setted = from r in items where itemProcentSizeSelector(r) != -1 || itemValueSizeSelector(r) != -1 select r;
+				exceptedSize = (size - setted.Sum(r => itemSizeSelector(r))) / (items.Count() - setted.Count());
+				return Math.Max(0, exceptedSize);
+			}
+			return Math.Max(0, Math.Min(exceptedSize, Y + Height - GetOffset(item, itemSizeSelector, offset, items)));
+		}
+
+		private float GetOffset<T>(T item, Func<T, float> itemSizeSelector, float offset, IEnumerable<T> items) where T : TableItem
+		{
+			var before = from c in items
+						 where c.Index < item.Index
 						 select c;
-			return Y + before.Sum(c => c.Height);
+			return offset + before.Sum(c => itemSizeSelector(c));
 		}
 	}
 }

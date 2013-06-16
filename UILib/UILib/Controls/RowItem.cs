@@ -7,23 +7,20 @@ using UILib.Base;
 
 namespace UILib.Controls
 {
-	public class RowItem : Table
+	public class RowItem : TableItem
 	{
-		private Table container;
-
 		public override float Y
 		{
-			get { return container.GetY(this); }
+			get { return Container.GetY(this); }
 			set { }
 		}
 
 		public override float Height
 		{
-			get { return container.GetHeight(this); }
+			get { return Container.GetHeight(this); }
 			set { ValueHeight = value; }
 		}
 
-		public int Index { get; set; }
 		public float ProcentHeight { get; set; }
 		public float ValueHeight { get; set; }
 
@@ -35,7 +32,6 @@ namespace UILib.Controls
 			Index = -1;
 
 			baseControl.Rows.Add(this);
-			container = baseControl;
 		}
 
 	}
