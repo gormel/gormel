@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Position X="10" Y="10" Width="500" Height="300">
+  <Table>
+    <RowItem Index="0" ProcentHeight="0,5">
+      <ColItem Index="0">
+        <Button Margin="3" TextFont="LabelFont" BackgroundImage="applelogo"
+                Text="Button 1" TextColor="DarkGreen" Name="button1"/>
+      </ColItem>
+    </RowItem>
+
+    <RowItem Index="1" Name="row1" >
+      <ColItem Index="0">
+        <Button Name="button2" Margin="3" TextFont="LabelFont"
+                Text="Button 2"/>
+      </ColItem>
+
+      <ColItem Index="1">
+        <Button Name="button3" Margin="3" TextFont="LabelFont"
+                Text="Button 3"/>
+      </ColItem>
+    </RowItem>
+
+    <RowItem Index="2" ProcentHeight="0,3">
+      <Label Name="label1" Margin="3" TextFont="LabelFont" Text="Label 1"/>
+    </RowItem>
+  </Table>
+</Position>

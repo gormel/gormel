@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="UILib.Base.UIContainer" Collapsed="true">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAEAAQAAAA=</HashCode>
+      <FileName>Base\UIContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Base.UIControl" Collapsed="true">
+    <Position X="3.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAADAAAAgAAAAAAAEBAAAAAAAEAQAAkAAQAYAA=</HashCode>
+      <FileName>Base\UIControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Base.XmlUIContainer" Collapsed="true">
+    <Position X="12" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\XmlUIContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Controls.Button" Collapsed="true">
+    <Position X="2.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAUAAAAAAAkAAAAEAAAAAAAAAEAAAAAABAAAAAAA=</HashCode>
+      <FileName>Controls\Button.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Controls.ColItem" Collapsed="true">
+    <Position X="5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAYAAAAEAAAAAAAAAAAAEAAAAAQAA=</HashCode>
+      <FileName>Controls\ColItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Controls.Label" Collapsed="true">
+    <Position X="2.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAABAAggIAAAAAAAAAgAAAAgAAAAACAAAAAA=</HashCode>
+      <FileName>Controls\Label.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Controls.Panel" Collapsed="true">
+    <Position X="2.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgBAAEAAAAAAAABAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Controls\Panel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Controls.Position" Collapsed="true">
+    <Position X="7.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAQAQAAAAEAAAAAAAAAAAABgAAAAYAA=</HashCode>
+      <FileName>Controls\Position.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Controls.RowItem" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAQAAAABAAAAAAAAAAAAAAEAAAAAIAA=</HashCode>
+      <FileName>Controls\RowItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Utils.BaseStringParser" Collapsed="true">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Utils\BaseStringParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Utils.ContentStringParser&lt;T&gt;" Collapsed="true">
+    <Position X="4" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAIAA=</HashCode>
+      <FileName>Utils\ContentStringParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Utils.EnumStringParser&lt;T&gt;" Collapsed="true">
+    <Position X="7.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Utils\EnumStringParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Utils.FloatStringParser" Collapsed="true">
+    <Position X="9.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Utils\FloatStringParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Utils.IntStringParser" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Utils\IntStringParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Utils.PrimetiveDrawHelper" Collapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIACAACAAAAAAAAAAAAAAAAAAAAAAEAAEAAAAAAAAA=</HashCode>
+      <FileName>Utils\PrimetiveDrawHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Utils.SpriteFontStringParser" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utils\SpriteFontStringParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Utils.StringParser&lt;T&gt;" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utils\StringParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UILib.Utils.TextureStringParser" Collapsed="true">
+    <Position X="5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utils\TextureStringParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="UILib.Controls.HorisontalTextAlligment" Collapsed="true">
+    <Position X="12" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAIAAA=</HashCode>
+      <FileName>Controls\Label.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="UILib.Controls.VerticalTextAlligment" Collapsed="true">
+    <Position X="13.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Controls\Label.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft YaHei" Size="9" />
+</ClassDiagram>
