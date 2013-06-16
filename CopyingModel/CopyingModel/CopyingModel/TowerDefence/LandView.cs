@@ -15,7 +15,7 @@ namespace CopyingModel
 		private float enteryWidth;
 		private float enteryHeight;
 
-		private Dictionary<LandEntery, Animation> animations = new Dictionary<LandEntery,Animation>();
+		private Dictionary<LandEntery, Animation> animations = new Dictionary<LandEntery, Animation>();
 		private List<Animation> otherAnimations = new List<Animation>();
 		private List<Animation> removing = new List<Animation>();
 
@@ -37,17 +37,10 @@ namespace CopyingModel
 			{
 				case Land.States.MonsterCreated:
 					//TODO: анимация появления монстра
-					var pos = (Point)e.Args[1];
 					var mon = (Monster)e.Args[0];
 					var sprites = ContentManager.MonsterStandAnimation;
 
-					DrawSettings settings = new DrawSettings();
-					settings.Scale = new Vector2(enteryWidth / sprites.First().Width, 
-												enteryHeight / sprites.First().Height);
-					settings.Origin = new Vector2(sprites.First().Width, sprites.First().Height) / 2;
-					settings.Position = new Vector2(pos.X * enteryWidth + enteryWidth / 2, pos.Y * enteryHeight + enteryHeight / 2);
-
-					SpriteAnimation anim = new SpriteAnimation(spriteBatch, settings, sprites, TimeSpan.FromMilliseconds(250 * 6));
+					Animation anim = CreateSpriteAnimation(mon, sprites);
 					anim.AnimationEnd += (s, ev) =>
 						{
 							((Animation)s).Start();
@@ -73,28 +66,14 @@ namespace CopyingModel
 				case Land.States.TowerShoot:
 					var tower = (Tower)e.Args[0];
 					var towPos = (Point)e.Args[1];
-					//TODO: анимация выстрела
-					Vector2 scaleFrom = new Vector2(enteryWidth / ContentManager.ShootTexture.Width,
-													enteryHeight / ContentManager.ShootTexture.Height);
-					Vector2 scaleTo = scaleFrom * tower.Radius * 2;
-
-					DrawSettings settings2 = new DrawSettings();
-					settings2.Texture = ContentManager.ShootTexture;
-					settings2.Position = new Vector2(towPos.X * enteryWidth + enteryWidth / 2, towPos.Y * enteryHeight + enteryHeight / 2);
-					settings2.Origin = new Vector2(settings2.Texture.Width, settings2.Texture.Height) / 2;
-					Animation shootAnim = 
-						new ScaleAnimation(spriteBatch, settings2, scaleFrom, scaleTo, 
-							TimeSpan.FromMilliseconds(Tower.shootTimeout.TotalMilliseconds / 4));
-					shootAnim.Start();
-					shootAnim.AnimationEnd += (s, ev) => removing.Add((Animation)s);
-
-					otherAnimations.Add(shootAnim);
+					
+					CreateShootAnimation(tower);
 					break;
 				case Land.States.TowerDied:
 				case Land.States.MonsterDied:
 					var monster = (LandEntery)e.Args[0];
 					var mWhere = (Point)e.Args[1];
-
+					//TODO: анимация смерти
 					animations.Remove(monster);
 					break;
 				default:
@@ -132,6 +111,39 @@ namespace CopyingModel
 			{
 				anim.Draw(time);
 			}
+		}
+
+		private void CreateShootAnimation(Tower tower)
+		{
+			var towPos = tower.Position;
+			Vector2 scaleFrom = new Vector2(enteryWidth / ContentManager.ShootTexture.Width,
+											enteryHeight / ContentManager.ShootTexture.Height);
+			Vector2 scaleTo = scaleFrom * tower.Radius * 2;
+
+			DrawSettings settings2 = new DrawSettings();
+			settings2.Texture = ContentManager.ShootTexture;
+			settings2.Position = new Vector2(towPos.X * enteryWidth + enteryWidth / 2, towPos.Y * enteryHeight + enteryHeight / 2);
+			settings2.Origin = new Vector2(settings2.Texture.Width, settings2.Texture.Height) / 2;
+			Animation shootAnim =
+				new ScaleAnimation(spriteBatch, settings2, scaleFrom, scaleTo,
+					TimeSpan.FromMilliseconds(Tower.shootTimeout.TotalMilliseconds / 4));
+			shootAnim.Start();
+			shootAnim.AnimationEnd += (s, ev) => removing.Add((Animation)s);
+
+			otherAnimations.Add(shootAnim);
+		}
+
+		private Animation CreateSpriteAnimation(LandEntery entery, IEnumerable<Texture2D> sprites)
+		{
+			DrawSettings settings = new DrawSettings();
+			settings.Scale = new Vector2(enteryWidth / sprites.First().Width,
+										enteryHeight / sprites.First().Height);
+			settings.Origin = new Vector2(sprites.First().Width, sprites.First().Height) / 2;
+			settings.Position = new Vector2(entery.Position.X * enteryWidth + enteryWidth / 2, 
+											entery.Position.Y * enteryHeight + enteryHeight / 2);
+
+			SpriteAnimation anim = new SpriteAnimation(spriteBatch, settings, sprites, TimeSpan.FromMilliseconds(250 * 6));
+			return anim;
 		}
 	}
 }
