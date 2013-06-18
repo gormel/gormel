@@ -14,7 +14,7 @@ namespace UILib.Base
 	public abstract class UIControl
 	{
         /// <summary>
-        /// Gets or sets control's bounding box horizontal drawing offset in screen coordinates.
+        /// Gets or sets horizontal drawing offset of control's bounding box in screen coordinates.
         /// </summary>
         public virtual float X
         {
@@ -22,7 +22,7 @@ namespace UILib.Base
             set { throw new NotSupportedException(); }
         }
         /// <summary>
-        /// Gets or sets control's bounding box vertical drawing offset in screen coordinates.
+        /// Gets or sets vertical drawing offset of control's bounding box in screen coordinates.
         /// </summary>
 		public virtual float Y
 		{
@@ -30,7 +30,7 @@ namespace UILib.Base
             set { throw new NotSupportedException(); }
 		}
         /// <summary>
-        /// Gets or sets control's bounding box width.
+        /// Gets or sets width of control's bounding box.
         /// </summary>
 		public virtual float Width
 		{
@@ -38,7 +38,7 @@ namespace UILib.Base
             set { throw new NotSupportedException(); }
 		}
         /// <summary>
-        /// Gets or sets control's bounding box height.
+        /// Gets or sets height of control's bounding box.
         /// </summary>
 		public virtual float Height
 		{
