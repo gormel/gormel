@@ -10,9 +10,7 @@ namespace UILib.Utils
 	{
 		public override object ParseString(string value)
 		{
-			CultureInfo ci = new CultureInfo(CultureInfo.CurrentCulture.LCID);
-			ci.NumberFormat.NumberDecimalSeparator = ".";
-			return float.Parse(value, ci);
+			return float.Parse(value, CultureInfo.InvariantCulture);
 		}
 	}
 }
