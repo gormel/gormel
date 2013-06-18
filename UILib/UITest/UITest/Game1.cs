@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using UILib.Base;
+using UILib.Controls;
 using UILib.Utils;
 
 namespace UITest
@@ -21,6 +22,9 @@ namespace UITest
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 		PrimetiveDrawHelper primetiveDrawHelper;
+
+		private bool dragMode;
+		private MouseState lastMouseState;
 
 		UIContainer testConteiner;
 
@@ -66,6 +70,28 @@ namespace UITest
 			// TODO: Unload any non ContentManager content here
 		}
 
+		private void button1_MouseDown(object sender, EventArgs e)
+		{
+			dragMode = true;
+		}
+
+		private void button1_MouseUp(object sender, EventArgs e)
+		{
+			dragMode = false;
+		}
+
+		private void button2_MouseUp(object sender, EventArgs e)
+		{
+			testConteiner.GetControl<Position>("root").Width += 10;
+			testConteiner.GetControl<Position>("root").Height += 10;
+		}
+
+		private void button3_MouseUp(object sender, EventArgs e)
+		{
+			testConteiner.GetControl<Position>("root").Width -= 10;
+			testConteiner.GetControl<Position>("root").Height -= 10;
+		}
+
 		/// <summary>
 		/// Allows the game to run logic such as updating the world,
 		/// checking for collisions, gathering input, and playing audio.
@@ -77,8 +103,20 @@ namespace UITest
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
 				this.Exit();
 
+			MouseState mouseState = Mouse.GetState();
+
 			testConteiner.Update(gameTime);
 
+			if (dragMode)
+			{
+				var dx = lastMouseState.X - mouseState.X;
+				var dy = lastMouseState.Y - mouseState.Y;
+
+				testConteiner.GetControl<Position>("root").X -= dx;
+				testConteiner.GetControl<Position>("root").Y -= dy;
+			}
+
+			lastMouseState = mouseState;
 			// TODO: Add your update logic here
 			
 			base.Update(gameTime);

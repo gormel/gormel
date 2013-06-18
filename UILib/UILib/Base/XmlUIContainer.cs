@@ -52,7 +52,7 @@ namespace UILib.Base
 				}
 
 				var @event = controlType.GetEvent(attr.Name.ToString());
-				var method = Controller.GetType().GetMethod(attr.Value, BindingFlags.Public | BindingFlags.Instance);
+				var method = Controller.GetType().GetMethod(attr.Value, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
 				if (@event != null)
 				{
 					if (method == null)

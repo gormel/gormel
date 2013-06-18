@@ -26,6 +26,11 @@ namespace UILib.Base
 			get { return Controls[name]; }
 		}
 
+		public T GetControl<T>(string name) where T : UIControl
+		{
+			return (T)Controls[name];
+		}
+
 		public virtual void Draw(GameTime time)
 		{
 			BaseControl.Draw(time);
