@@ -11,10 +11,13 @@ namespace CopyingModel
 		public int Radius { get; set; }
 		public int Energy { get; set; }
 
+		public static int EnergyUpgaradeCost { get { return 100; } }
+		public static int RadiusUpgardeCost { get { return 400; } }
+
 		public TowerFactory()
 		{
-			Radius = 3;
-			Energy = 3;
+			Radius = 1;
+			Energy = 10;
 		}
 
 		public Tower CreateTower(Point pos)

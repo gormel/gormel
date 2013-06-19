@@ -22,6 +22,9 @@ namespace CopyingModel
 		LandCursor cursor;
 		LandCursorView cursorView;
 
+		int money = 400;
+		KeyboardState lastKeyboardState;
+
 		//SpriteAnimation anim;
 
 		public Game1()
@@ -39,6 +42,7 @@ namespace CopyingModel
 			float cellHeight = 50;
 
 			land = new Land(10, 10);
+			land.StateChanged += land_StateChanged;
 			lView = new LandView(land, spriteBatch, land.Width * cellWidth, land.Height * cellHeight);
 
 			cursor = new LandCursor(cellWidth, cellHeight);
@@ -50,13 +54,28 @@ namespace CopyingModel
 			graphics.ApplyChanges();
 		}
 
+		void land_StateChanged(object sender, StateChangedEventArgs<Land.States> e)
+		{
+			switch (e.State)
+			{
+				case Land.States.MonsterDied:
+					money += Monster.Loot;
+					break;
+				default:
+					break;
+			}
+		}
+
 		void cursor_StateChanged(object sender, StateChangedEventArgs<LandCursor.State> e)
 		{
 			switch (e.State)
 			{
 				case LandCursor.State.CursorDown:
+					if (money < Tower.Cost)
+						break;
 					var dPos = (Point)e.Args[1];
 					land.PlaceTower(dPos);
+					money -= Tower.Cost;
 					break;
 				case LandCursor.State.CursorUp:
 					break;
@@ -77,16 +96,36 @@ namespace CopyingModel
 
 		protected override void Update(GameTime gameTime)
 		{
-			// Allows the game to exit
-			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-				this.Exit();
+			KeyboardState keyboardState = Keyboard.GetState();
+
+			if (lastKeyboardState.IsKeyUp(Keys.E) && keyboardState.IsKeyDown(Keys.E))
+			{
+				if (money >= TowerFactory.EnergyUpgaradeCost)
+				{
+					money -= TowerFactory.EnergyUpgaradeCost;
+					land.TowerFactory.Energy++;
+				}
+			}
+
+			if (lastKeyboardState.IsKeyUp(Keys.R) && keyboardState.IsKeyDown(Keys.R))
+			{
+				if (money >= TowerFactory.RadiusUpgardeCost)
+				{
+					money -= TowerFactory.RadiusUpgardeCost;
+					land.TowerFactory.Radius++;
+				}
+			}
 
 			land.Update(gameTime);
 			lView.Update(gameTime);
-
+			
 			cursor.Update(gameTime);
 			cursorView.Update(gameTime);
 
+			Window.Title = string.Format("{0}$, {1}e, {2}r", money, land.TowerFactory.Energy,
+										land.TowerFactory.Radius);
+
+			lastKeyboardState = keyboardState;
 			base.Update(gameTime);
 		}
 

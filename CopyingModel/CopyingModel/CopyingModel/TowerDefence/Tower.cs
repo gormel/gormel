@@ -11,7 +11,8 @@ namespace CopyingModel
 		public int Radius { get; set; }
 		public int Energy { get; set; }
 
-		public readonly static TimeSpan shootTimeout = TimeSpan.FromMilliseconds(1000);
+		public readonly static TimeSpan shootTimeout = TimeSpan.FromMilliseconds(3000);
+		public static int Cost { get { return 200; } }
 		private TimeSpan lastShoot = TimeSpan.FromMilliseconds(0);
 
 		public Tower(Point pos)

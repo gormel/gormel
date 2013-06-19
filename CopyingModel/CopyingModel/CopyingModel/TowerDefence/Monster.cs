@@ -14,7 +14,9 @@ namespace CopyingModel
 		public int Life { get; set; }
 
 		private TimeSpan lastCreation;
-		private static TimeSpan creationTimeout = TimeSpan.FromMilliseconds(2000);
+		private static TimeSpan creationTimeout = TimeSpan.FromMilliseconds(6000);
+
+		public static int Loot { get { return 20; } }
 
 		public Monster(Point pos)
 			: base(pos)
