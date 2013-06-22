@@ -31,6 +31,8 @@ namespace UILib.Controls
 		public HorisontalTextAlligment HorisontalTextAlligment { get; set; }
 		public VerticalTextAlligment VerticalTextAlligment { get; set; }
 
+		protected int Offset { get; set; }
+
 		private float textIndent = 5;
 		private string visibleText;
 
@@ -41,7 +43,7 @@ namespace UILib.Controls
 			TextColor = Color.LightGreen;
 			HorisontalTextAlligment = HorisontalTextAlligment.Left;
 			VerticalTextAlligment = VerticalTextAlligment.Top;
-			
+			Offset = 0;
 		}
 
 		public override void Draw(GameTime time)
@@ -65,7 +67,7 @@ namespace UILib.Controls
 		{
 			if (Text.Length > 0)
 			{
-				visibleText = Text;
+				visibleText = Text.Substring(Offset);
 				for (int i = 0; i < visibleText.Length; i++)
 				{
 					var textBounds = TextFont.MeasureString(visibleText.Substring(0, i));

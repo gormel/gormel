@@ -5,19 +5,19 @@
       <ColItem Index="0">
         <Button Margin="3" TextFont="LabelFont" BackgroundImage="applelogo"
                 Text="Button 1" TextColor="DarkGreen" Name="button1" 
-                MouseDown="button1_MouseDown" MouseUp="button1_MouseUp"/>
+                Pressed="button1_MouseDown" Released="button1_MouseUp"/>
       </ColItem>
     </RowItem>
 
     <RowItem Index="1" Name="row1" Height="50">
       <ColItem Index="0">
         <Button Name="button2" Margin="3" TextFont="LabelFont"
-                Text="Button 2" MouseUp="button2_MouseUp"/>
+                Text="Button 2" Released="button2_MouseUp"/>
       </ColItem>
 
       <ColItem Index="1">
         <Button Name="button3" Margin="3" TextFont="LabelFont"
-                Text="Button 3" MouseUp ="button3_MouseUp"/>
+                Text="Button 3" Released ="button3_MouseUp"/>
       </ColItem>
     </RowItem>
 

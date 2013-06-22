@@ -36,6 +36,7 @@ namespace UILib.Base
 			XElement xml = XElement.Load(file);
 
 			BaseControl = ParseControl(xml, null);
+			BaseControl.Activate();
 		}
 
 		private UIControl ParseControl(XElement xml, object baseControl)

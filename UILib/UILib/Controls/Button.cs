@@ -11,17 +11,43 @@ namespace UILib.Controls
 {
 	public class Button : Label
 	{
-		public event EventHandler MouseDown;
-		public event EventHandler MouseUp;
+		public event EventHandler Pressed;
+		public event EventHandler Released;
 		private MouseState lastMouseState;
 		private bool mouseIsOn;
 		private bool mouseIsDown;
+		private bool enterIsDown;
 
 		public Button(UIControl baseControl, GraphicsDevice device)
 			: base(baseControl, device)
 		{
 			HorisontalTextAlligment = HorisontalTextAlligment.Center;
 			VerticalTextAlligment = VerticalTextAlligment.Center;
+		}
+
+		protected override void OnKeyDown(Keys key)
+		{
+			base.OnKeyDown(key);
+
+			if (key == Keys.Enter)
+			{
+				enterIsDown = true;
+				if (Pressed != null)
+					Pressed(this, null);
+
+			}
+		}
+
+		protected override void OnKeyUp(Keys key)
+		{
+			base.OnKeyUp(key);
+
+			if (key == Keys.Enter)
+			{
+				enterIsDown = false;
+				if (Released != null)
+					Released(this, null);
+			}
 		}
 
 		public override void Update(GameTime time)
@@ -38,13 +64,13 @@ namespace UILib.Controls
 
 				if (lastMouseState.LeftButton == ButtonState.Released &&
 					mouseState.LeftButton == ButtonState.Pressed)
-					if (MouseDown != null)
-						MouseDown(this, null);
+					if (Pressed != null)
+						Pressed(this, null);
 
 				if (lastMouseState.LeftButton == ButtonState.Pressed &&
 					mouseState.LeftButton == ButtonState.Released)
-					if (MouseUp != null)
-						MouseUp(this, null);
+					if (Released != null)
+						Released(this, null);
 			}
 
 			lastMouseState = mouseState;
@@ -56,11 +82,11 @@ namespace UILib.Controls
 		{
 			base.Draw(time);
 			Color fill = Color.Transparent;
-			if (mouseIsDown)
+			if (mouseIsDown || enterIsDown)
 			{
 				fill = new Color(0, 0, 0, 150);
 			}
-			else if (mouseIsOn)
+			else if (Active || mouseIsOn)
 			{
 				fill = new Color(255, 255, 255, 50);
 			}
