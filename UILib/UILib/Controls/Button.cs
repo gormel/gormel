@@ -23,6 +23,7 @@ namespace UILib.Controls
 		{
 			HorisontalTextAlligment = HorisontalTextAlligment.Center;
 			VerticalTextAlligment = VerticalTextAlligment.Center;
+			Activable = true;
 		}
 
 		protected override void OnKeyDown(Keys key)
@@ -78,20 +79,23 @@ namespace UILib.Controls
 			base.Update(time);
 		}
 
-		public override void Draw(GameTime time)
+		protected override void DrawBody(GameTime time)
 		{
-			base.Draw(time);
+			base.DrawBody(time);
 			Color fill = Color.Transparent;
 			if (mouseIsDown || enterIsDown)
 			{
 				fill = new Color(0, 0, 0, 150);
 			}
-			else if (Active || mouseIsOn)
+			else if (mouseIsOn)
 			{
 				fill = new Color(255, 255, 255, 50);
 			}
-			PrimetiveDarwHelper.DrawBox(new Vector2(X - BorderWidth / 2, Y - BorderWidth / 2), 
+			PrimetiveDarwHelper.DrawBox(new Vector2(X - BorderWidth / 2, Y - BorderWidth / 2),
 				new Vector2(Width + BorderWidth, Height + BorderWidth), fill, fill, 0);
+			if (Active)
+				PrimetiveDarwHelper.DrawBox(new Vector2(X, Y), new Vector2(Width, Height), Color.Transparent,
+					Color.Black, 1);
 		}
 
 		private bool Inside(float x, float y)

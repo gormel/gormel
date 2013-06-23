@@ -23,9 +23,9 @@ namespace UILib.Controls
 			BackgroundImage = null;
 		}
 
-		public override void Draw(GameTime time)
+		protected override void DrawBody(GameTime time)
 		{
-			base.Draw(time);
+			base.DrawBody(time);
 			if (BackgroundImage == null)
 				PrimetiveDarwHelper.DrawBox(new Vector2(X, Y), new Vector2(Width, Height), Background, Border, BorderWidth);
 			else

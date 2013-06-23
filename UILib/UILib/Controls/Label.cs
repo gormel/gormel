@@ -46,10 +46,9 @@ namespace UILib.Controls
 			Offset = 0;
 		}
 
-		public override void Draw(GameTime time)
+		protected override void DrawBody(GameTime time)
 		{
-			base.Draw(time);
-
+			base.DrawBody(time);
 			if (Text.Length == 0)
 				return;
 

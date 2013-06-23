@@ -100,6 +100,7 @@ namespace UILib.Base
 		protected bool IsNullSize { get { return Math.Abs(Width) < float.Epsilon || Math.Abs(Height) < float.Epsilon; } }
 
 		private KeyboardState lastKeyboardState;
+		private bool shift;
 
 		/// <summary>
 		/// Initializes a new UI control.
@@ -114,36 +115,48 @@ namespace UILib.Base
 			GraphicsDevice = device;
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
 			PrimetiveDarwHelper = new PrimetiveDrawHelper(GraphicsDevice);
+			Activable = false;
 
 			if (BaseControl != null)
 				BaseControl.Controls.Add(this);
 		}
 
-		private void ActivateNext(ActivationDirection activationDirection, int sender)
+		private void ActivateNext(ActivationDirection activationDirection, int sender, bool right)
 		{
 			Active = false;
+			UIControl canBeActivated = null;
 			switch (activationDirection)
 			{
 				case ActivationDirection.Right:
-					if (sender < Controls.Count - 1)
-					{
-						Controls[sender + 1].Active = true;
-						return;
-					}
+					if (right && sender < Controls.Count - 1 ||
+						!right && sender > 0)
+						canBeActivated = right ? Controls[sender + 1] : Controls[sender - 1];
 					break;
 				case ActivationDirection.Down:
 					if (Controls.Count > 0)
-					{
-						Controls[0].Active = true;
-						return;
-					}
+						canBeActivated = right ? Controls[0] : Controls[Controls.Count - 1];
 					break;
 				default:
 					break;
 			}
+			if (canBeActivated != null)
+			{
+				if (!canBeActivated.Activable)
+				{
+					canBeActivated.ActivateNext(ActivationDirection.Down, 0, right);
+					return;
+				}
+				canBeActivated.Active = true;
+				return;
+			}
 			if (BaseControl != null)
 			{
-				BaseControl.ActivateNext(ActivationDirection.Right, BaseControl.Controls.IndexOf(this));
+				BaseControl.ActivateNext(ActivationDirection.Right, BaseControl.Controls.IndexOf(this), right);
+				return;
+			}
+			if (!Activable)
+			{
+				ActivateNext(ActivationDirection.Down, 0, right);
 				return;
 			}
 			Active = true;
@@ -170,6 +183,11 @@ namespace UILib.Base
 
 		public void Activate()
 		{
+			if (!Activable)
+			{
+				ActivateNext(ActivationDirection.Down, 0, true);
+				return;
+			}
 			Deactivate(false);
 			Active = true;
 		}
@@ -177,12 +195,19 @@ namespace UILib.Base
 		protected virtual void OnKeyDown(Keys key)
 		{
 			if (key == Keys.Tab)
-			{
-				ActivateNext(ActivationDirection.Down, 0);
-			}
+				ActivateNext(ActivationDirection.Down, 0, !shift);
+
+			if (key == Keys.LeftShift || key == Keys.RightShift)
+				shift = true;
 		}
 
 		protected virtual void OnKeyUp(Keys key)
+		{
+			if (key == Keys.LeftShift || key == Keys.RightShift)
+				shift = false;
+		}
+
+		protected virtual void DrawBody(GameTime time)
 		{
 
 		}
@@ -191,10 +216,11 @@ namespace UILib.Base
 		/// Draws control using associated <see cref="GraphicsDevice"/>.
 		/// </summary>
 		/// <param name="time">Time elapsed from last draw invocation.</param>
-		public virtual void Draw(GameTime time)
+		public void Draw(GameTime time)
 		{
 			if (IsNullSize)
 				return;
+			DrawBody(time);
 			for (int i = 0; i < Controls.Count; i++)
 			{
 				Controls[i].Draw(time);
@@ -211,9 +237,9 @@ namespace UILib.Base
 				Controls[i].Update(time);
 			}
 
-			KeyboardState keyboardState = Keyboard.GetState();
 			if (Active)
 			{
+				KeyboardState keyboardState = Keyboard.GetState();
 
 				var downedKeys = from k in keyboardState.GetPressedKeys()
 								 where !lastKeyboardState.GetPressedKeys().Contains(k)
@@ -230,8 +256,8 @@ namespace UILib.Base
 				{
 					OnKeyUp(key);
 				}
+				lastKeyboardState = keyboardState;
 			}
-			lastKeyboardState = keyboardState;
 		}
 	}
 }
