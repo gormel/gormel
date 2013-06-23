@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Position X="10" Y="10" Width="500" Height="300" Name="root">
+<Position X="10" Y="10" Width="300" Height="300" Name="root">
   <Table>
     <RowItem Index="0" RelativeHeight="3">
       <ColItem Index="0">
