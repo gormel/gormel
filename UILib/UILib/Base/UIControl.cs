@@ -183,12 +183,12 @@ namespace UILib.Base
 
 		public void Activate()
 		{
+			Deactivate(false);
 			if (!Activable)
 			{
 				ActivateNext(ActivationDirection.Down, 0, true);
 				return;
 			}
-			Deactivate(false);
 			Active = true;
 		}
 

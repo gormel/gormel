@@ -24,6 +24,12 @@ namespace UILib.Controls
 			HorisontalTextAlligment = HorisontalTextAlligment.Center;
 			VerticalTextAlligment = VerticalTextAlligment.Center;
 			Activable = true;
+			Pressed += Button_Pressed;
+		}
+
+		void Button_Pressed(object sender, EventArgs e)
+		{
+			Activate();
 		}
 
 		protected override void OnKeyDown(Keys key)

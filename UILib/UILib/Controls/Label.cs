@@ -27,14 +27,38 @@ namespace UILib.Controls
 	{
 		public SpriteFont TextFont { get; set; }
 		public string Text { get; set; }
+		public IEnumerable<string> Lines
+		{
+			get
+			{
+				if (Text.Length == 0)
+					yield break;
+
+				int t = Offset;
+				for (int i = Offset; i < Text.Length; i++)
+				{
+					var substr = Text.Substring(t, i - t);
+					if (substr.EndsWith(Environment.NewLine) || 
+						TextFont.MeasureString(substr).X > Width - textIndent * 2)
+					{
+						yield return substr.Substring(0, substr.Length - 1);
+						t = --i;
+					}
+				}
+				yield return Text.Substring(t);
+			}
+		}
 		public Color TextColor { get; set; }
 		public HorisontalTextAlligment HorisontalTextAlligment { get; set; }
 		public VerticalTextAlligment VerticalTextAlligment { get; set; }
 
 		protected int Offset { get; set; }
+		protected IEnumerable<string> VisibleLines 
+		{ 
+			get { return Lines.Where((s, i) => Lines.Take(i + 1).Sum(s2 => TextFont.MeasureString(s2).Y) < Height - textIndent * 2); } 
+		}
 
 		private float textIndent = 5;
-		private string visibleText;
 
 		public Label(UIControl baseConrol, GraphicsDevice device)
 			: base(baseConrol, device)
@@ -43,15 +67,17 @@ namespace UILib.Controls
 			TextColor = Color.LightGreen;
 			HorisontalTextAlligment = HorisontalTextAlligment.Left;
 			VerticalTextAlligment = VerticalTextAlligment.Top;
-			Offset = 0;
 		}
-
+		
 		protected override void DrawBody(GameTime time)
 		{
 			base.DrawBody(time);
 			if (Text.Length == 0)
 				return;
 
+			var visibleText = new String(VisibleLines.SelectMany(s => s + Environment.NewLine).ToArray());
+			if (visibleText.Length > 0)
+				visibleText = visibleText.Remove(visibleText.Length - Environment.NewLine.Length);
 			var textBounds = TextFont.MeasureString(visibleText);
 			var textPos = new Vector2(X, Y);
 			textPos.X += (Width - textBounds.X) * ((int)HorisontalTextAlligment + 1) / 2 - textIndent * (int)HorisontalTextAlligment;
@@ -64,26 +90,6 @@ namespace UILib.Controls
 
 		public override void Update(GameTime time)
 		{
-			if (Text.Length > 0)
-			{
-				visibleText = Text.Substring(Offset);
-				for (int i = 0; i < visibleText.Length; i++)
-				{
-					var textBounds = TextFont.MeasureString(visibleText.Substring(0, i));
-					if (textBounds.X >= Width - textIndent * 2)
-					{
-						visibleText = visibleText.Insert(--i, Environment.NewLine);
-					}
-				}
-
-				int lastIndex = 0;
-				while (TextFont.MeasureString(visibleText.Substring(0, lastIndex + Environment.NewLine.Length)).Y < Height - textIndent * 2 && lastIndex >= 0)
-				{
-					lastIndex = visibleText.IndexOf(Environment.NewLine, lastIndex + Environment.NewLine.Length);
-				}
-				if (lastIndex > -1)
-					visibleText = visibleText.Substring(0, lastIndex);
-			}
 			base.Update(time);
 		}
 	}

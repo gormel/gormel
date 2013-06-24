@@ -22,7 +22,7 @@
     </RowItem>
 
     <RowItem Index="2" RelativeHeight="5">
-      <Label Name="label1" Margin="3" TextFont="LabelFont" Text="Label 1"/>
+      <Label Name="label1" Margin="3" TextFont="LabelFont" Text="it is a very long text to test his multilineing for searching bugs!"/>
     </RowItem>
   </Table>
 </Position>
