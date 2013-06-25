@@ -34,8 +34,8 @@ namespace UILib.Controls
 				if (Text.Length == 0)
 					yield break;
 
-				int t = Offset;
-				for (int i = Offset; i < Text.Length; i++)
+				int t = 0;
+				for (int i = 0; i < Text.Length; i++)
 				{
 					var substr = Text.Substring(t, i - t);
 					if (substr.EndsWith(Environment.NewLine) || 
@@ -43,6 +43,11 @@ namespace UILib.Controls
 					{
 						yield return substr.Substring(0, substr.Length - 1);
 						t = --i;
+						if (!AutoTranslit)
+						{
+							var enter = Text.IndexOf(Environment.NewLine, i);
+							i = t = enter < 0 ? Text.Length : enter + Environment.NewLine.Length;
+						}
 					}
 				}
 				yield return Text.Substring(t);
@@ -51,8 +56,10 @@ namespace UILib.Controls
 		public Color TextColor { get; set; }
 		public HorisontalTextAlligment HorisontalTextAlligment { get; set; }
 		public VerticalTextAlligment VerticalTextAlligment { get; set; }
+		public bool AutoTranslit { get; set; }
 
-		protected int Offset { get; set; }
+		protected int TopOffset { get; set; }
+		protected int LeftOffset { get; set; }
 		protected IEnumerable<string> VisibleLines 
 		{ 
 			get { return Lines.Where((s, i) => Lines.Take(i + 1).Sum(s2 => TextFont.MeasureString(s2).Y) < Height - textIndent * 2); } 
@@ -67,6 +74,7 @@ namespace UILib.Controls
 			TextColor = Color.LightGreen;
 			HorisontalTextAlligment = HorisontalTextAlligment.Left;
 			VerticalTextAlligment = VerticalTextAlligment.Top;
+			AutoTranslit = false;
 		}
 		
 		protected override void DrawBody(GameTime time)
@@ -75,7 +83,7 @@ namespace UILib.Controls
 			if (Text.Length == 0)
 				return;
 
-			var visibleText = new String(VisibleLines.SelectMany(s => s + Environment.NewLine).ToArray());
+			var visibleText = new String(VisibleLines.Skip(TopOffset).SelectMany(s => s.Substring(LeftOffset) + Environment.NewLine).ToArray());
 			if (visibleText.Length > 0)
 				visibleText = visibleText.Remove(visibleText.Length - Environment.NewLine.Length);
 			var textBounds = TextFont.MeasureString(visibleText);

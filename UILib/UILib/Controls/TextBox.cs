@@ -46,6 +46,7 @@ namespace UILib.Controls
 					string add = typeingKey.ToString();
 					Text = Text.Insert(Cursor, add);
 					Cursor += add.Length;
+					//if (Cursor > 
 				}
 			}
 			base.Update(time);
