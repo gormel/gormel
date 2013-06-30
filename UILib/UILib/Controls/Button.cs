@@ -21,8 +21,8 @@ namespace UILib.Controls
 		public Button(UIControl baseControl, GraphicsDevice device)
 			: base(baseControl, device)
 		{
-			HorisontalTextAlligment = HorisontalTextAlligment.Center;
-			VerticalTextAlligment = VerticalTextAlligment.Center;
+			HorisontalTextAlligment = HorisontalAlligment.Center;
+			VerticalTextAlligment = VerticalAlligment.Center;
 			Activable = true;
 			Pressed += Button_Pressed;
 		}

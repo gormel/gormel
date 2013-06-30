@@ -22,7 +22,8 @@
     </RowItem>
 
     <RowItem Index="2" RelativeHeight="5">
-      <Label Name="label1" Margin="3" TextFont="LabelFont" Text="it is a very long text to test his multilineing for searching bugs!"/>
+      <Label Name="label1" Margin="3" TextFont="LabelFont" HorisontalTextAlligment="Right" VerticalTextAlligment="Center"
+             Text="it is a very long text to test his multilineing for searching bugs! i want to extent this line lenght more and more. This string lenght is too short to test some featchures."/>
     </RowItem>
   </Table>
 </Position>

@@ -20,14 +20,15 @@ namespace UILib.Base
 			: base(controller, device)
 		{
 			parsers[typeof(int)] = new IntStringParser();
+			parsers[typeof(bool)] = new BoolStringParser();
 			parsers[typeof(float)] = new FloatStringParser();
 			parsers[typeof(string)] = new StringStringParser();
 
 			parsers[typeof(Texture2D)] = new TextureStringParser(content);
 			parsers[typeof(SpriteFont)] = new SpriteFontStringParser(content);
 
-			parsers[typeof(HorisontalTextAlligment)] = new EnumStringParser<HorisontalTextAlligment>();
-			parsers[typeof(VerticalTextAlligment)] = new EnumStringParser<VerticalTextAlligment>();
+			parsers[typeof(HorisontalAlligment)] = new EnumStringParser<HorisontalAlligment>();
+			parsers[typeof(VerticalAlligment)] = new EnumStringParser<VerticalAlligment>();
 
 			parsers[typeof(Color)] = new ColorStringParser();
 

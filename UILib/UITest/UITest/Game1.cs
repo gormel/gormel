@@ -46,6 +46,7 @@ namespace UITest
 			this.IsMouseVisible = true;
 			testConteiner = new XmlUIContainer(this, GraphicsDevice, Content, "TestUI.xml");
 			//testConteiner = new TestUIContainer(this, GraphicsDevice, Content);
+			testConteiner.GetControl<Label>("label1").Text += Environment.NewLine + Environment.NewLine + "aaaaa!!!";
 			base.Initialize();
 		}
 

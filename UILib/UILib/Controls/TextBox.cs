@@ -15,8 +15,22 @@ namespace UILib.Controls
 		private TimeSpan typeCooldown = TimeSpan.FromMilliseconds(100);
 		private TimeSpan typeTimeSpend = TimeSpan.Zero;
 		private Keys typeingKey = Keys.None;
+		private int CursorX
+		{
+			get { return Cursor - getCursorY().savedLen; }
+		}
+		private int CursorY
+		{
+			get  { return getCursorY().y; }
+		}
 
-
+		private dynamic getCursorY()
+		{
+			int savedLen = 0;
+			int y = Lines.TakeWhile(s => (savedLen += s.Length) < Cursor).Count();
+			return new { savedLen, y };
+		}
+		
 		public TextBox(UIControl baseControl, GraphicsDevice device)
 			: base(baseControl, device)
 		{
@@ -37,7 +51,7 @@ namespace UILib.Controls
 
 		public override void Update(GameTime time)
 		{//сильно не ругайте, так прикольно ^^
-			if ((typeTimeSpend += time.ElapsedGameTime) < typeCooldown) ;
+			if ((typeTimeSpend += time.ElapsedGameTime) < typeCooldown) { }
 			else
 			{
 				typeTimeSpend = TimeSpan.Zero;
@@ -46,7 +60,7 @@ namespace UILib.Controls
 					string add = typeingKey.ToString();
 					Text = Text.Insert(Cursor, add);
 					Cursor += add.Length;
-					//if (Cursor > 
+
 				}
 			}
 			base.Update(time);

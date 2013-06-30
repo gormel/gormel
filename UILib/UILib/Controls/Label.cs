@@ -9,62 +9,59 @@ using UILib.Base;
 
 namespace UILib.Controls
 {
-	public enum HorisontalTextAlligment
+	public enum HorisontalAlligment
 	{
-		Left = -1,
-		Center = 0,
-		Right = 1
+		Left = 0,
+		Center = 1,
+		Right = 2
 	}
 
-	public enum VerticalTextAlligment
+	public enum VerticalAlligment
 	{
-		Top = -1,
-		Center = 0,
-		Down = 1
+		Top = 0,
+		Center = 1,
+		Bottom = 2
 	}
 
 	public class Label : Panel
 	{
 		public SpriteFont TextFont { get; set; }
 		public string Text { get; set; }
-		public IEnumerable<string> Lines
+		public string[] Lines
 		{
-			get
-			{
-				if (Text.Length == 0)
-					yield break;
-
-				int t = 0;
-				for (int i = 0; i < Text.Length; i++)
-				{
-					var substr = Text.Substring(t, i - t);
-					if (substr.EndsWith(Environment.NewLine) || 
-						TextFont.MeasureString(substr).X > Width - textIndent * 2)
-					{
-						yield return substr.Substring(0, substr.Length - 1);
-						t = --i;
-						if (!AutoTranslit)
-						{
-							var enter = Text.IndexOf(Environment.NewLine, i);
-							i = t = enter < 0 ? Text.Length : enter + Environment.NewLine.Length;
-						}
-					}
-				}
-				yield return Text.Substring(t);
-			}
+			get { return Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None); }
 		}
 		public Color TextColor { get; set; }
-		public HorisontalTextAlligment HorisontalTextAlligment { get; set; }
-		public VerticalTextAlligment VerticalTextAlligment { get; set; }
+		public HorisontalAlligment HorisontalTextAlligment { get; set; }
+		public VerticalAlligment VerticalTextAlligment { get; set; }
 		public bool AutoTranslit { get; set; }
 
 		protected int TopOffset { get; set; }
 		protected int LeftOffset { get; set; }
-		protected IEnumerable<string> VisibleLines 
-		{ 
-			get { return Lines.Where((s, i) => Lines.Take(i + 1).Sum(s2 => TextFont.MeasureString(s2).Y) < Height - textIndent * 2); } 
-		}
+		protected IEnumerable<string> CuttedLines
+		{
+			get
+			{
+				int index = 0;
 
+				foreach (var line in Lines)
+				{
+					int lineOffset = LeftOffset;
+					do
+					{
+						var l = line.Substring(lineOffset).Aggregate("", (s, c) =>
+							s + ((TextFont.MeasureString(s + c).X < Width - textIndent * 2) ? c.ToString() : ""));
+						lineOffset += Math.Max(l.Length, 1) + (!AutoTranslit ? line.Length : 0);
+
+						if (index++ < TopOffset)
+							continue;
+
+						yield return l;
+					} while (lineOffset < line.Length);
+				}
+			}
+		}
+		
 		private float textIndent = 5;
 
 		public Label(UIControl baseConrol, GraphicsDevice device)
@@ -72,9 +69,9 @@ namespace UILib.Controls
 		{
 			Text = "";
 			TextColor = Color.LightGreen;
-			HorisontalTextAlligment = HorisontalTextAlligment.Left;
-			VerticalTextAlligment = VerticalTextAlligment.Top;
-			AutoTranslit = false;
+			HorisontalTextAlligment = HorisontalAlligment.Left;
+			VerticalTextAlligment = VerticalAlligment.Top;
+			AutoTranslit = true;
 		}
 		
 		protected override void DrawBody(GameTime time)
@@ -83,16 +80,24 @@ namespace UILib.Controls
 			if (Text.Length == 0)
 				return;
 
-			var visibleText = new String(VisibleLines.Skip(TopOffset).SelectMany(s => s.Substring(LeftOffset) + Environment.NewLine).ToArray());
-			if (visibleText.Length > 0)
-				visibleText = visibleText.Remove(visibleText.Length - Environment.NewLine.Length);
-			var textBounds = TextFont.MeasureString(visibleText);
-			var textPos = new Vector2(X, Y);
-			textPos.X += (Width - textBounds.X) * ((int)HorisontalTextAlligment + 1) / 2 - textIndent * (int)HorisontalTextAlligment;
-			textPos.Y += (Height - textBounds.Y) * ((int)VerticalTextAlligment + 1) / 2 - textIndent * (int)VerticalTextAlligment;
-
 			SpriteBatch.Begin();
-			SpriteBatch.DrawString(TextFont, visibleText, textPos, TextColor);
+
+			float offsetY = Math.Max((Height - 
+				CuttedLines.Count() * TextFont.LineSpacing) / 2 * 
+							(int)VerticalTextAlligment, 0);
+
+			foreach (var line in CuttedLines)
+			{
+				if (offsetY + TextFont.MeasureString(line).Y >= Height - textIndent * 2)
+					break;
+
+				var offsetX = (Width - textIndent * 2 - TextFont.MeasureString(line).X) / 2 * 
+								(int)HorisontalTextAlligment;
+				SpriteBatch.DrawString(TextFont, line,
+					new Vector2(X + textIndent + offsetX, Y + textIndent + offsetY), TextColor);
+				offsetY += Math.Max(TextFont.MeasureString(line).Y ,TextFont.LineSpacing);
+			}
+
 			SpriteBatch.End();
 		}
 

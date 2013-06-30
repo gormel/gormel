@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UITestContent", "UITest\UIT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SomeEasyTests", "SomeEasyTests\SomeEasyTests.csproj", "{12AA9E0F-117A-42E3-BE65-19308AB31A2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{C757CD59-79D5-4B4A-9556-101F5AD21083}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,16 @@ Global
 		{12AA9E0F-117A-42E3-BE65-19308AB31A2C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{12AA9E0F-117A-42E3-BE65-19308AB31A2C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{12AA9E0F-117A-42E3-BE65-19308AB31A2C}.Release|x86.ActiveCfg = Release|Any CPU
+		{C757CD59-79D5-4B4A-9556-101F5AD21083}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C757CD59-79D5-4B4A-9556-101F5AD21083}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C757CD59-79D5-4B4A-9556-101F5AD21083}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C757CD59-79D5-4B4A-9556-101F5AD21083}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C757CD59-79D5-4B4A-9556-101F5AD21083}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C757CD59-79D5-4B4A-9556-101F5AD21083}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C757CD59-79D5-4B4A-9556-101F5AD21083}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C757CD59-79D5-4B4A-9556-101F5AD21083}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C757CD59-79D5-4B4A-9556-101F5AD21083}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C757CD59-79D5-4B4A-9556-101F5AD21083}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
