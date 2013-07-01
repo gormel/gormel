@@ -1,8 +1,10 @@
 #include "hat.h"
+#include <assert.h>
 
 Hat::Hat(Point position, float len, float height)
 	: seg(position, len, height)
 {
+	assert(len > 0 && height > 0);
 #ifdef TALKY
 	cout << "Hat created!" << endl;
 #endif
@@ -28,7 +30,7 @@ CycleList<Point> Hat::GetPoints()
 	CycleList<Point> list;
 	
 	list.Add(seg.GetStart());
-	list.Add(seg.GetStart().MoveBy(Point(seg.GetWidth() / 2, seg.GetHeiht())));
+	list.Add(seg.GetStart().MoveBy(Point(seg.GetWidth() / 2, seg.GetHeight())));
 	list.Add(seg.GetStart().MoveBy(Point(seg.GetWidth(), 0)));
 
 	return list;

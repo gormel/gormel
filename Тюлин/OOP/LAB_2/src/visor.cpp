@@ -1,4 +1,5 @@
 #include "visor.h"
+#include <assert.h>
 
 Visor::Visor(Point position, double dx, double dy)
 	: line(position, position.MoveBy(Point(dx, dy)))

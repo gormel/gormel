@@ -12,7 +12,7 @@ private:
 	Hat hat;
 	Visor visor;
 public:
-	Cap(Point pos, double width, double h1, double h2);
+	Cap(Point pos, double w1, double w2, double h1, double h2);
 	Cap(const Cap &obj);
 	~Cap();
 

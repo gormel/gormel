@@ -1,7 +1,7 @@
 #ifndef my_segment
 #define my_segment
 
-#include "segment.h"
+#include "point.h"
 
 class Segment
 {

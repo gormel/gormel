@@ -2,7 +2,7 @@
 
 
 Segment::Segment(Point start, double width, double height)
-	: satrt(start), width(width), height(height)
+	: start(start), width(width), height(height)
 {
 #ifdef TALKY
 	cout << "Segment created!" << endl;
