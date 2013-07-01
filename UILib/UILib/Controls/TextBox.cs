@@ -15,26 +15,15 @@ namespace UILib.Controls
 		private TimeSpan typeCooldown = TimeSpan.FromMilliseconds(100);
 		private TimeSpan typeTimeSpend = TimeSpan.Zero;
 		private Keys typeingKey = Keys.None;
-		private int CursorX
-		{
-			get { return Cursor - getCursorY().savedLen; }
-		}
-		private int CursorY
-		{
-			get  { return getCursorY().y; }
-		}
 
-		private dynamic getCursorY()
-		{
-			int savedLen = 0;
-			int y = Lines.TakeWhile(s => (savedLen += s.Length) < Cursor).Count();
-			return new { savedLen, y };
-		}
+		private float CursorX { get; set; }
+		private float CursorY { get; set; }
+		private float CursorHeight { get { return TextFont.LineSpacing; } }
 		
 		public TextBox(UIControl baseControl, GraphicsDevice device)
 			: base(baseControl, device)
 		{
-			
+			Activable = true;
 		}
 
 		protected override void OnKeyDown(Keys key)
@@ -58,11 +47,21 @@ namespace UILib.Controls
 				if (typeingKey != Keys.None)
 				{
 					string add = typeingKey.ToString();
+					if (typeingKey == Keys.Enter)
+						add = Environment.NewLine;
+
 					Text = Text.Insert(Cursor, add);
 					Cursor += add.Length;
-
 				}
 			}
+			if (CursorX > Width - TextIndent)
+				LeftOffset++;
+			if (CursorX < TextIndent)
+				LeftOffset--;
+			if (CursorY + CursorHeight > Height - TextIndent)
+				TopOffset++;
+			if (CursorY < TextIndent)
+				TopOffset--;
 			base.Update(time);
 		}
 	}

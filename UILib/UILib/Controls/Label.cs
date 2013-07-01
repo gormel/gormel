@@ -50,7 +50,7 @@ namespace UILib.Controls
 					do
 					{
 						var l = line.Substring(lineOffset).Aggregate("", (s, c) =>
-							s + ((TextFont.MeasureString(s + c).X < Width - textIndent * 2) ? c.ToString() : ""));
+							s + ((TextFont.MeasureString(s + c).X < Width - TextIndent * 2) ? c.ToString() : ""));
 						lineOffset += Math.Max(l.Length, 1) + (!AutoTranslit ? line.Length : 0);
 
 						if (index++ < TopOffset)
@@ -62,7 +62,7 @@ namespace UILib.Controls
 			}
 		}
 		
-		private float textIndent = 5;
+		protected float TextIndent = 5;
 
 		public Label(UIControl baseConrol, GraphicsDevice device)
 			: base(baseConrol, device)
@@ -83,18 +83,18 @@ namespace UILib.Controls
 			SpriteBatch.Begin();
 
 			float offsetY = Math.Max((Height - 
-				CuttedLines.Count() * TextFont.LineSpacing) / 2 * 
+				CuttedLines.Count() * TextFont.LineSpacing - TextIndent * 2) / 2 * 
 							(int)VerticalTextAlligment, 0);
 
 			foreach (var line in CuttedLines)
 			{
-				if (offsetY + TextFont.MeasureString(line).Y >= Height - textIndent * 2)
+				if (offsetY + TextFont.MeasureString(line).Y >= Height - TextIndent * 2)
 					break;
 
-				var offsetX = (Width - textIndent * 2 - TextFont.MeasureString(line).X) / 2 * 
+				var offsetX = (Width - TextIndent * 2 - TextFont.MeasureString(line).X) / 2 * 
 								(int)HorisontalTextAlligment;
 				SpriteBatch.DrawString(TextFont, line,
-					new Vector2(X + textIndent + offsetX, Y + textIndent + offsetY), TextColor);
+					new Vector2(X + TextIndent + offsetX, Y + TextIndent + offsetY), TextColor);
 				offsetY += Math.Max(TextFont.MeasureString(line).Y ,TextFont.LineSpacing);
 			}
 
