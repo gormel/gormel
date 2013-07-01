@@ -3,25 +3,67 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Roslyn.Compilers.CSharp;
 
 namespace SomeEasyTests
 {
-	class Rectangle
+	static class StringUtils
 	{
-		public int Width { get; set; }
-		public int Height { get; set; }
-		public int Square { get { return Width * Height; } }
-
-		public Rectangle(int width, int height)
+		static Random rand = new Random();
+		public static char GetRandomChar()
 		{
-			Width = width;
-			Height = height;
+			char c = ' ';
+			do
+			{
+				c = (char)rand.Next(255);
+			} while (char.IsControl(c));
+			return c;
 		}
 
+		public static string GetRandomString(int length)
+		{
+			string s = "";
+			for (int i = 0; i < length; i++)
+			{
+				s += GetRandomChar();
+			}
+			return s;
+		}
+	}
+
+	class CodePart
+	{
+		private Random rand = new Random();
+		public CodePart(int size)
+		{
+			for (int i = 0; i < size; i++)
+			{
+				Genes.Add(StringUtils.GetRandomString(rand.Next(50)));
+			}
+		}
+		public List<string> Genes = new List<string>();
+
+		public IEnumerable<Diagnostic> Errors
+		{
+			get
+			{
+				try
+				{
+					var tree = SyntaxTree.ParseText(Genes.Aggregate("", (s1, s2) => s1 + Environment.NewLine + s2));
+					var comp = Compilation.Create("Program.cs").AddSyntaxTrees(tree).GetSemanticModel(tree);
+					return tree.GetRoot().GetDiagnostics().Concat(comp.GetDiagnostics());
+				}
+				catch (Exception ex)
+				{
+					return null;
+				}
+			}
+		}
 
 		public override string ToString()
 		{
-			return string.Format("[{0}, {1}]:{2}", Width, Height, Square);
+			var loc = Errors.FirstOrDefault().Location.GetLineSpan(false);
+			return "[" + loc.StartLinePosition.ToString() + "]";
 		}
 	}
 
@@ -33,12 +75,21 @@ namespace SomeEasyTests
 			MutationRate = 0;
 		}
 		private Random rand = new Random();
-		public Rectangle CreateNew(Rectangle a, Rectangle b)
+		public CodePart CreateNew(CodePart a, CodePart b)
 		{
-			int w = rand.NextDouble() < 0.5 ? a.Width : b.Width;
-			int h = rand.NextDouble() < 0.5 ? a.Height : b.Height;
-			return new Rectangle((int)(w + w * rand.NextDouble() * MutationRate), 
-								 (int)(h + h * rand.NextDouble() * MutationRate));
+			CodePart newItem = new CodePart(0);
+			for (int i = 0; i < a.Genes.Count; i++)
+			{
+				string s = rand.NextDouble() < 0.5 ? a.Genes[i] : b.Genes[i];
+				StringBuilder sb = new StringBuilder(s);
+				for (int j = 0; j < s.Length * MutationRate; j++)
+				{
+					sb[rand.Next(s.Length)] = StringUtils.GetRandomChar();
+				}
+				s = sb.ToString();
+				newItem.Genes.Add(s);
+			}
+			return newItem;
 		}
 	}
 
@@ -48,50 +99,76 @@ namespace SomeEasyTests
 		private static MutationFabric fabric = new MutationFabric();
 		static void Main(string[] args)
 		{
-			int rectCount = 10;
-			int maxWidth = 100;
-			int maxHeight = 100;
-			List<Rectangle> rects = new List<Rectangle>();
+			int rectCount = 16;
+			fabric.MutationRate = 0.5;
+			List<CodePart> parts = new List<CodePart>();
 			for (int i = 0; i < rectCount; i++)
 			{
-				rects.Add(new Rectangle(rand.Next(maxWidth), rand.Next(maxHeight)));
+				parts.Add(new CodePart(12));
 			}
 
-			foreach (var rect in rects)
+			Console.WriteLine("\t:[0]");
+			foreach (var part in parts)
 			{
-				Console.WriteLine(rect.ToString());
+				Console.WriteLine(part.ToString());
 			}
-			Console.WriteLine("----");
-
+			int iteration = 1;
 			while (true)
 			{
-				rects = Process(rects);
-				foreach (var rect in rects)
+				parts = Process(parts);
+				if (iteration++ % 10 == 0)
 				{
-					Console.WriteLine(rect.ToString());
+					Console.Clear();
+					Console.WriteLine(string.Format("\t:[{0}]", iteration));
+					foreach (var rect in parts)
+					{
+						Console.WriteLine(rect.ToString());
+					}
 				}
-				Console.WriteLine("----");
-				Console.ReadKey(true);
 			}
+			Console.ReadKey(true);
 		}
 
-		private static List<Rectangle> Process(List<Rectangle> input)
+		private static List<CodePart> Process(List<CodePart> input)
 		{
-			int c = input.Count;
+			input.Sort((r1, r2) => new ErrorListComparer().Compare(r2.Errors, r1.Errors));
+			var c = Math.Sqrt(input.Count);
 			for (int i = 0; i < c; i++)
 			{
 				for (int j = 0; j < c; j++)
 				{
-					if (i != j)
-						input.Add(fabric.CreateNew(input[i], input[j]));
+					var newCode = fabric.CreateNew(input[i], input[j]);
+					input.Add(newCode);
 				}
 			}
-			for (int i = 0; i < c; i++)
+
+			return input.Take(input.Count / 2).ToList();
+		}
+	}
+
+	class ErrorListComparer : Comparer<IEnumerable<Diagnostic>>
+	{
+		public override int Compare(IEnumerable<Diagnostic> x, IEnumerable<Diagnostic> y)
+		{
+			var xFirst = x.FirstOrDefault();
+			var yFirst = y.FirstOrDefault();
+			if (xFirst == null && yFirst == null)
+				return 0;
+			else if (xFirst == null)
+				return 1;
+			else if (yFirst == null)
+				return -1;
+			else
 			{
-				input.RemoveAt(0);
+				var xSpanStart = xFirst.Location.GetLineSpan(false).StartLinePosition;
+				var ySpanStart = yFirst.Location.GetLineSpan(false).StartLinePosition;
+				int result = xSpanStart.Line.CompareTo(ySpanStart.Line);
+				if (result != 0)
+					return result;
+				else
+					return xSpanStart.Character.CompareTo(ySpanStart.Character);
 			}
-			input.Sort((r1, r2) => r2.Square - r1.Square);
-			return input.Take(c).ToList();
 		}
 	}
 }
+

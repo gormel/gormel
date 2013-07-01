@@ -26,11 +26,13 @@ public:
 	Point(double x, double y);
 	Point(double xy);
 	int operator ==(const Point &obj);
+	int operator !=(const Point &obj);
+
 	int GetX() const;
 	int GetY() const;
-	Point Rotate(float angle);//--
-	Point RotateAround(float angle, Point center);//--
-	Point MoveBy(Point dxdy);//--
+
+	Point MoveBy(Point dxdy);
+
 	int operator >(double value) const;
 	int operator <(double value) const;
 

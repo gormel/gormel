@@ -1,24 +1,24 @@
 #ifndef my_segment
 #define my_segment
 
+#include "segment.h"
+
 class Segment
 {
 private:
-	Point center;
 	Point start;
-	float angle;
+	double width;
+	double height;
 public:
-	Segment(Point center, Point start, float angle);
+	Segment(Point start, double width, double height);
 	Segment(const Segment &obj);
 	~Segment();
 
-	Point GetCenter();
 	Point GetStart();
-	float GetAngle();
+	double GetWidth();
+	double GetHeight();
 
 	void MoveBy(Point dxdy);
-	void RotateStart(float radians);
-	void SetAngle(float angle);
 };
 
 #endif

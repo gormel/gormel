@@ -1,6 +1,8 @@
 #ifndef my_line
 #define my_line
 
+#include "point.h"
+
 class Line
 {
 private:
@@ -10,10 +12,11 @@ public:
 	Line(Point start, Point end);
 	Line(const Line &obj);
 	~Line();
+
 	Point GetStart();
 	Point GetEnd();
+
 	void MoveBy(Point dxdy);
-	void RotateEnd(float radians);
 };
 
 #endif

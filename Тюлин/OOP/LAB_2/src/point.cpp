@@ -35,6 +35,11 @@ int Point::operator ==(const Point &obj)
 	return x == obj.x && y == obj.y;
 }
 
+int Point::operator !=(const Point &obj)
+{
+	return x != obj.x || y != obj.y;
+}
+
 int Point::GetX() const
 {
 	return x;
@@ -53,6 +58,11 @@ int Point::operator >(double value) const
 int Point::operator <(double value) const
 {
 	return x * y < value;
+}
+
+Point Point::MoveBy(Point dxdy)
+{
+	return Point(x + dxdy.x, y + dxdy.y);
 }
 
 ostream &operator <<(ostream &os, Point &p)
