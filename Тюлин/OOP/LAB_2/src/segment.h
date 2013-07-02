@@ -14,9 +14,9 @@ public:
 	Segment(const Segment &obj);
 	~Segment();
 
-	Point GetStart();
-	double GetWidth();
-	double GetHeight();
+	Point GetStart() const;
+	double GetWidth() const;
+	double GetHeight() const;
 
 	void MoveBy(Point dxdy);
 };

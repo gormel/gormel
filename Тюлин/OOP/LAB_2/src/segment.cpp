@@ -24,17 +24,17 @@ Segment::~Segment()
 #endif
 }
 
-Point Segment::GetStart()
+Point Segment::GetStart() const
 {
 	return start;
 }
 
-double Segment::GetWidth()
+double Segment::GetWidth() const
 {
 	return width;
 }
 
-double Segment::GetHeight()
+double Segment::GetHeight() const
 {
 	return height;
 }

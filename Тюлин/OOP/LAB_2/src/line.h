@@ -13,8 +13,8 @@ public:
 	Line(const Line &obj);
 	~Line();
 
-	Point GetStart();
-	Point GetEnd();
+	Point GetStart() const;
+	Point GetEnd() const;
 
 	void MoveBy(Point dxdy);
 };

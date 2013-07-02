@@ -25,6 +25,8 @@ public:
 	Point();
 	Point(double x, double y);
 	Point(double xy);
+	Point &operator =(const Point &obj);
+
 	int operator ==(const Point &obj);
 	int operator !=(const Point &obj);
 

@@ -30,6 +30,13 @@ Point::Point(double xy)
 #endif
 }
 
+Point &Point::operator =(const Point &obj)
+{
+	x = obj.x;
+	y = obj.y;
+	return *this;
+}
+
 int Point::operator ==(const Point &obj)
 {
 	return x == obj.x && y == obj.y;

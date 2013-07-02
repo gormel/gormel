@@ -25,7 +25,26 @@ Cap::~Cap()
 #endif
 }
 
-CycleList<Point> Cap::GetPoints()
+int Cap::operator ==(const Cap &obj)
+{
+	CycleList<Point> my = GetPoints();
+	CycleList<Point> his = obj.GetPoints();
+	if (my.Count() != his.Count())
+		return 0;
+	for (int i = 0; i < my.Count(); ++i)
+	{
+		if (my.Get(i) != his.Get(i))
+			return 0;
+	}
+	return 1;
+}
+
+int Cap::operator !=(const Cap &obj)
+{
+	return !(*this == obj);
+}
+
+CycleList<Point> Cap::GetPoints() const
 {
 	CycleList<Point> list;
 

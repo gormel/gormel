@@ -24,7 +24,7 @@ Visor::~Visor()
 #endif
 }
 
-CycleList<Point> Visor::GetPoints()
+CycleList<Point> Visor::GetPoints() const
 {
 	CycleList<Point> list;
 

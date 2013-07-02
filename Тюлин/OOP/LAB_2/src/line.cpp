@@ -23,12 +23,12 @@ Line::~Line()
 #endif
 }
 
-Point Line::GetStart()
+Point Line::GetStart() const
 {
 	return start;
 }
 
-Point Line::GetEnd()
+Point Line::GetEnd() const
 {
 	return end;
 }

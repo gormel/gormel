@@ -14,7 +14,7 @@ public:
 	Visor(const Visor &obj);
 	~Visor();
 
-	CycleList<Point> GetPoints();
+	CycleList<Point> GetPoints() const;
 	void MoveBy(Point dxdy);
 };
 

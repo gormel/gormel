@@ -25,7 +25,7 @@ Hat::~Hat()
 #endif
 }
 
-CycleList<Point> Hat::GetPoints()
+CycleList<Point> Hat::GetPoints() const
 {
 	CycleList<Point> list;
 	

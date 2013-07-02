@@ -1,2 +1,1 @@
 .\bin\lab.exe
-pause

@@ -16,7 +16,10 @@ public:
 	Cap(const Cap &obj);
 	~Cap();
 
-	CycleList<Point> GetPoints();
+	int operator ==(const Cap &obj);
+	int operator !=(const Cap &obj);
+
+	CycleList<Point> GetPoints() const;
 	void MoveBy(Point dxdy);
 };
 

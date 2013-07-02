@@ -13,7 +13,7 @@ public:
 	Hat(const Hat &obj);
 	~Hat();
 
-	CycleList<Point> GetPoints();
+	CycleList<Point> GetPoints() const;
 	void MoveBy(Point dxdy);
 };
 
