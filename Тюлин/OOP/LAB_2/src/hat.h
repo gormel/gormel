@@ -1,3 +1,8 @@
+//file: hat.h
+//hat class header
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #ifndef my_hat
 #define my_hat
 

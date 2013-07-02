@@ -1,3 +1,8 @@
+//file: line.h
+//line class header
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #ifndef my_line
 #define my_line
 

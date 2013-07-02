@@ -1,3 +1,8 @@
+//file: cap.h
+//cap class header
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #ifndef my_cap
 #define my_cap
 

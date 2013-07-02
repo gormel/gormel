@@ -1,3 +1,8 @@
+//file: line.cpp
+//line class realisation
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #include "line.h"
 
 Line::Line(Point start, Point end)

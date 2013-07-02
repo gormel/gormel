@@ -1,3 +1,8 @@
+//file: cyclist.hpp
+//CycleList class realisation
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 template<class T>
 CycleListNode<T>::CycleListNode(const T &value)
 	: value(value), next(0) {}

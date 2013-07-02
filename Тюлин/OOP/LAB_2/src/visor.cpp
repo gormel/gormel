@@ -1,3 +1,8 @@
+//file: visor.cpp
+//visor class realisation
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #include "visor.h"
 #include <assert.h>
 

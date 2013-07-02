@@ -1,3 +1,8 @@
+//file: cap.cpp
+//Cap class realisation
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #include "cap.h"
 #include <assert.h>
 

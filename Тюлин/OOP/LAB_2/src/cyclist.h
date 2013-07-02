@@ -1,3 +1,8 @@
+//file: cyclist.h
+//cycled list class header
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #ifndef my_cyclelist
 #define my_cyclelist
 

@@ -1,5 +1,9 @@
-#include "segment.h"
+//file: segment.cpp
+//segment class realisation
+//autor: Tyulin Roman
+//date: 20.04.2013
 
+#include "segment.h"
 
 Segment::Segment(Point start, double width, double height)
 	: start(start), width(width), height(height)

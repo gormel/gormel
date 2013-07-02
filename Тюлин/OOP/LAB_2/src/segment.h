@@ -1,3 +1,8 @@
+//file: segmrnt.h
+//segment class header
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #ifndef my_segment
 #define my_segment
 

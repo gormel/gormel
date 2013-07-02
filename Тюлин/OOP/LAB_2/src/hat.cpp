@@ -1,3 +1,8 @@
+//file: hat.cpp
+//hat class realisation
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #include "hat.h"
 #include <assert.h>
 

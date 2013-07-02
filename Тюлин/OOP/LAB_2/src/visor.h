@@ -1,3 +1,8 @@
+//file: visor.h
+//visor class header
+//autor: Tyulin Roman
+//date: 20.04.2013
+
 #ifndef my_visor
 #define my_visor
 
