@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.List;
 
 /**
  *
@@ -47,27 +48,6 @@ public class TreePanel extends javax.swing.JPanel {
         return null;
     }
     
-    private void updateTreeVis() {
-	gVis.refreshNodes();
-	
-	for (TreeNode node : g.getNodes()) {
-	    TreeNodeVis nodeVis = gVis.getVisualisation(node);
-	    nodeVis.setColor(TreeNodeVis.DEFAULT_COLOR);
-	}
-	
-	for (TreeNode max : g.getMinMax(true)) {
-	    TreeNodeVis maxVis = gVis.getVisualisation(max);
-	    maxVis.setColor(Color.red);
-	}
-	
-	for (TreeNode max : g.getMinMax(false)) {
-	    TreeNodeVis maxVis = gVis.getVisualisation(max);
-	    maxVis.setColor(Color.green);
-	}
-	
-	repaint();
-    }
-    
     private void initUserComponents() {
         gVis = new TreeVis(g);
         gVis.getVisualisation(g.getHead()).setX(100);
@@ -88,7 +68,7 @@ public class TreePanel extends javax.swing.JPanel {
                     
                     oldNode.getChildren().add(newNode);
                     g.AddNode(newNode);
-                    updateTreeVis();
+                    gVis.refreshNodes();
                     created = gVis.getVisualisation(newNode);
 		    created.setX(me.getX());
 		    created.setY(me.getY());
@@ -97,7 +77,8 @@ public class TreePanel extends javax.swing.JPanel {
                     if (near == null)
                         return;
                     g.RemoveNode(near);
-                    updateTreeVis();
+                    gVis.refreshNodes();
+		    repaint();
                 }
             }
 
@@ -134,7 +115,7 @@ public class TreePanel extends javax.swing.JPanel {
 		if (near == null)
 		    return;
 		near.setValue(near.getValue() - mwe.getWheelRotation());
-		updateTreeVis();
+		repaint();
 	    }
 	});
     }
@@ -143,6 +124,16 @@ public class TreePanel extends javax.swing.JPanel {
     public void paint(Graphics grphcs) {
         super.paint(grphcs);
         gVis.GraphPaint(grphcs);
+    }
+    
+    public void mark(List<TreeNode> nodes, Color color) {
+	for(TreeNode node : nodes) {
+	    TreeNodeVis vis = gVis.getVisualisation(node);
+	    if (vis == null)
+		continue;
+	    vis.setColor(color);
+	}
+	repaint();
     }
     
     /**

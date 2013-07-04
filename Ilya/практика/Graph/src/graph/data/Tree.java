@@ -53,6 +53,29 @@ public class Tree {
 	}
     }
     
+    public List<TreeNode> find(int value) {
+	List<TreeNode> found = new ArrayList<>();
+	
+	Queue queue = new Queue();
+	queue.enqueue(head);
+	
+	while (!queue.isEmpty()) {
+	    try {
+		TreeNode node = (TreeNode) queue.dequeue();
+		for (TreeNode n : node.getChildren()) {
+		    queue.enqueue(n);
+		}
+		
+		if (node.getValue() == value)
+		    found.add(node);
+	    } catch (InterruptedException ex) {
+		throw new RuntimeException(ex.getMessage());
+	    }
+	}
+	
+	return found;
+    }
+    
     public List<TreeNode> getMinMax(boolean max) {
 	List<TreeNode> found = new ArrayList<>();
 	TreeNode fakeNode = new TreeNode();

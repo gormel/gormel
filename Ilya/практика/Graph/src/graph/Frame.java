@@ -6,7 +6,21 @@ package graph;
 
 import graph.data.Tree;
 import graph.data.TreeNode;
+import graph.data.view.TreeNodeVis;
 import graph.data.view.TreePanel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.util.List;
+import javax.swing.JColorChooser;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -21,9 +35,47 @@ public class Frame extends javax.swing.JFrame {
     Tree g = new Tree(head);
     public Frame() {
         initComponents();
+	initUserComponents();
     }
     
+    private void mark() {
+	treePanel.mark(g.getNodes(), TreeNodeVis.DEFAULT_COLOR);
+	treePanel.mark(g.getMinMax(true), Color.red);
+	treePanel.mark(g.getMinMax(false), Color.green);
+	treePanel.mark(g.find((Integer)jSpinner1.getValue()), jButton2.getBackground());
+    }
+    
+    private void initUserComponents() {
+	treePanel = new TreePanel(g);
+	treePanel.addMouseListener(new MouseAdapter() {
 
+	    @Override
+	    public void mousePressed(MouseEvent me) {
+		mark();
+	    }
+	    
+	});
+	
+	treePanel.addMouseWheelListener(new MouseWheelListener() {
+
+	    @Override
+	    public void mouseWheelMoved(MouseWheelEvent mwe) {
+		mark();
+	    }
+	});
+	jPanel1.setLayout(new BorderLayout());
+	jPanel1.add(treePanel, BorderLayout.CENTER);
+	
+	jButton2.setBackground(Color.blue);
+	
+	jSpinner1.addChangeListener(new ChangeListener() {
+
+	    @Override
+	    public void stateChanged(ChangeEvent ce) {
+		mark();
+	    }
+	});
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,7 +86,11 @@ public class Frame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new TreePanel(g);
+        jColorChooser1 = new javax.swing.JColorChooser();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jSpinner1 = new javax.swing.JSpinner();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,7 +102,30 @@ public class Frame extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 305, Short.MAX_VALUE)
+        );
+
+        jSpinner1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(239, 239, 239)
+                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSpinner1, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -54,14 +133,24 @@ public class Frame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+	Color c = JColorChooser.showDialog(this, "Pick a color.", jButton2.getBackground());
+	jButton2.setBackground(c);
+	mark();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -98,6 +187,11 @@ public class Frame extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton2;
+    private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JSpinner jSpinner1;
     // End of variables declaration//GEN-END:variables
+    private TreePanel treePanel;
 }
