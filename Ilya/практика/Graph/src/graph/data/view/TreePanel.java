@@ -6,11 +6,14 @@ package graph.data.view;
 
 import graph.data.Tree;
 import graph.data.TreeNode;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 /**
  *
@@ -44,6 +47,27 @@ public class TreePanel extends javax.swing.JPanel {
         return null;
     }
     
+    private void updateTreeVis() {
+	gVis.refreshNodes();
+	
+	for (TreeNode node : g.getNodes()) {
+	    TreeNodeVis nodeVis = gVis.getVisualisation(node);
+	    nodeVis.setColor(TreeNodeVis.DEFAULT_COLOR);
+	}
+	
+	for (TreeNode max : g.getMinMax(true)) {
+	    TreeNodeVis maxVis = gVis.getVisualisation(max);
+	    maxVis.setColor(Color.red);
+	}
+	
+	for (TreeNode max : g.getMinMax(false)) {
+	    TreeNodeVis maxVis = gVis.getVisualisation(max);
+	    maxVis.setColor(Color.green);
+	}
+	
+	repaint();
+    }
+    
     private void initUserComponents() {
         gVis = new TreeVis(g);
         gVis.getVisualisation(g.getHead()).setX(100);
@@ -64,14 +88,16 @@ public class TreePanel extends javax.swing.JPanel {
                     
                     oldNode.getChildren().add(newNode);
                     g.AddNode(newNode);
-                    gVis.refreshNodes();
+                    updateTreeVis();
                     created = gVis.getVisualisation(newNode);
+		    created.setX(me.getX());
+		    created.setY(me.getY());
                 } else if (me.getButton() == MouseEvent.BUTTON2) {
                     TreeNode near = getNear(me.getX(), me.getY());
                     if (near == null)
                         return;
                     g.RemoveNode(near);
-                    gVis.refreshNodes();
+                    updateTreeVis();
                 }
             }
 
@@ -82,6 +108,7 @@ public class TreePanel extends javax.swing.JPanel {
             }
     
         });
+	
         this.addMouseMotionListener(new MouseMotionAdapter() {
 
             @Override
@@ -97,9 +124,19 @@ public class TreePanel extends javax.swing.JPanel {
                      repaint();
                }
            }
-            
         });
         
+	addMouseWheelListener(new MouseWheelListener() {
+
+	    @Override
+	    public void mouseWheelMoved(MouseWheelEvent mwe) {
+		TreeNode near = getNear(mwe.getX(), mwe.getY());
+		if (near == null)
+		    return;
+		near.setValue(near.getValue() - mwe.getWheelRotation());
+		updateTreeVis();
+	    }
+	});
     }
 
     @Override

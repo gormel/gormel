@@ -15,9 +15,17 @@ import java.util.List;
  */
 public class TreeNode {
     private List<TreeNode> children = new ArrayList<>();
-    
+    private int value;
     public TreeNode() {
         
+    }
+
+    public int getValue() {
+	return value;
+    }
+
+    public void setValue(int value) {
+	this.value = value;
     }
     
     public List<TreeNode> getChildren() {

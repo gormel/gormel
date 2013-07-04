@@ -4,19 +4,9 @@
  */
 package graph;
 
-import java.awt.Graphics;
-import sun.java2d.loops.DrawLine;
 import graph.data.Tree;
 import graph.data.TreeNode;
-import graph.data.view.TreeNodeVis;
-import static graph.data.view.TreeNodeVis.POINT_RADIUS;
 import graph.data.view.TreePanel;
-import graph.data.view.TreeVis;
-import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.image.BufferStrategy;
 
 /**
  *
