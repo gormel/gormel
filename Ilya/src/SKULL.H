@@ -12,8 +12,7 @@ class Skull
 	public:
 	Skull(Points position1,float height1,float width1);
 	Skull(const Skull &b);
-	List<Points> GetPoints();
+	List<Points> GetPoints() const;
 	float GetHeight();
-	}
-;
+	};
 #endif

@@ -2,7 +2,8 @@
 //class spisok
 //avtor:Obmanov Ilja
 //data: 10.04.2013
-
+#ifndef my_listp_
+#define my_listp_
 
 #include <iostream.h>
 #include <stdlib.h>
@@ -30,3 +31,5 @@
       void RemoveAt(int position);
       void Clear();
 };
+
+#endif

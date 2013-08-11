@@ -13,6 +13,6 @@ class Cap
 	public:
 	Cap(Points positionLeft1,Points positionRight1,float lenght1);
 	Cap(const Cap &obj);
-	List<Points> PointsList();
+	List<Points> PointsList() const;
 	};
 #endif

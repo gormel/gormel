@@ -29,7 +29,7 @@ namespace UILib.Controls
 		public string Text { get; set; }
 		public string[] Lines
 		{
-			get { return Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None); }
+			get { return Text.Trim().Split(new[] { Environment.NewLine, "\n", "\n\r" }, StringSplitOptions.None); }
 		}
 		public Color TextColor { get; set; }
 		public HorisontalAlligment HorisontalTextAlligment { get; set; }
@@ -56,7 +56,7 @@ namespace UILib.Controls
 						if (index++ < TopOffset)
 							continue;
 
-						yield return l;
+						yield return l.Trim();
 					} while (lineOffset < line.Length);
 				}
 			}

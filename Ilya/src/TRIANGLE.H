@@ -7,8 +7,8 @@ class Triangle
 	float height;
 	public:
 	Triangle(const Points Left1,const Points Right1,float height1);
-	Points GetLeft();
-	Points GetRight();
-	float GetHeight();
+	Points GetLeft() const;
+	Points GetRight() const;
+	float GetHeight() const;
 	}
 ;

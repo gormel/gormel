@@ -12,7 +12,7 @@ Cap::Cap(const Cap&obj)
 {
 cout<<"Cap created"<<endl;
 }
-List<Points> Cap::PointsList()
+List<Points> Cap::PointsList() const
 {
  List<Points> list;
  list.Add(trig.GetLeft());

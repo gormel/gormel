@@ -16,7 +16,7 @@ float Skull::GetHeight()
 {
 return height;
 }
-List<Points> Skull::GetPoints()
+List<Points> Skull::GetPoints() const
 {
 List<Points> list;
 list.Add(rec.GetTopLeft());

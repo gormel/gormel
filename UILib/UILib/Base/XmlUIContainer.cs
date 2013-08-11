@@ -42,18 +42,20 @@ namespace UILib.Base
 
 		private UIControl ParseControl(XElement xml, object baseControl)
 		{
-			var controlType = Assembly.GetAssembly(typeof(XmlUIContainer)).GetTypes().First(s => s.Name == xml.Name.LocalName);
+			var controlType = Assembly.GetAssembly(typeof(XmlUIContainer)).GetTypes()
+								.Concat(Assembly.GetAssembly(Controller.GetType()).GetTypes())
+								.First(s => s.Name == xml.Name.LocalName);
 			var control = Activator.CreateInstance(controlType, baseControl, GraphicsDevice);
 			foreach (var attr in xml.Attributes())
 			{
-				var property = controlType.GetProperty(attr.Name.ToString());
+				var property = controlType.GetProperty(attr.Name.LocalName);
 				if (property != null)
 				{
 					property.SetValue(control, parsers[property.PropertyType].ParseString(attr.Value), null);
 					continue;
 				}
 
-				var @event = controlType.GetEvent(attr.Name.ToString());
+				var @event = controlType.GetEvent(attr.Name.LocalName);
 				var method = Controller.GetType().GetMethod(attr.Value, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
 				if (@event != null)
 				{
@@ -68,6 +70,15 @@ namespace UILib.Base
 
 			foreach (var child in xml.Elements())
 			{
+				if (child.Name.LocalName.StartsWith(controlType.Name + "."))
+				{
+					var propertyName = child.Name.LocalName.Substring(controlType.Name.Length + 1);
+					var property = controlType.GetProperty(propertyName);
+					if (property == null)
+						throw new Exception(string.Format("No property {0} in class {1}.", propertyName, controlType.Name));
+					property.SetValue(control, parsers[property.PropertyType].ParseString(child.Value), null);
+					continue;
+				}
 				ParseControl(child, control);
 			}
 			var resultControl = (UIControl)control;

@@ -11,13 +11,13 @@ namespace UILib.Controls
 {
 	public class TextBox : Label
 	{
-		public int Cursor { get; set; }
+		public int Cursor { get { return Lines.Take(CursorRow).Sum(s => s.Length) + CursorCol; } }
 		private TimeSpan typeCooldown = TimeSpan.FromMilliseconds(100);
 		private TimeSpan typeTimeSpend = TimeSpan.Zero;
 		private Keys typeingKey = Keys.None;
 
-		private float CursorX { get; set; }
-		private float CursorY { get; set; }
+		private int CursorCol { get; set; }
+		private int CursorRow { get; set; }
 		private float CursorHeight { get { return TextFont.LineSpacing; } }
 		
 		public TextBox(UIControl baseControl, GraphicsDevice device)
@@ -50,17 +50,16 @@ namespace UILib.Controls
 					if (typeingKey == Keys.Enter)
 						add = Environment.NewLine;
 
-					Text = Text.Insert(Cursor, add);
-					Cursor += add.Length;
+					//TODO: text add logic
 				}
 			}
-			if (CursorX > Width - TextIndent)
+			if (CursorCol > Width - TextIndent)
 				LeftOffset++;
-			if (CursorX < TextIndent)
+			if (CursorCol < TextIndent)
 				LeftOffset--;
-			if (CursorY + CursorHeight > Height - TextIndent)
+			if (CursorRow + CursorHeight > Height - TextIndent)
 				TopOffset++;
-			if (CursorY < TextIndent)
+			if (CursorRow < TextIndent)
 				TopOffset--;
 			base.Update(time);
 		}

@@ -14,6 +14,6 @@ class SkullCaps
 	List<Points> GetSkull();
 	List<Points> GetPoints() const;
 	void MoveBy(float dx,float dy);
-	}
+	};
 ;
 #endif

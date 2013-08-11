@@ -8,11 +8,11 @@ Right=Right1;
 height=height1;
 }
 
-Points Triangle::GetLeft()
+Points Triangle::GetLeft() const
 {return Left;}
-Points Triangle::GetRight()
+Points Triangle::GetRight() const
 {return Right;}
-float Triangle::GetHeight()
+float Triangle::GetHeight() const
 {return height;}
 
 

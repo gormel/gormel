@@ -8,9 +8,9 @@ class Rectangle
 	Points bottomRight;
 	public:
 	Rectangle(const Points topLeft1,const Points topRight2,const Points bottomLeft1,const Points bottomRight1);
-	Points GetTopLeft();
-	Points GetTopRight();
-	Points GetBottomLeft();
-	Points GetBottomRight();
+	Points GetTopLeft() const;
+	Points GetTopRight() const;
+	Points GetBottomLeft() const;
+	Points GetBottomRight() const;
 	}
 ;

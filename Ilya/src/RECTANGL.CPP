@@ -8,12 +8,12 @@ Rectangle::Rectangle(const Points topLeft1,const Points topRight1,const Points b
  bottomLeft=bottomLeft1;
  bottomRight=bottomRight1;
 }
-Points Rectangle::GetTopLeft()
+Points Rectangle::GetTopLeft() const
 {return topLeft;}
-Points Rectangle::GetTopRight()
+Points Rectangle::GetTopRight() const
 {return topRight;}
-Points Rectangle::GetBottomLeft()
+Points Rectangle::GetBottomLeft() const
 {return bottomLeft;}
-Points Rectangle::GetBottomRight()
+Points Rectangle::GetBottomRight() const
 {return bottomRight;}
 #endif

@@ -1,6 +1,6 @@
 #ifndef _main_
 #define _main_
-#include <skullcap.h>
+#include <skullcap.cpp>
 #include <assert.h>
 #include <strstream.h>
 
@@ -156,7 +156,7 @@ void Show(istream &args)
 
 void Show(const SkullCaps &skullcap)
 {
-	List<Points> skullcapPoints = skullcap.GetPoints();
+	List<Points> skullcapPoints(skullcap.GetPoints());
 	cout << "( ";
 	for (int i = 0; i < skullcapPoints.Count() - 1; ++i)
 	{

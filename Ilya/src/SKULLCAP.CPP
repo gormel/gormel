@@ -17,26 +17,32 @@ List<Points> SkullCaps::GetCap()
 	list=cap.PointsList();
 	return list;
 	}
+
 List<Points> SkullCaps::GetSkull()
 	{
 	List<Points> list;
 	list=skull.GetPoints();
 	return list;
 	}
-List<Points> SkullCaps::GetPoints()
+
+List<Points> SkullCaps::GetPoints() const
 	{
 	List<Points> list;
-	List<Points> capPoints= cap.PointsList();
+	List<Points> capPoints(cap.PointsList());
 	int i=0;
 	for(i=0;i<capPoints.Count();i++)
 		{
 		list.Add(capPoints.Get(i));
 		}
-	List<Points> skullPoints=skull.GetPoints();
+	List<Points> skullPoints(skull.GetPoints());
 	for(i=0;i<skullPoints.Count();i++)
 		{
 		list.Add(skullPoints.Get(i));
 		}
 	return list;
 	}
+
+void SkullCaps::MoveBy(float dx,float dy)
+{
+}
 #endif
