@@ -99,9 +99,6 @@ namespace UILib.Controls
 			}
 			PrimetiveDarwHelper.DrawBox(new Vector2(X - BorderWidth / 2, Y - BorderWidth / 2),
 				new Vector2(Width + BorderWidth, Height + BorderWidth), fill, fill, 0);
-			if (Active)
-				PrimetiveDarwHelper.DrawBox(new Vector2(X, Y), new Vector2(Width, Height), Color.Transparent,
-					Color.Black, 1);
 		}
 
 		private bool Inside(float x, float y)

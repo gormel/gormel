@@ -35,6 +35,9 @@ namespace UILib.Controls
 					new Rectangle(0, 0, BackgroundImage.Width, BackgroundImage.Height), Color.White);
 				SpriteBatch.End();
 			}
+			if (Active)
+				PrimetiveDarwHelper.DrawBox(new Vector2(X, Y), new Vector2(Width, Height), Color.Transparent,
+					Color.Black, 1);
 		}
 	}
 }

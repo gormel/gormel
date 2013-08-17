@@ -22,16 +22,17 @@
     </RowItem>
 
     <RowItem Index="2" RelativeHeight="5">
-      <Label Name="label1" Margin="3" TextFont="LabelFont" HorisontalTextAlligment="Right" VerticalTextAlligment="Center"
-             AutoTranslit="true">
-        <Label.Text>
+      <TextBox Name="label1" Margin="3" TextFont="LabelFont" AutoTranslit="true">
+        <!--
+          <TextBox.Text>
           This is very long string to test multilinenimg and string autotranslit
           
           mul
           ti
           linening test
-        </Label.Text>
-      </Label>
+        </TextBox.Text>
+        -->
+      </TextBox>
     </RowItem>
   </Table>
 </Position>

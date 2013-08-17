@@ -16,6 +16,9 @@ namespace UILib.Base
 	{
 		private Dictionary<Type, BaseStringParser> parsers = new Dictionary<Type, BaseStringParser>();
 
+		SpriteBatch sb;
+		SpriteFont sf;
+
 		public XmlUIContainer(object controller, GraphicsDevice device, ContentManager content, string UIScheme)
 			: base(controller, device)
 		{
@@ -31,6 +34,9 @@ namespace UILib.Base
 			parsers[typeof(VerticalAlligment)] = new EnumStringParser<VerticalAlligment>();
 
 			parsers[typeof(Color)] = new ColorStringParser();
+
+			sb = new SpriteBatch(device);
+			sf = (SpriteFont)parsers[typeof(SpriteFont)].ParseString("DebugFont");
 
 			var files = controller.GetType().Assembly.GetManifestResourceNames();
 			var file = controller.GetType().Assembly.GetManifestResourceStream(files.First(s => s.EndsWith(UIScheme)));
@@ -87,6 +93,20 @@ namespace UILib.Base
 			Controls.Add(resultControl.Name, resultControl);
 
 			return resultControl;
+		}
+
+		public override void Draw(GameTime time)
+		{
+			base.Draw(time);
+
+			var info = ControlInfoString(BaseControl);
+			for (int i = 0; i < info.Length; i += 80)
+			{
+				info = info.Insert(i, Environment.NewLine);
+			}
+			sb.Begin();
+			sb.DrawString(sf, info, Vector2.Zero, Color.White);
+			sb.End();
 		}
 	}
 }

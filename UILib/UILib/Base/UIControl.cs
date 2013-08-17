@@ -99,8 +99,10 @@ namespace UILib.Base
 		/// </summary>
 		protected bool IsNullSize { get { return Math.Abs(Width) < float.Epsilon || Math.Abs(Height) < float.Epsilon; } }
 
+		private bool willBeActive = false;
+
 		private KeyboardState lastKeyboardState;
-		private bool shift;
+		private bool shift = false;
 
 		/// <summary>
 		/// Initializes a new UI control.
@@ -116,6 +118,7 @@ namespace UILib.Base
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
 			PrimetiveDarwHelper = new PrimetiveDrawHelper(GraphicsDevice);
 			Activable = false;
+			Active = false;
 
 			if (BaseControl != null)
 				BaseControl.Controls.Add(this);
@@ -141,12 +144,7 @@ namespace UILib.Base
 			}
 			if (canBeActivated != null)
 			{
-				if (!canBeActivated.Activable)
-				{
-					canBeActivated.ActivateNext(ActivationDirection.Down, 0, right);
-					return;
-				}
-				canBeActivated.Active = true;
+				canBeActivated.TryActivate(right);
 				return;
 			}
 			if (BaseControl != null)
@@ -154,12 +152,7 @@ namespace UILib.Base
 				BaseControl.ActivateNext(ActivationDirection.Right, BaseControl.Controls.IndexOf(this), right);
 				return;
 			}
-			if (!Activable)
-			{
-				ActivateNext(ActivationDirection.Down, 0, right);
-				return;
-			}
-			Active = true;
+			TryActivate(right);
 		}
 
 		private void Deactivate(bool down)
@@ -184,12 +177,17 @@ namespace UILib.Base
 		public void Activate()
 		{
 			Deactivate(false);
+			TryActivate(true);
+		}
+
+		private void TryActivate(bool right)
+		{
 			if (!Activable)
 			{
-				ActivateNext(ActivationDirection.Down, 0, true);
+				ActivateNext(ActivationDirection.Down, 0, right);
 				return;
 			}
-			Active = true;
+			willBeActive = true;
 		}
 
 		protected virtual void OnKeyDown(Keys key)
@@ -237,27 +235,35 @@ namespace UILib.Base
 				Controls[i].Update(time);
 			}
 
-			if (Active)
+			if (willBeActive)
 			{
-				KeyboardState keyboardState = Keyboard.GetState();
-
-				var downedKeys = from k in keyboardState.GetPressedKeys()
-								 where !lastKeyboardState.GetPressedKeys().Contains(k)
-								 select k;
-				foreach (var key in downedKeys)
-				{
-					OnKeyDown(key);
-				}
-
-				var uppedKeys = from k in lastKeyboardState.GetPressedKeys()
-								where !keyboardState.GetPressedKeys().Contains(k)
-								select k;
-				foreach (var key in uppedKeys)
-				{
-					OnKeyUp(key);
-				}
-				lastKeyboardState = keyboardState;
+				Active = true;
+				willBeActive = false;
+				return;
 			}
+
+			if (!Active)
+				return;
+			
+			KeyboardState keyboardState = Keyboard.GetState();
+			var downedKeys = from k in keyboardState.GetPressedKeys()
+								where !lastKeyboardState.GetPressedKeys().Contains(k)
+								select k;
+			var uppedKeys = from k in lastKeyboardState.GetPressedKeys()
+							where !keyboardState.GetPressedKeys().Contains(k)
+							select k;
+
+			foreach (var key in downedKeys)
+			{
+				OnKeyDown(key);
+			}
+
+			foreach (var key in uppedKeys)
+			{
+				OnKeyUp(key);
+			}
+			lastKeyboardState = keyboardState;
 		}
+		
 	}
 }

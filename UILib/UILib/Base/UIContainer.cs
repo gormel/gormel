@@ -36,6 +36,18 @@ namespace UILib.Base
 			BaseControl.Draw(time);
 		}
 
+		protected static string ControlInfoString(UIControl c)
+		{
+			var result = string.Format("{0}({1}, {2}): [ ", c.Name, c.Activable, c.Active);
+
+			foreach (var con in c.Controls)
+			{
+				result += ControlInfoString(con) + ", ";
+			}
+
+			return result + " ]";
+		}
+
 		public virtual void Update(GameTime time)
 		{
 			BaseControl.Update(time);

@@ -27,9 +27,10 @@ namespace UILib.Controls
 	{
 		public SpriteFont TextFont { get; set; }
 		public string Text { get; set; }
-		public string[] Lines
+		public IEnumerable<string> Lines
 		{
-			get { return Text.Trim().Split(new[] { Environment.NewLine, "\n", "\n\r" }, StringSplitOptions.None); }
+			get { return Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None)
+							 .Select(l => l.Trim()); }
 		}
 		public Color TextColor { get; set; }
 		public HorisontalAlligment HorisontalTextAlligment { get; set; }

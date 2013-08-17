@@ -11,8 +11,9 @@ namespace UILib.Controls
 {
 	public class TextBox : Label
 	{
-		public int Cursor { get { return Lines.Take(CursorRow).Sum(s => s.Length) + CursorCol; } }
-		private TimeSpan typeCooldown = TimeSpan.FromMilliseconds(100);
+		public int Cursor { get { return Lines.Take(CursorRow).Sum(s => s.Length + 
+			Environment.NewLine.Length) + CursorCol; } }
+		private TimeSpan typeCooldown = TimeSpan.FromMilliseconds(200);
 		private TimeSpan typeTimeSpend = TimeSpan.Zero;
 		private Keys typeingKey = Keys.None;
 
@@ -26,42 +27,63 @@ namespace UILib.Controls
 			Activable = true;
 		}
 
+		private void Type(Keys value)
+		{
+			string add = value.ToString();
+			if (value == Keys.Enter)
+				add = Environment.NewLine;
+
+			var splitted = add.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+			int cursorDy = splitted.Length - 1;
+			int cursorDx = add.Length;
+			if (splitted.Length > 1)
+				cursorDx = splitted.Last().Length - CursorCol;
+			
+			Text = Text.Insert(Cursor, add);
+			CursorCol += cursorDx;
+			CursorRow += cursorDy;
+		}
+
 		protected override void OnKeyDown(Keys key)
 		{
-			base.OnKeyDown(key);
+			//base.OnKeyDown(key);
 			typeingKey = key;
+			if (Active)
+				Type(key);
+			typeTimeSpend = TimeSpan.Zero;
 		}
 
 		protected override void OnKeyUp(Keys key)
 		{
-			base.OnKeyUp(key);
+			//base.OnKeyUp(key);
 			typeingKey = Keys.None;
 		}
 
 		public override void Update(GameTime time)
-		{//сильно не ругайте, так прикольно ^^
-			if ((typeTimeSpend += time.ElapsedGameTime) < typeCooldown) { }
-			else
+		{
+			base.Update(time);
+			if (!Active)
+				return;
+			if (typeingKey != Keys.None)
 			{
-				typeTimeSpend = TimeSpan.Zero;
-				if (typeingKey != Keys.None)
+				//сильно не ругайте, так прикольно ^^
+				if ((typeTimeSpend += time.ElapsedGameTime) < typeCooldown) { }
+				else
 				{
-					string add = typeingKey.ToString();
-					if (typeingKey == Keys.Enter)
-						add = Environment.NewLine;
-
-					//TODO: text add logic
+					typeTimeSpend = TimeSpan.Zero;
+					Type(typeingKey);
 				}
 			}
-			if (CursorCol > Width - TextIndent)
-				LeftOffset++;
-			if (CursorCol < TextIndent)
-				LeftOffset--;
-			if (CursorRow + CursorHeight > Height - TextIndent)
-				TopOffset++;
-			if (CursorRow < TextIndent)
-				TopOffset--;
-			base.Update(time);
+		}
+
+		protected override void DrawBody(GameTime time)
+		{
+			base.DrawBody(time);
+
+//			var debugData = string.Format("Col:{0}, Row:{1}, Cur:{2}", CursorCol, CursorRow, Cursor);
+//			SpriteBatch.Begin();
+//			SpriteBatch.DrawString(TextFont, debugData, Vector2.Zero, Color.White);
+//			SpriteBatch.End();
 		}
 	}
 }

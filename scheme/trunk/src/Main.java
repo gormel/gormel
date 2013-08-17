@@ -111,7 +111,7 @@ public class Main {
 	Viewer rv = new SchemeResultViewer(s);
 	
         Image image = v.getPicture();
-        BufferedImage im = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_BGR);
+        im = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_BGR);
         im.createGraphics().drawImage(image, 0, 0, null);
         
         ImageIO.write(im, "bmp", new File("file.bmp"));
@@ -128,9 +128,9 @@ public class Main {
 //        
 //        ImageIO.write(im, "bmp", new File("file.bmp"));
 	
-	Image result = rv.getPicture();
-        im = new BufferedImage(result.getWidth(null), result.getHeight(null), BufferedImage.TYPE_INT_BGR);
-        im.createGraphics().drawImage(result, 0, 0, null);
+	Image result_ = rv.getPicture();
+        im = new BufferedImage(result_.getWidth(null), result.getHeight(null), BufferedImage.TYPE_INT_BGR);
+        im.createGraphics().drawImage(result_, 0, 0, null);
         
         ImageIO.write(im, "bmp", new File("result.bmp"));
     }
