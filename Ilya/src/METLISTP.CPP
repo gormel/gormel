@@ -17,40 +17,29 @@ List<T>::List()
 }
 template<class T>
 List<T> &List<T>::operator = (const List<T> &obj)
-	{
+{
 	Clear();
 	Elem<T> *temp=obj.Tail->getNext();
 	for (int i=0;i<obj.size;i++)
 	{
 		Add(temp->getData());
-
 	}
 	return *this;
-	}
-template<class T>
-List<T> &operator=(const List<T> &obj)
-{
-Clear();
-Elem<T> *curent=odj.Head;
-int i;
-for (i=0;i<obj.size;i++)
-{
-Add(curent->getData());
-curent=curent->getNext();
 }
-}
+	
 template<class T>
 List<T>::List(const List<T> &obj)
 :size(obj.size),Head(obj.Head),Tail(obj.Tail)
 {
-Elem<T>*p=obj.Head;
-int i;
-for(i=0;i<size;i++)
-{
-Add(p->getData());
-p=p->getNext();
+	Elem<T>*p=obj.Head;
+	int i;
+	for(i=0;i<size;i++)
+	{
+		Add(p->getData());
+		p=p->getNext();
+	}
 }
-}
+
 template<class T>
 int List<T>::ListNul()
 {int a;
@@ -60,6 +49,7 @@ if (Head==0)
 	}
 return(a);
 }
+
 template<class T>
 List<T>::~List()
  {
@@ -80,40 +70,44 @@ template<class T>
 void List<T>::Add(const T &elem)
 {
 //cout << "added: " << elem << endl;
- size++;
- Elem<T> *temp=new Elem<T>(elem);
-if (Head!=0)
- {
-  Tail->setNext(temp);
-  Tail=temp;
-   }
-else Head=Tail=temp;
-temp->setNext(Head);
+	size++;
+	Elem<T> *temp=new Elem<T>(elem);
+	if (Head!=0)
+	{
+		Tail->setNext(temp);
+		Tail=temp;
+	}
+	else Head=Tail=temp;
+	temp->setNext(Head);
 }
 template <class T>
 T &List<T>::Get(int position)
-	{
+{
+	cout << "  debug: List<T>::Get(" << position << "): ";
 	Elem<T> *p=Tail->getNext();
 	for (int i=0;i<position;i++)
-	p=p->getNext();
-	return p->getData();
+	{
+		p=p->getNext();
 	}
+	cout << endl;
+	return p->getData();
+}
 
 template <class T>
 void List<T>::RemoveAt(int position)
-	{
+{
 	Elem<T> *p=Tail;
 	for(int i=0;i<position;i++)
-		{
+	{
 		p=p->getNext();
-		}
+	}
 	Elem<T> *deleting=p->getNext();
 	p->setNext(deleting->getNext());
 	if (deleting==Tail)
 		Tail=p;
 	delete deleting;
 	size--;
-	}
+}
 
 // template <class T>
 //void List<T>::Remove(const T &elem){
@@ -148,7 +142,7 @@ void List<T>::RemoveAt(int position)
 template<class T>
 T &List<T>::operator[](int index)
 {
-  ///	cout << "list[] call!!!" << endl;
+  //	cout << "list[] call!!!" << endl;
 	int i;
 	assert(index > -1 && index < size);
 	Elem<T> *p = Head;
@@ -161,29 +155,19 @@ T &List<T>::operator[](int index)
 }
 template<class T>
 void List<T>::Clear()
-	{
-	Elem<T> *deleting=Head;
+{
 	int i;
 	for(i=0;i<size;i++)
-		{
+	{
+		Elem<T> *deleting=Head;
 		Head=Head->getNext();
 		delete deleting;
-		}
+	}
 	Tail=0;
 	size=0;
-	}
+}
 
 #endif
-
-
- //int comp(const Point &p)
- //{
-//	return p.X > 5 && p.Y < 100500;
-// }
-
-// List<Point> l;
-// int in = l.Find(comp);
-// l[in] = ....;
 
 
 

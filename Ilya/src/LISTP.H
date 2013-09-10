@@ -20,7 +20,6 @@
       List<T> &operator=(const List<T> &obj);
      ~List();
       void Add(const T &elem);
-      void Show();
       int Count();
       T &Get(int position);
 	  T &operator[](int index);

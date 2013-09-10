@@ -6,8 +6,6 @@ class Cap
 	{
 	private:
 	Triangle trig;
-	Points positionLeft;
-        Points positionRight;
 	float height;
 	float lenght;
 	public:

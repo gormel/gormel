@@ -6,14 +6,14 @@ class Skull
 	{
 	private:
 	Rectangle rec;
-	Points position;
 	float height;
-        float width;
+	float width;
 	public:
 	Skull(Points position1,float height1,float width1);
 	Skull(const Skull &b);
 	List<Points> GetPoints() const;
 	float GetHeight();
+	float GetWidth();
 	void MoveBy(float dx, float dy);
 	};
 #endif
