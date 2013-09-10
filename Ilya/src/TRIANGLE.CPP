@@ -1,5 +1,5 @@
-#ifndef _triangle_
-#define _triangle_
+#ifndef _qwetriangle_
+#define _qwetriangle_
 #include <triangle.h>
 Triangle::Triangle(const Points Left1,const Points Right1,float height1)
 {
@@ -14,6 +14,10 @@ Points Triangle::GetRight() const
 {return Right;}
 float Triangle::GetHeight() const
 {return height;}
-
+void Triangle::MoveBy(float dx,float dy)
+{
+Left=Left.MoveBy(dx,dy);
+Right=Right.MoveBy(dx,dy);
+}
 
 #endif

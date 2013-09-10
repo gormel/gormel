@@ -10,5 +10,6 @@ class Triangle
 	Points GetLeft() const;
 	Points GetRight() const;
 	float GetHeight() const;
+	void MoveBy(float dx,float dy);
 	}
 ;

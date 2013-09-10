@@ -1,5 +1,5 @@
-#ifndef _skull_
-#define _skull_
+#ifndef _qwskull_
+#define _qwskull_
 #include <skull.h>
 #include <iostream.h>
 Skull::Skull(Points position1,float height1,float width1)

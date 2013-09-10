@@ -1,5 +1,5 @@
-#ifndef _cap_
-#define _cap_
+#ifndef _qwcap_
+#define _qwcap_
 #include <iostream.h>
 #include <cap.h>
 Cap::Cap(Points positionLeft1,Points positionRight1,float lenght1)
@@ -7,6 +7,10 @@ Cap::Cap(Points positionLeft1,Points positionRight1,float lenght1)
 {
 cout<<"Cap created"<<endl;
 }
+void Cap::MoveBy(float dx,float dy)
+	{
+        trig.MoveBy(dx,dy);
+	}
 Cap::Cap(const Cap&obj)
 :trig(obj.trig)
 {
