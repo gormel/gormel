@@ -19,7 +19,7 @@ template<class T>
 List<T> &List<T>::operator = (const List<T> &obj)
 	{
 	Clear();
-	List<T> *temp=obj.Tail->getNext();
+	Elem<T> *temp=obj.Tail->getNext();
 	for (int i=0;i<obj.size;i++)
 	{
 		Add(temp->getData());

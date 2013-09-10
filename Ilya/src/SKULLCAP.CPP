@@ -44,5 +44,7 @@ List<Points> SkullCaps::GetPoints() const
 
 void SkullCaps::MoveBy(float dx,float dy)
 {
+	skull.MoveBy(dx, dy);
+	cap.MoveBy(dx, dy);
 }
 #endif

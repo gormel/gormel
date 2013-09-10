@@ -47,7 +47,6 @@ int ProcessCommand(int command, istream &args)
 		{
 			case HELP:
 				Help();
-				return 1;
 			case EXIT:
 				return 0;
 			case ADD:
@@ -64,7 +63,6 @@ int ProcessCommand(int command, istream &args)
 				break;
 			default:
 				cout << "Wrong command, try 0." << endl;
-				return 1;
 		}
 	}
 	cout << "Command done." << endl;
@@ -169,10 +167,10 @@ void Help()
 {
 	cout << "0 - Show this message." << endl
 		 << "1 - Exit program." << endl
-		 << "2 - Add new caps in list (pos, w1, w2, h1, h2; w1 > w2)." << endl
-		 << "3 - Remove caps by indices (-1 to clear)." << endl
-		 << "4 - Move caps by indices (-1 to move all)." << endl
-		 << "5 - Show caps by indices (-1 to show all)." << endl;
+		 << "2 - Add new cap in list (pos w h)." << endl
+		 << "3 - Remove caps by index (-1 to clear)." << endl
+		 << "4 - Move caps by index (-1 to move all) (index shift)." << endl
+		 << "5 - Show caps by index (-1 to show all)." << endl;
 }
 
 template<class T>

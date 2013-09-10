@@ -14,5 +14,6 @@ class Skull
 	Skull(const Skull &b);
 	List<Points> GetPoints() const;
 	float GetHeight();
+	void MoveBy(float dx, float dy);
 	};
 #endif

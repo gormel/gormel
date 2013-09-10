@@ -12,5 +12,6 @@ class Rectangle
 	Points GetTopRight() const;
 	Points GetBottomLeft() const;
 	Points GetBottomRight() const;
+	void MoveBy(float dx,float dy);
 	}
 ;
