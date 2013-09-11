@@ -6,6 +6,7 @@
 #include <iostream.h>
 #include <strstream.h>
 #include <assert.h>
+#include <conio.h>
 #include "slist.h"
 #include "cap.h"
 #include "point.h"
@@ -31,6 +32,9 @@ SingleList<Cap> caps;
 
 int main()
 {
+	clrscr();
+	cout << "Caps manipulator." << endl
+		 << "created by Tyulin Roman(c)" << endl;
 	Help();
 	while (1)
 	{
