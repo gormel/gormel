@@ -1,12 +1,12 @@
-#include "traps.h"
+#include "trap.h"
 
 Trapezium::Trapezium(Point pos, double height, double down, double top)
-	: lu(pos.MoveBy(down / 2 - top / 2, height)), ru(pos.MoveBy(down / 2 + top / 2, height)), 
-	  ld(pos), rd(pos.MoveBy(down, 0))
+	: lu(pos.MoveBy(Point(down / 2 - top / 2, height))), ru(pos.MoveBy(Point(down / 2 + top / 2, height))),
+	  ld(pos), rd(pos.MoveBy(Point(down, 0)))
 {
 }
 
-void Showcase::MoveBy(Point dxdy)
+void Trapezium::MoveBy(Point dxdy)
 {
 	lu.MoveBy(dxdy);
 	ru.MoveBy(dxdy);
@@ -14,19 +14,19 @@ void Showcase::MoveBy(Point dxdy)
 	rd.MoveBy(dxdy);
 }
 
-Point Showcase::GetLeftUp()
+Point Trapezium::GetLeftUp() const
 {
 	return lu;
 }
-Point Showcase::GetRightUp()
+Point Trapezium::GetRightUp() const
 {
 	return ru;
 }
-Point Showcase::GetLeftDown()
+Point Trapezium::GetLeftDown() const
 {
 	return ld;
 }
-Point Showcase::GetRightDown()
+Point Trapezium::GetRightDown() const
 {
 	return rd;
 }

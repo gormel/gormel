@@ -10,6 +10,7 @@
 #include "slist.h"
 #include "cap.h"
 #include "point.h"
+#include "showview.h"
 
 const int HELP = 0;
 const int EXIT = 1;
@@ -22,19 +23,22 @@ int ProcessCommand(int command, istream &args);
 void Add(istream &args);
 void Remove(istream &args);
 void Move(istream &args);
+void Move(Goodcap &cap, Point dxdy);
 void Show(istream &args);
 void Show(const Cap &cap);
 void Help();
+void GenerateShowcaseView();
 template<class T>
 T Read(istream &is, T *fake);
 
-SingleList<Cap> caps;
+ShowcaseView *view;
 
 int main()
 {
 	clrscr();
 	cout << "Caps manipulator." << endl
 		 << "created by Tyulin Roman(c)" << endl;
+	GenerateShowcaseView();
 	Help();
 	while (1)
 	{
@@ -101,8 +105,13 @@ void Add(istream &args)
 	if (args.eof())
 		return;
 
-	Cap cap(p, w1, w2, h1, h2);
-	caps.Add(cap);
+	Goodcap cap(p, w1, w2, h1, h2);
+	if (!view->Validate(cap))
+	{
+		cout << "Wrong arguments. Cap is out of range." << endl;
+		return;
+	}
+	view->Add(cap);
 }
 
 void Remove(istream &args)
@@ -114,11 +123,11 @@ void Remove(istream &args)
 
 	if (index == -1)
 	{
-		caps.Clear();
+		view->Clear();
 		return;
 	}
-	assert(index >= 0 && index < caps.Count());
-	caps.RemoveAt(index);
+	assert(index >= 0 && index < view->Count());
+	view->RemoveAt(index);
 }
 
 void Move(istream &args)//{10, 10} 10 5 2 5 {10, 10} 10 5 2 5 {11, 12} 10 6 2 5
@@ -135,15 +144,27 @@ void Move(istream &args)//{10, 10} 10 5 2 5 {10, 10} 10 5 2 5 {11, 12} 10 6 2 5
 
 	if (index == -1)
 	{
-		for (int i = 0; i < caps.Count(); ++i)
+		for (int i = 0; i < view->Count(); ++i)
 		{
-			caps.Get(i).MoveBy(dxdy);
+			Move(view->Get(i), dxdy);
 		}
 		return;
 	}
 
-	assert(index >=0 && index < caps.Count());
-	caps.Get(index).MoveBy(dxdy);
+	assert(index >=0 && index < view->Count());
+	Move(view->Get(index), dxdy);
+}
+
+void Move(Goodcap &cap, Point dxdy)
+{
+	Goodcap copy(cap);
+	copy.MoveBy(dxdy);
+	if (!view->Validate(copy))
+	{
+		cout << "Wrong parameters. Cap is out of range." << endl;
+		return;
+	}
+	cap.MoveBy(dxdy);
 }
 
 void Show(istream &args)
@@ -155,18 +176,18 @@ void Show(istream &args)
 
 	if (index == -1)
 	{
-		for (int i = 0; i < caps.Count(); ++i)
+		for (int i = 0; i < view->Count(); ++i)
 		{
 			cout << "[" << i << "]";
-			Show(caps.Get(i));
+			Show(view->Get(i));
 			cout << endl;
 		}
 		return;
 	}
 
-	assert(index >= 0 && index < caps.Count());
+	assert(index >= 0 && index < view->Count());
 	cout << "[" << index << "]";
-	Show(caps.Get(index));
+	Show(view->Get(index));
 	cout << endl;
 }
 
@@ -191,10 +212,24 @@ void Help()
 		 << "5 - Show caps by indices (-1 to show all)." << endl;
 }
 
+void GenerateShowcaseView()
+{
+	cout << "input showcase view parameters: (position, height, down side, top side)" << endl;
+	Point pos;
+	cin >> pos;
+	double h;
+	cin >> h;
+	double d;
+	cin >> d;
+	double t;
+	cin >> t;
+	view = new ShowcaseView(pos, h, d, t);
+}
+
 template<class T>
 T Read(istream &is, T *fake)
 {
-	fake = fake;
+	fake = fake; //не стирать, руки оторву!
 	//assert(!is.eof());
 	T var;
 	is >> var;

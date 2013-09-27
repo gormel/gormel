@@ -13,10 +13,10 @@ private:
 public:
 	Rectangle(Point lu, double length, double height);
 	void MoveBy(Point dxdy);
-	Point GetLeftUp();
-	Point GetRightUp();
-	Point GetLeftDown();
-	Point GetRightDown();
+	Point GetLeftUp() const;
+	Point GetRightUp() const;
+	Point GetLeftDown() const;
+	Point GetRightDown() const;
 };
 
 #endif
