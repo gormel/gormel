@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:my="clr-namespace:MTGCounter"
              mc:Ignorable="d" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
     <Grid>
         <Grid.RowDefinitions>
@@ -16,16 +17,22 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Button Grid.Row="0" Grid.Column="0" Click="Button_Click">+</Button>
-            <Button Grid.Row="1" Grid.Column="0" Click="Button_Click_1">-</Button>
+            <Button Style="{StaticResource incButtonStyle}" Grid.Row="0" Grid.Column="0" Click="Button_Click_2">+5</Button>
+            <Button Style="{StaticResource incButtonStyle}" Grid.Row="1" Grid.Column="0" Click="Button_Click">+1</Button>
+            <Button Style="{StaticResource incButtonStyle}" Grid.Row="2" Grid.Column="0" Click="Button_Click_1" >-1</Button>
+            <Button Style="{StaticResource incButtonStyle}" Grid.Row="3" Grid.Column="0" Click="Button_Click_3">-5</Button>
         </Grid>
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Life}" FontSize="80"
+        <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="1" >
+            <TextBlock Text="{Binding Life}" Foreground="White"
                    MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"
                    MouseRightButtonDown="TextBlock_MouseRightButtonDown"
-                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        </Viewbox>
     </Grid>
 </UserControl>

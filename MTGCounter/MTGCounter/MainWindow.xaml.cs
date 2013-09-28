@@ -23,10 +23,10 @@ namespace MTGCounter
 		MainController controller;
 
 		private void InitController()
-		{
-			controller = new MainController();
-			controller.Counters.CollectionChanged += Counters_CollectionChanged;
-			UpdateCounterSize();
+        {
+            controller = new MainController();
+            controller.Counters.CollectionChanged += Counters_CollectionChanged;
+            UpdateCounterSize();
 		}
 
 		void Counters_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -34,10 +34,11 @@ namespace MTGCounter
 			UpdateCounterSize();
 		}
 
-
-
 		private void UpdateCounterSize()
 		{
+            if (controller == null)
+                return;
+
 			foreach (var counterController in controller.Counters)
 			{
 				counterController.Height = rowWithData.ActualHeight / 
@@ -68,5 +69,10 @@ namespace MTGCounter
 		{
 			controller.Counters.Add(new PlayerCounterController());
 		}
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            UpdateCounterSize();
+        }
 	}
 }
