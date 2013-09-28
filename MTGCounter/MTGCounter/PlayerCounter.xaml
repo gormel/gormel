@@ -7,7 +7,8 @@
              mc:Ignorable="d" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition />
+            <RowDefinition Height="7*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -34,5 +35,23 @@
                    MouseRightButtonDown="TextBlock_MouseRightButtonDown"
                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Viewbox>
+        <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="0">
+            <Image Source="poison.png" />
+        </Viewbox>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Click="Button_Click_4" Grid.Row="0" Grid.Column="0" Style="{StaticResource incButtonStyle}">+1</Button>
+            <Button Click="Button_Click_5" Grid.Row="0" Grid.Column="1" Style="{StaticResource incButtonStyle}">-1</Button>
+            <Viewbox Grid.Row="0" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TextBlock Text="{Binding Poison}" Foreground="White"/>
+            </Viewbox>
+        </Grid>
     </Grid>
 </UserControl>

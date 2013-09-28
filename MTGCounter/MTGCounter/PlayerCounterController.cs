@@ -40,6 +40,17 @@ namespace MTGCounter
 				FirePropertyChange("Height");
 			}
 		}
+
+        private int poison;
+        public int Poison
+        {
+            get { return poison; }
+            set
+            {
+                poison = value;
+                FirePropertyChange("Poison");
+            }
+        }
 		public PlayerCounterController()
 		{
 			Life = 20;

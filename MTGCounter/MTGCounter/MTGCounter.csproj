@@ -108,7 +108,16 @@
     <Resource Include="background.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="poison.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="icon_restore.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="chpok.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

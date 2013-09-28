@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mtgns="clr-namespace:MTGCounter"
         Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded"
-        SizeChanged="Window_SizeChanged">
+        SizeChanged="Window_SizeChanged" KeyDown="Window_KeyDown"
+        WindowStyle="None" WindowState="Maximized">
     <Window.Resources>
         <mtgns:PlayerCounterConverter x:Key="converter">
         </mtgns:PlayerCounterConverter>
@@ -43,9 +44,11 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Button Style="{StaticResource incButtonStyle}" Grid.Row="0" Grid.Column="0" Click="Button_Click_1">+</Button>
             <Button Style="{StaticResource restoreButtonStyle}" Grid.Row="0" Grid.Column="1" Click="Button_Click">Restore</Button>
+            <Button Style="{StaticResource restoreButtonStyle}" Grid.Row="0" Grid.Column="2" Click="Button_Click_2" Name="Exit"/>
         </Grid>
     </Grid>
 </Window>

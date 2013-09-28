@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -33,17 +35,17 @@ namespace MTGCounter
 
 		private void Button_Click_1(object sender, RoutedEventArgs e)
 		{
-			Controller.Life--;
+            Controller.Life--;
 		}
 
 		private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			Controller.Life--;
+            Controller.Life--;
 		}
 
 		private void TextBlock_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			Controller.Life++;
+            Controller.Life++;
 		}
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -54,6 +56,16 @@ namespace MTGCounter
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             Controller.Life -= 5;
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            Controller.Poison++;
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            Controller.Poison--;
         }
 	}
 }
