@@ -69,6 +69,9 @@ int ProcessCommand(int command, istream &args)
 			case ADD:
 				Add(args);
 				break;
+			case ADD_:
+				AddSticker(args);
+				break;
 			case REMOVE:
 				Remove(args);
 				break;
