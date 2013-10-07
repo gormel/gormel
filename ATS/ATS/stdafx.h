@@ -35,10 +35,12 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
 #include "Call.h"
 #include "Phone.h"
 #include "Phone1.h"
 #include "Phone2.h"
+#include "Phone3.h"
 #include "Station.h"
 
 
