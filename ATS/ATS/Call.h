@@ -59,6 +59,12 @@ public:
 		date = value;
 	}
 
+	std::wstring GetInfoString()
+	{
+		std::wstring result;
+		result += std::to_wstring(call.GetCost());
+	}
+
 	Phone GetContainer() const;
 };
 
