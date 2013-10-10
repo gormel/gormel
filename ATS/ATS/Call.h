@@ -1,9 +1,10 @@
 #ifndef my_call
 #define my_call
 
-class Phone;
+class Station;
 
 #include "stdafx.h"
+#include "Phone.h"
 
 class Call
 {
@@ -18,7 +19,7 @@ private:
 		container = value;
 	}
 public:
-	friend class Phone;
+	friend class Station;
 
 	Call()
 	{
@@ -48,6 +49,11 @@ public:
 	{
 		return date;
 	}
+
+	void SetDate(const CTime &value)
+	{
+		date = value;
+	}
 	
 	std::wstring GetDateString() const
 	{
@@ -59,13 +65,9 @@ public:
 		date = value;
 	}
 
-	std::wstring GetInfoString()
-	{
-		std::wstring result;
-		result += std::to_wstring(call.GetCost());
-	}
+	std::vector<std::wstring> GetInfoStrings();
 
-	Phone GetContainer() const;
+	Phone *GetContainer() const;
 };
 
 #endif

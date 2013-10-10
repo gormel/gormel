@@ -1,24 +1,71 @@
-#ifndef my_station
+﻿#ifndef my_station
 #define my_station
 
 #include "stdafx.h"
-
+#include "Call.h"
+#include "Phone.h"
+#include "Phone1.h"
+#include "Phone2.h"
+#include "Phone3.h"
+    
 class Station
 {
 private:
 	std::vector<Phone *> phones;
+	std::vector<Call *> calls;
 
 	void Initialize()
 	{
-		for (int i = 0; i < 8; i++)
+		std::ifstream ifs(L"phones.txt");
+		while (!ifs.eof())
 		{
-			phones.push_back(new Phone3());
+			int _class;
+			std::string phone;
+			std::string family;
+
+			std::string cl;
+			std::getline(ifs, cl);
+			if (ifs.eof())
+				break;
+			std::getline(ifs, phone);
+			if (ifs.eof())
+				break;
+			std::getline(ifs, family);
+			if (ifs.eof())
+				break;
+			_class = std::stoi(cl);
+
+			Phone *p;
+			switch (_class)
+			{
+			case 1:
+				p = new Phone1();
+				p->SetNumber(stows(phone));
+				p->SetFamily(stows(family));
+				break;
+			case 2:
+				p = new Phone2();
+				p->SetNumber(stows(phone));
+				p->SetFamily(stows(family));
+				break;
+			case 3:
+				p = new Phone3();
+				p->SetNumber(stows(phone));
+				p->SetFamily(stows(family));
+				break;
+			default:
+				break;
+			}
+			phones.push_back(p);
 		}
-		for (int i = 0; i < 4; i++)
-		{
-			phones.push_back(new Phone2());
-			phones.push_back(new Phone1());
-		}
+	}
+
+	std::wstring stows(std::string value)
+	{
+		int bufferSize = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, value.c_str(), -1, nullptr, 0);
+		wchar_t *arr = new wchar_t[bufferSize];
+		MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, value.c_str(), -1, arr, bufferSize);
+		return arr;
 	}
 
 	bool ContainsKeyword(const Call &call, const std::wstring &word)
@@ -29,11 +76,11 @@ private:
 			return true;
 		if (call.GetDateString().find(word, 0) != std::wstring::npos)
 			return true;
-		if (std::to_wstring(call.GetContainer().GetCategory()).find(word, 0) != std::wstring::npos)
+		if (std::to_wstring(call.GetContainer()->GetCategory()).find(word, 0) != std::wstring::npos)
 			return true;
-		if (call.GetContainer().GetFamily().find(word, 0) != std::wstring::npos)
+		if (call.GetContainer()->GetFamily().find(word, 0) != std::wstring::npos)
 			return true;
-		if (call.GetContainer().GetNumber().find(word, 0) != std::wstring::npos)
+		if (call.GetContainer()->GetNumber().find(word, 0) != std::wstring::npos)
 			return true;
 		return false;
 	}
@@ -51,9 +98,9 @@ public:
 		}
 	}
 
-	Phone *GetPhone(int index)
+	std::vector<Phone *> GetPhones()
 	{
-		return phones.at(index);
+		return phones;
 	}
 
 	std::vector<Phone *> GetPhonesByCaegory(int category)
@@ -67,26 +114,29 @@ public:
 		return result;
 	}
 
-	std::vector<Call> GetAllCalls()
+	std::vector<Call *> GetCalls()
 	{
-		std::vector<Call> result;
-		for (auto p : phones)
-		{
-			for (auto c : p->GetCalls())
-			{
-				result.push_back(c);
-			}
-		}
-		std::sort(result.begin(), result.end(), [&](const Call &a, const Call &b) { return a.GetDate() < b.GetDate(); });
-		return result;
+		return calls;
 	}
 
-	std::vector<Call> FindByKeyword(const std::wstring &value)
+	void AddCall(Phone *p, Call *call)
 	{
-		std::vector<Call> result;
-		for (auto c : GetAllCalls())
+		call->SetContainer(p);
+		calls.push_back(call);
+		std::sort(calls.begin(), calls.end(), [&](const Call *a, const Call *b){ return a->GetDate() < b->GetDate(); });
+	}
+
+	void RemoveCall(int index)
+	{
+		calls.erase(calls.begin() + index);
+	}
+
+	std::vector<Call *> FindByKeyword(const std::wstring &value)
+	{
+		std::vector<Call *> result;
+		for (auto c : GetCalls())
 		{
-			if (ContainsKeyword(c, value))
+			if (ContainsKeyword(*c, value))
 				result.push_back(c);
 		}
 		return result;
@@ -94,3 +144,4 @@ public:
 };
 
 #endif
+

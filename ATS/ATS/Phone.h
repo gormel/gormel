@@ -1,14 +1,11 @@
 #ifndef my_phone
 #define my_phone
 
-class Call;
-
 #include "stdafx.h"
 
 class Phone
 {
 private:
-	std::vector<Call> calls;
 	std::wstring number;
 	std::wstring family;
 	int category;
@@ -23,11 +20,6 @@ public:
 	int GetCategory()
 	{
 		return category;
-	}
-
-	void SetCategory(int value)
-	{
-		category = value;
 	}
 
 	std::wstring GetNumber()
@@ -48,17 +40,6 @@ public:
 	void SetFamily(const std::wstring &value)
 	{
 		family = value;
-	}
-
-	std::vector<Call> GetCalls()
-	{
-		return calls;
-	}
-
-	void AddCall(Call &value)
-	{
-		calls.push_back(value);
-		value.SetContainer(this);
 	}
 };
 

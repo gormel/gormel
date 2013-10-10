@@ -6,6 +6,8 @@
 #include "ATS.h"
 #include "ATSDlg.h"
 #include "afxdialogex.h"
+#include "ReportDlg.h"
+#include "StatisticDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -63,6 +65,9 @@ BEGIN_MESSAGE_MAP(CATSDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CATSDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CATSDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &CATSDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &CATSDlg::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -156,4 +161,25 @@ HCURSOR CATSDlg::OnQueryDragIcon()
 void CATSDlg::OnBnClickedButton1()
 {
 	this->EndDialog(0);
+}
+
+
+void CATSDlg::OnBnClickedButton2()
+{
+	EditDlg edit(&station, this);
+	edit.DoModal();
+}
+
+
+void CATSDlg::OnBnClickedButton3()
+{
+	CReportDlg dlg(&station, this);
+	dlg.DoModal();
+}
+
+
+void CATSDlg::OnBnClickedButton4()
+{
+	CStatisticDlg dlg(&station, this);
+	dlg.DoModal();
 }
