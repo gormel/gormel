@@ -8,6 +8,7 @@
 #include "afxdialogex.h"
 #include "ReportDlg.h"
 #include "StatisticDlg.h"
+#include "DiagramDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -68,6 +69,7 @@ BEGIN_MESSAGE_MAP(CATSDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &CATSDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &CATSDlg::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &CATSDlg::OnBnClickedButton4)
+	ON_BN_CLICKED(IDC_BUTTON5, &CATSDlg::OnBnClickedButton5)
 END_MESSAGE_MAP()
 
 
@@ -181,5 +183,12 @@ void CATSDlg::OnBnClickedButton3()
 void CATSDlg::OnBnClickedButton4()
 {
 	CStatisticDlg dlg(&station, this);
+	dlg.DoModal();
+}
+
+
+void CATSDlg::OnBnClickedButton5()
+{
+	CDiagramDlg dlg(&station, this);
 	dlg.DoModal();
 }

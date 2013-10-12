@@ -106,6 +106,7 @@
     <ClInclude Include="ATS.h" />
     <ClInclude Include="ATSDlg.h" />
     <ClInclude Include="Call.h" />
+    <ClInclude Include="DiagramDlg.h" />
     <ClInclude Include="EditDlg.h" />
     <ClInclude Include="Phone.h" />
     <ClInclude Include="Phone1.h" />
@@ -123,6 +124,7 @@
     <ClCompile Include="ATS.cpp" />
     <ClCompile Include="ATSDlg.cpp" />
     <ClCompile Include="Call.cpp" />
+    <ClCompile Include="DiagramDlg.cpp" />
     <ClCompile Include="EditDlg.cpp" />
     <ClCompile Include="ReportDlg.cpp" />
     <ClCompile Include="StatisticDlg.cpp" />

@@ -7,7 +7,7 @@
 #include "Phone1.h"
 #include "Phone2.h"
 #include "Phone3.h"
-    
+	
 class Station
 {
 private:
@@ -106,7 +106,7 @@ public:
 	std::vector<Phone *> GetPhonesByCaegory(int category)
 	{
 		std::vector<Phone *> result;
-		for (int i = 0; i < phones.size(); i++)
+		for (size_t i = 0; i < phones.size(); i++)
 		{
 			if (phones.at(i)->GetCategory() == category)
 				result.push_back(phones.at(i));

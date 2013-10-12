@@ -64,6 +64,9 @@
     <ClInclude Include="StatisticDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DiagramDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ATS.cpp">
@@ -88,6 +91,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StatisticDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DiagramDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
