@@ -8,10 +8,16 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Tyulen on 11.02.14.
- */
 public class Server {
+
+    private static Server inst = null;
+    public static Server getInstance() {
+        if (inst == null) {
+            inst = new Server();
+        }
+        return inst;
+    }
+
     private ServerSocket serverSocket;
     private Thread serverThread;
     private List<Client> clients = new ArrayList<Client>();
@@ -52,8 +58,8 @@ public class Server {
                         try {
                             Socket client = serverSocket.accept();
                             Client c = new Client(client, Server.this);
-                            c.start();
                             clients.add(c);
+                            c.start();
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
