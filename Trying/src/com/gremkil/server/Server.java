@@ -41,10 +41,11 @@ public class Server {
 
         @Override
         public void run() {
+            throw new UnsupportedOperationException();
         }
 
         public void send() {
-
+            throw new UnsupportedOperationException();
         }
     }
 
@@ -72,7 +73,7 @@ public class Server {
     }
 
     private void onPackageRecived(Client c) {
-
+        throw new UnsupportedOperationException();
     }
 
     public void stop() {

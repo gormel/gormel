@@ -14,10 +14,10 @@ public class TypeConverter {
         ByteBuffer buffer = ByteBuffer.wrap(data);
         int packageId = buffer.getInt();
 
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     public byte[] getData(Object obj) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }

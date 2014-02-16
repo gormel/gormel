@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="ff88840b-1226-4437-bd6c-46eec929e579" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/gremkil/server/packages/PackageStorage.java" />
-      <change type="MOVED" beforePath="C:\Users\Tyulen\workspace\svn\Trying\src\com\gremkil\server\packages\PackageConverter.java" afterPath="$PROJECT_DIR$/src/com/gremkil/server/packages/TypeConverter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/gremkil/trying/MainActivity.java" afterPath="$PROJECT_DIR$/src/com/gremkil/trying/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/gremkil/server/packages/Package.java" afterPath="$PROJECT_DIR$/src/com/gremkil/server/packages/Package.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/gremkil/trying/ReflectionHelper.java" afterPath="$PROJECT_DIR$/src/com/gremkil/trying/ReflectionHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/gremkil/trying/ServerCommunicator.java" afterPath="$PROJECT_DIR$/src/com/gremkil/trying/ServerCommunicator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/gremkil/server/Server.java" afterPath="$PROJECT_DIR$/src/com/gremkil/server/Server.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/gremkil/server/packages/TypeConverter.java" afterPath="$PROJECT_DIR$/src/com/gremkil/server/packages/TypeConverter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Trying.iws" />
@@ -139,19 +134,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Server.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Server.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/gremkil/server/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="27" selection-start="195" selection-end="195" vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="1479">
-              <folding />
+            <state line="75" column="50" selection-start="2250" selection-end="2250" vertical-scroll-proportion="1.8731809" vertical-offset="323" max-vertical-offset="1445">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Package.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Package.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/gremkil/server/packages/Package.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="44" column="9" selection-start="1351" selection-end="1351" vertical-scroll-proportion="0.64656967" vertical-offset="437" max-vertical-offset="969">
+            <state line="47" column="5" selection-start="1402" selection-end="1402" vertical-scroll-proportion="0.0" vertical-offset="437" max-vertical-offset="969">
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#516#523#0" expanded="true" />
@@ -166,7 +163,7 @@
       <file leaf-file-name="TypeConverter.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/gremkil/server/packages/TypeConverter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="26" selection-start="93" selection-end="93" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
+            <state line="20" column="50" selection-start="574" selection-end="574" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
               <folding />
             </state>
           </provider>
@@ -192,14 +189,14 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/src/com/gremkil/trying/Server.java" />
-        <option value="$PROJECT_DIR$/src/com/gremkil/server/Server.java" />
         <option value="$PROJECT_DIR$/src/com/gremkil/trying/ServerCommunicator.java" />
         <option value="$PROJECT_DIR$/src/com/gremkil/trying/ReflectionHelper.java" />
         <option value="$PROJECT_DIR$/src/com/gremkil/server/packages/PackageStorage.java" />
         <option value="$PROJECT_DIR$/src/com/gremkil/trying/MainActivity.java" />
         <option value="$PROJECT_DIR$/src/com/gremkil/server/packages/PackageConverter.java" />
-        <option value="$PROJECT_DIR$/src/com/gremkil/server/packages/TypeConverter.java" />
         <option value="$PROJECT_DIR$/src/com/gremkil/server/packages/Package.java" />
+        <option value="$PROJECT_DIR$/src/com/gremkil/server/packages/TypeConverter.java" />
+        <option value="$PROJECT_DIR$/src/com/gremkil/server/Server.java" />
       </list>
     </option>
   </component>
@@ -775,6 +772,11 @@
       <created>1392097632611</created>
       <updated>1392097632611</updated>
     </task>
+    <task id="LOCAL-00001">
+      <created>1392587195984</created>
+      <updated>1392587195984</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -863,7 +865,9 @@
     <entry file="file://$PROJECT_DIR$/src/com/gremkil/server/Server.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="7" column="27" selection-start="195" selection-end="195" vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="1479">
-          <folding />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -904,7 +908,9 @@
     <entry file="file://$PROJECT_DIR$/src/com/gremkil/server/Server.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="7" column="27" selection-start="195" selection-end="195" vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="1479">
-          <folding />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -938,13 +944,6 @@
     <entry file="file://$PROJECT_DIR$/gen/com/gremkil/trying/Manifest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="19" selection-start="176" selection-end="176" vertical-scroll-proportion="0.103785105" vertical-offset="0" max-vertical-offset="819" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/gremkil/server/Server.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="27" selection-start="195" selection-end="195" vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="1377">
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/gremkil/trying/ServerCommunicator.java">
@@ -995,20 +994,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/gremkil/server/packages/TypeConverter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="26" selection-start="93" selection-end="93" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
+        <state line="20" column="50" selection-start="574" selection-end="574" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/gremkil/server/packages/Package.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="9" selection-start="1351" selection-end="1351" vertical-scroll-proportion="0.64656967" vertical-offset="437" max-vertical-offset="969">
+        <state line="47" column="5" selection-start="1402" selection-end="1402" vertical-scroll-proportion="0.0" vertical-offset="437" max-vertical-offset="969">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#516#523#0" expanded="true" />
             <element signature="e#696#1000#0" expanded="true" />
             <element signature="e#989#990#0" expanded="true" />
             <element signature="e#1045#1051#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/gremkil/server/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="75" column="50" selection-start="2250" selection-end="2250" vertical-scroll-proportion="1.8731809" vertical-offset="323" max-vertical-offset="1445">
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
