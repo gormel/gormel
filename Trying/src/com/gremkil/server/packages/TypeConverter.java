@@ -1,15 +1,12 @@
 package com.gremkil.server.packages;
 
-import org.apache.http.util.ByteArrayBuffer;
-
 import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
 
-public class PackageConverter {
-    private static PackageConverter inst = null;
-    public static PackageConverter getInstance() {
+public class TypeConverter {
+    private static TypeConverter inst = null;
+    public static TypeConverter getInstance() {
         if (inst == null)
-            inst = new PackageConverter();
+            inst = new TypeConverter();
         return inst;
     }
 
@@ -17,6 +14,10 @@ public class PackageConverter {
         ByteBuffer buffer = ByteBuffer.wrap(data);
         int packageId = buffer.getInt();
 
+        return null;
+    }
+
+    public byte[] getData(Object obj) {
         return null;
     }
 }

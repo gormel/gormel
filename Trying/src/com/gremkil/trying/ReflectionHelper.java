@@ -1,5 +1,8 @@
 package com.gremkil.trying;
 
+import android.app.Activity;
+import android.content.pm.PackageManager;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -10,14 +13,10 @@ import java.util.List;
 import dalvik.system.DexFile;
 import dalvik.system.PathClassLoader;
 
-/**
- * Created by User on 11.02.14.
- */
 public class ReflectionHelper {
 
-    public static List<Class<?>> getClasses() {
-        Field[] fileds = PathClassLoader.class.getFields();
-        fileds.clone();
+    public static List<Class<?>> getClasses(Activity activity) {
+        //String s = MainActivity.class.getProtectionDomain().getCodeSource().getLocation().toString();
         return null;
     }
 }

@@ -4,12 +4,17 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 
+import com.gremkil.server.packages.IsData;
+
+import java.lang.annotation.Annotation;
+
 public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        ReflectionHelper.getClasses();
+        Annotation[] as = getClass().getAnnotations();
+        Annotation a = getClass().getAnnotation(IsData.class);
 		setContentView(R.layout.activity_main);
 	}
 
