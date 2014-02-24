@@ -14,9 +14,5 @@ import dalvik.system.DexFile;
 import dalvik.system.PathClassLoader;
 
 public class ReflectionHelper {
-
-    public static List<Class<?>> getClasses(Activity activity) {
-        //String s = MainActivity.class.getProtectionDomain().getCodeSource().getLocation().toString();
-        return null;
-    }
+    
 }

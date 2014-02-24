@@ -1,5 +1,7 @@
 package com.gremkil.trying;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -7,14 +9,23 @@ import android.view.Menu;
 import com.gremkil.server.packages.IsData;
 
 import java.lang.annotation.Annotation;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 public class MainActivity extends Activity {
 
-	@Override
+	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        Annotation[] as = getClass().getAnnotations();
-        Annotation a = getClass().getAnnotation(IsData.class);
+        //test area
+
+        byte[] buff = new byte[] { 1, 2, 3, 4, 5 };
+        ByteBuffer buffer = ByteBuffer.wrap(buff);
+        byte b = buffer.get();
+        short s = buffer.getShort();
+        byte[] arr = Arrays.copyOfRange(buffer.array(), buffer.position(), buffer.capacity());
+
 		setContentView(R.layout.activity_main);
 	}
 

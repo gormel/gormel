@@ -11,7 +11,7 @@ import java.util.List;
 
 public abstract class Package {
     protected Package() {
-
+        PackageStorage.getInstance().registerClass(getClass());
     }
 
     public int getIndex() {

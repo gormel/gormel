@@ -37,4 +37,17 @@ public class PackageStorage {
         }
         return result;
     }
+
+    public Class<? extends Package> getPackageClass(int id) {
+        List<Class<? extends Package>> packageClasses = getPackageClasses();
+        for (Class<? extends Package> packageClass : packageClasses) {
+            IsPackage isPackageAnnotation = packageClass.getAnnotation(IsPackage.class);
+            if (isPackageAnnotation != null) {
+                if (isPackageAnnotation.id() == id) {
+                    return packageClass;
+                }
+            }
+        }
+        return null;
+    }
 }
