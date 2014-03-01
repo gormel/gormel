@@ -1,7 +1,7 @@
 #ifndef my_program
 #define my_program
 
-#include <gl\GLAux.h>
+#include "gl\GLAux.h"
 #include <iostream>
 #include <unordered_map>
 #include "BaseObject.h"
@@ -52,7 +52,10 @@ public:
 			inst = new Program();
 		return inst;
 	}
-	virtual ~Program() {}
+	virtual ~Program() 
+	{
+		delete f;
+	}
 };
 
 Program *Program::inst = nullptr;

@@ -1,7 +1,7 @@
 #ifndef my_mouse_state
 #define my_mouse_state
 
-#include <gl/GLAux.h>
+#include "gl/GLAux.h"
 #include <Windows.h>
 
 class MouseState

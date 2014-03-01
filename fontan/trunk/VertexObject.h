@@ -2,7 +2,7 @@
 #define my_vertex_object
 
 #include <Windows.h>
-#include <gl/GL.H>
+#include "gl/GL.H"
 #include "BaseObject.h"
 
 class VertexObject : public BaseObject

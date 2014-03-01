@@ -2,10 +2,10 @@
 #pragma comment(lib, "glaux.lib")
 
 #include <Windows.h>
-#include <gl\glut.h>
-#include <gl\GL.h>
-#include <gl\GLU.h>
-#include <gl\GLAux.h>
+#include "gl\glut.h"
+#include "gl\GL.h"
+#include "gl\GLU.h"
+#include "gl\GLAux.h"
 #include <iostream>
 
 #include "Program.h"

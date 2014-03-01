@@ -1,7 +1,7 @@
 #ifndef my_font
 #define my_font
 
-#include <gl\GL.H>
+#include "gl\GL.H"
 #include <vector>
 #include <stdlib.h>
 #include <algorithm>

@@ -2,7 +2,7 @@
 #define my_geosphere
 
 #include <Windows.h>
-#include <gl/GL.H>
+#include "gl/GL.H"
 #include "VertexObject.h"
 
 class Geosphere : public VertexObject

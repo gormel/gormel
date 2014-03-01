@@ -1,7 +1,7 @@
 #ifndef my_base_object
 #define my_base_object
 
-#include <gl\glut.h>
+#include "gl\glut.h"
 #include "Vector3.h"
 #include "Quatarnion.h"
 #include "Rotation.h"
