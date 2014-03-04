@@ -69,6 +69,7 @@
     <ClInclude Include="KeyboardState.h" />
     <ClInclude Include="MouseState.h" />
     <ClInclude Include="part.h" />
+    <ClInclude Include="PrimetivesScreen.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="Quatarnion.h" />
     <ClInclude Include="Rotation.h" />

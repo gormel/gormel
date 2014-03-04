@@ -41,6 +41,9 @@ public:
 		list = -1;
 	}
 
-	virtual ~VertexObject() { }
+	virtual ~VertexObject() 
+	{
+		
+	}
 };
 #endif

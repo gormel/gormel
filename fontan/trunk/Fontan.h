@@ -10,7 +10,6 @@
 #include "Geosphere.h"
 #include "part.h"
 
-
 class Fontan : public BaseObject
 {
 private:
@@ -29,7 +28,6 @@ protected:
 			model.Draw(timeSpend);
 		}
 	}
-
 
 	void update(long timeSpend)
 	{
