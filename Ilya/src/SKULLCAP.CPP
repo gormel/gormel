@@ -4,25 +4,16 @@
 SkullCaps::SkullCaps(Points position,float width,float height)
 :cap(position,position.MoveBy(width,0),height*0.75),skull(position, height*(-0.25),width)
 	{
+#ifdef TALKY
 	cout<<"SkullCaps created"<<endl;
+#endif
 	}
 SkullCaps::SkullCaps(const SkullCaps &n)
 :cap(n.cap),skull(n.skull)
 	{
+#ifdef TALKY
 	cout<<"SkullCaps created"<<endl;
-	}
-List<Points> SkullCaps::GetCap()
-	{
-	List<Points> list;
-	list=cap.PointsList();
-	return list;
-	}
-
-List<Points> SkullCaps::GetSkull()
-	{
-	List<Points> list;
-	list=skull.GetPoints();
-	return list;
+#endif
 	}
 
 List<Points> SkullCaps::GetPoints() const

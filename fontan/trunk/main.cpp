@@ -44,7 +44,7 @@ void CALLBACK display(void)
 	{
 		long time = GetTickCount();
 		spendTime += time - lastTime;
-		std::cout << spendTime << std::endl;
+		//std::cout << spendTime << std::endl;
 		Program::Instance()->Update(time - lastTime);
 		lastTime = time;
 		//std::cout << "Update" << std::endl;
@@ -76,7 +76,7 @@ float dir[3] = {-1, -1, -1};
 	auxInitWindow( "Window" );
 	auxIdleFunc(display);
 	auxReshapeFunc(resize);
-	
+	glEnable(GL_ALPHA);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHTING);

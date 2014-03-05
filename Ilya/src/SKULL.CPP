@@ -9,13 +9,17 @@ position1.MoveBy(0,height1*(-1)),
 position1.MoveBy(width1,height1*(-1))),
 width(width1), height(height1)
 {
+#ifdef TALKY
 cout<<"skull created"<<endl;
+#endif
 }
 
 Skull::Skull(const Skull &b)
 :rec(b.rec)
 {
+#ifdef TALKY
 cout<<"Skull created"<<endl;
+#endif
 }
 
 float Skull::GetHeight()

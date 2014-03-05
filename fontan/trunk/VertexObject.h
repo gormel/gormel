@@ -43,7 +43,8 @@ public:
 
 	virtual ~VertexObject() 
 	{
-		
+		if (list != -1)
+			glDeleteLists(list, 1);
 	}
 };
 #endif

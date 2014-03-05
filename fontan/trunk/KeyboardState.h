@@ -25,7 +25,7 @@ public:
 
 	bool IsKeyDown(int VK)
 	{
-		return keys[VK];
+		return keys[VK] != 0;
 	}
 };
 

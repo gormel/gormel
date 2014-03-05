@@ -4,36 +4,49 @@
 #include "BaseObject.h"
 #include "GL\GL.H"
 #include "Vector3.h"
+#include <vector>
 
 class PrimetivesScreen : public BaseObject
 {
 private:
-	Vector3 v1;
-	Vector3 v2;
-	Vector3 v3;
-	Vector3 v4;
+	std::vector<Vector3> points;
 	GLenum primetiveType;
 protected:
 	virtual void draw(long timeSpend) 
 	{
+		glPointSize(5);
+		glLineWidth(5);
+		glPolygonMode(GL_FILL, GL_FRONT);
 		glBegin(primetiveType);
-
-		glVertex3d(v1.X, v1.Y, v1.Z);
-		glVertex3d(v2.X, v2.Y, v2.Z);
-		glVertex3d(v3.X, v3.Y, v3.Z);
-		glVertex3d(v4.X, v4.Y, v4.Z);
+		
+		for (auto v : points)
+		{
+			glVertex3d(v.X, v.Y, v.Z);
+		}
 
 		glEnd();
 	}
 	virtual void update(long timeSpend) {}
 public:
 	PrimetivesScreen()
-		: primetiveType(GL_POINT),
-		v1(0, 0, 0), v2(), v3(), v4()
+		: primetiveType(GL_POINTS)
 	{
 	}
 
+	void AddPoint(const Vector3 &p)
+	{
+		points.push_back(p);
+	}
 
+	void ClearPoints()
+	{
+		points.clear();
+	}
+
+	void setPrimetiveType(GLenum type)
+	{
+		primetiveType = type;
+	}
 };
 
 #endif

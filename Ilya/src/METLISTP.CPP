@@ -12,31 +12,35 @@
 #include <listp.h>
 template<class T>
 List<T>::List()
-  :Head(0),Tail(0),size(0)
+  :Tail(0),size(0)
 {
+//cout << "List::ctor;" << endl;
 }
 template<class T>
-List<T> &List<T>::operator = (const List<T> &obj)
+List<T> &List<T>::operator =(const List<T> &obj)
 {
+//cout << "List::=();" << endl;
 	Clear();
 	Elem<T> *temp=obj.Tail->getNext();
-	for (int i=0;i<obj.size;i++)
+	for (int i=0; i < obj.size; i++)
 	{
 		Add(temp->getData());
+		temp = temp->getNext();
 	}
 	return *this;
 }
 	
 template<class T>
 List<T>::List(const List<T> &obj)
-:size(obj.size),Head(obj.Head),Tail(obj.Tail)
+	: size(0), Tail(0)
 {
-	Elem<T>*p=obj.Head;
+//cout << "List::copy ctor" << endl;
+	Elem<T> *p = obj.Tail->getNext();
 	int i;
-	for(i=0;i<size;i++)
+	for(i = 0; i < obj.size; i++)
 	{
 		Add(p->getData());
-		p=p->getNext();
+		p = p->getNext();
 	}
 }
 
@@ -44,7 +48,7 @@ template<class T>
 int List<T>::ListNul()
 {int a;
 a=0;
-if (Head==0)
+if (Tail==0)
 	{a=1;
 	}
 return(a);
@@ -53,60 +57,62 @@ return(a);
 template<class T>
 List<T>::~List()
  {
-   while (size!=0)
+// cout << "List::destr;" << endl;
+   while (size > 0)
     {
-     Elem<T> *temp=Head->getNext();
-     delete Head;
-     Head=temp;
+     Elem<T> *temp = Tail->getNext();
+     delete Tail;
+     Tail = temp;
      size--;
     }
  }
 template<class T>
 int List<T>::Count()
  {
+// cout << "List::Cout();" << size << endl;
    return size;
  }
 template<class T>
 void List<T>::Add(const T &elem)
 {
-//cout << "added: " << elem << endl;
+//cout << "List::Add();" << endl;
+	Elem<T> *newNode = new Elem<T>(elem);
 	size++;
-	Elem<T> *temp=new Elem<T>(elem);
-	if (Head!=0)
+	if (!Tail)
 	{
-		Tail->setNext(temp);
-		Tail=temp;
+		Tail = newNode;
+		Tail->setNext(Tail);
+		return;		        	
 	}
-	else Head=Tail=temp;
-	temp->setNext(Head);
+
+	Elem<T> *first = Tail->getNext();
+	Tail->setNext(newNode);
+	newNode->setNext(first);
+	Tail = newNode;
 }
 template <class T>
 T &List<T>::Get(int position)
 {
-	cout << "  debug: List<T>::Get(" << position << "): ";
-	Elem<T> *p=Tail->getNext();
-	for (int i=0;i<position;i++)
-	{
-		p=p->getNext();
-	}
-	cout << endl;
-	return p->getData();
+	return this->operator[](position);
 }
 
 template <class T>
 void List<T>::RemoveAt(int position)
 {
-	Elem<T> *p=Tail;
-	for(int i=0;i<position;i++)
+//cout << "List::RemoveAt();" << endl;
+	Elem<T> *p = Tail;
+	for(int i=0; i < position; i++)
 	{
-		p=p->getNext();
+		p = p->getNext();
 	}
-	Elem<T> *deleting=p->getNext();
+	Elem<T> *deleting = p->getNext();
 	p->setNext(deleting->getNext());
 	if (deleting==Tail)
 		Tail=p;
 	delete deleting;
 	size--;
+	if (size == 0)
+		Tail = 0;
 }
 
 // template <class T>
@@ -142,10 +148,11 @@ void List<T>::RemoveAt(int position)
 template<class T>
 T &List<T>::operator[](int index)
 {
+//cout << "List::operator[];" << endl;
   //	cout << "list[] call!!!" << endl;
 	int i;
 	assert(index > -1 && index < size);
-	Elem<T> *p = Head;
+	Elem<T> *p = Tail->getNext();
 	for (i = 0; i < index; ++i)
 	{
      //		cout << p << " " << p->getNext() << ": " << p->getData() << endl;
@@ -156,15 +163,11 @@ T &List<T>::operator[](int index)
 template<class T>
 void List<T>::Clear()
 {
-	int i;
-	for(i=0;i<size;i++)
+//cout << "List::Clear();" << endl;
+	while (size > 0)
 	{
-		Elem<T> *deleting=Head;
-		Head=Head->getNext();
-		delete deleting;
+		RemoveAt(0);
 	}
-	Tail=0;
-	size=0;
 }
 
 #endif

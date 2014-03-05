@@ -113,6 +113,7 @@
     <Compile Include="Utils\EnumStringParser.cs" />
     <Compile Include="Utils\FloatStringParser.cs" />
     <Compile Include="Utils\IntStringParser.cs" />
+    <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\PrimetiveDrawHelper.cs" />
     <Compile Include="Utils\SpriteFontStringParser.cs" />
     <Compile Include="Utils\StringParser.cs" />

@@ -23,8 +23,29 @@ T Read(istream &is, T *fake);
 
 List<SkullCaps> skullcaps;
 
+template<class T>
+void out(List<T> &list)
+{
+	cout << "List: ";
+	int i = 0;
+	for (i = 0; i < list.Count(); i++)
+	{
+		cout << "el[" << i << "]: ";
+		cout << list[i] << ", ";
+	}
+	cout << endl;
+}
+
 int main()
 {
+//	List<Points> testList = SkullCaps(Points(1, 1), 5, 10).GetPoints();
+//	
+//	long i;
+//	for (i = 0; i < 2000000000; i++);
+	
+//	out(testList);
+//	return 0;
+
 	Help();
 	while (1)
 	{
@@ -47,6 +68,7 @@ int ProcessCommand(int command, istream &args)
 		{
 			case HELP:
 				Help();
+				return 1;
 			case EXIT:
 				return 0;
 			case ADD:
@@ -63,6 +85,7 @@ int ProcessCommand(int command, istream &args)
 				break;
 			default:
 				cout << "Wrong command, try 0." << endl;
+				return 1;
 		}
 	}
 	cout << "Command done." << endl;

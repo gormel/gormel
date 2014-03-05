@@ -99,7 +99,7 @@ namespace UILib.Base
 		/// </summary>
 		protected bool IsNullSize { get { return Math.Abs(Width) < float.Epsilon || Math.Abs(Height) < float.Epsilon; } }
 
-		private bool willBeActive = false;
+		private int activationCooldown = -1;
 
 		private KeyboardState lastKeyboardState;
 		private bool shift = false;
@@ -187,11 +187,13 @@ namespace UILib.Base
 				ActivateNext(ActivationDirection.Down, 0, right);
 				return;
 			}
-			willBeActive = true;
+			activationCooldown = 2;
+			Logger.Debug.WriteLine(string.Format("{0} activation cooldown changed", Name));
 		}
 
 		protected virtual void OnKeyDown(Keys key)
 		{
+			Logger.Debug.WriteLine(string.Format("{0} on key down: {1}", Name, key));
 			if (key == Keys.Tab)
 				ActivateNext(ActivationDirection.Down, 0, !shift);
 
@@ -218,6 +220,7 @@ namespace UILib.Base
 		{
 			if (IsNullSize)
 				return;
+			GraphicsDevice.ScissorRectangle = new Rectangle((int)X, (int)Y, (int)Width, (int)Height);
 			DrawBody(time);
 			for (int i = 0; i < Controls.Count; i++)
 			{
@@ -235,17 +238,21 @@ namespace UILib.Base
 				Controls[i].Update(time);
 			}
 
-			if (willBeActive)
+			if (activationCooldown > 0)
 			{
-				Active = true;
-				willBeActive = false;
-				return;
+				activationCooldown--;
+				Logger.Debug.WriteLine(string.Format("{0} activation cooldown decremented.", Name));
 			}
 
-			if (!Active)
-				return;
+			if (activationCooldown == 0)
+			{
+				activationCooldown = -1;
+				Active = true;
+				Logger.Debug.WriteLine(string.Format("{0} activated", Name));
+			}
 			
 			KeyboardState keyboardState = Keyboard.GetState();
+			MouseState mouseState = Mouse.GetState();
 			var downedKeys = from k in keyboardState.GetPressedKeys()
 								where !lastKeyboardState.GetPressedKeys().Contains(k)
 								select k;
@@ -253,15 +260,17 @@ namespace UILib.Base
 							where !keyboardState.GetPressedKeys().Contains(k)
 							select k;
 
-			foreach (var key in downedKeys)
-			{
-				OnKeyDown(key);
-			}
+			if (Active)
+				foreach (var key in downedKeys)
+				{
+					OnKeyDown(key);
+				}
 
-			foreach (var key in uppedKeys)
-			{
-				OnKeyUp(key);
-			}
+			if (Active)
+				foreach (var key in uppedKeys)
+				{
+					OnKeyUp(key);
+				}
 			lastKeyboardState = keyboardState;
 		}
 		

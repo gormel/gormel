@@ -5,16 +5,22 @@
 Cap::Cap(Points positionLeft1,Points positionRight1,float lenght1)
 :trig(positionLeft1,positionRight1,lenght1)
 {
+#ifdef TALKY
 cout<<"Cap created"<<endl;
+#endif
 }
+
 void Cap::MoveBy(float dx,float dy)
 	{
         trig.MoveBy(dx,dy);
 	}
+	
 Cap::Cap(const Cap&obj)
 :trig(obj.trig)
 {
+#ifdef TALKY
 cout<<"Cap created"<<endl;
+#endif
 }
 List<Points> Cap::PointsList() const
 {

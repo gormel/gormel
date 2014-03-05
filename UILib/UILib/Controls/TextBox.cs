@@ -11,6 +11,13 @@ namespace UILib.Controls
 {
 	public class TextBox : Label
 	{
+		private struct TypingInfo
+		{
+			public string Data { get; set; }
+			public int DeltaRow { get; set; }
+			public int DeltaCol { get; set; }
+
+		}
 		public int Cursor { get { return Lines.Take(CursorRow).Sum(s => s.Length + 
 			Environment.NewLine.Length) + CursorCol; } }
 		private TimeSpan typeCooldown = TimeSpan.FromMilliseconds(200);
@@ -32,6 +39,8 @@ namespace UILib.Controls
 			string add = value.ToString();
 			if (value == Keys.Enter)
 				add = Environment.NewLine;
+			if (value == Keys.Space)
+				add = " ";
 
 			var splitted = add.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 			int cursorDy = splitted.Length - 1;

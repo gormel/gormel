@@ -29,8 +29,7 @@ namespace UILib.Controls
 		public string Text { get; set; }
 		public IEnumerable<string> Lines
 		{
-			get { return Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None)
-							 .Select(l => l.Trim()); }
+			get { return Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None); }
 		}
 		public Color TextColor { get; set; }
 		public HorisontalAlligment HorisontalTextAlligment { get; set; }
@@ -43,23 +42,26 @@ namespace UILib.Controls
 		{
 			get
 			{
-				int index = 0;
-
-				foreach (var line in Lines)
+				var copyText = Text;
+				float countedX = 0;
+				for (int i = 0; i < copyText.Length; i++)
 				{
-					int lineOffset = LeftOffset;
-					do
+					if (copyText.IndexOf(Environment.NewLine, i) == i)
 					{
-						var l = line.Substring(lineOffset).Aggregate("", (s, c) =>
-							s + ((TextFont.MeasureString(s + c).X < Width - TextIndent * 2) ? c.ToString() : ""));
-						lineOffset += Math.Max(l.Length, 1) + (!AutoTranslit ? line.Length : 0);
-
-						if (index++ < TopOffset)
-							continue;
-
-						yield return l.Trim();
-					} while (lineOffset < line.Length);
+						countedX = 0;
+						continue;
+					}
+					var addX = TextFont.MeasureString(copyText[i].ToString()).X; 
+					if (countedX + addX > Width - TextIndent * 2)
+					{
+						copyText = copyText.Insert(i, Environment.NewLine);
+						i += Environment.NewLine.Length - 1;
+						countedX = 0;
+						continue;
+					}
+					countedX += addX;
 				}
+				return copyText.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 			}
 		}
 		
@@ -82,12 +84,13 @@ namespace UILib.Controls
 				return;
 
 			SpriteBatch.Begin();
+			var cutted = CuttedLines.Skip(TopOffset).Select(s => s.Substring(LeftOffset));
 
 			float offsetY = Math.Max((Height - 
-				CuttedLines.Count() * TextFont.LineSpacing - TextIndent * 2) / 2 * 
+				cutted.Count() * TextFont.LineSpacing - TextIndent * 2) / 2 * 
 							(int)VerticalTextAlligment, 0);
 
-			foreach (var line in CuttedLines)
+			foreach (var line in cutted)
 			{
 				if (offsetY + TextFont.MeasureString(line).Y >= Height - TextIndent * 2)
 					break;

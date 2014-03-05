@@ -11,7 +11,6 @@
  template<class T>
  class List
  {
-      Elem<T> *Head;
       Elem<T> *Tail;
       int size;
   public:

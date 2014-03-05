@@ -6,6 +6,8 @@
 #include "Quatarnion.h"
 #include "Rotation.h"
 
+#include <iostream>
+
 class BaseObject
 {
 protected:
@@ -26,18 +28,20 @@ public:
 	{
 		glPushMatrix();
 
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+				
 		Rotations = Rotations.Normalize();
 		Rotation rot(Rotations);
+		
+		glTranslated(Position.X, Position.Y, Position.Z);
 
 		if (!(rot.X == 0 && rot.Y == 0 && rot.Z == 0))
 			glRotated(rot.Angle, rot.X, rot.Y, rot.Z);
 
-		glTranslated(Position.X, Position.Y, Position.Z);
-		
 		if (!(Scale.X == 0 || Scale.Y == 0 || Scale.Z == 0))
 			glScaled(Scale.X, Scale.Y, Scale.Z);
-
-
+		
 		draw(timeSpend);
 
 		glPopMatrix();

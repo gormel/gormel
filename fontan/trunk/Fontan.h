@@ -8,6 +8,7 @@
 #include <assert.h>
 #include "BaseObject.h"
 #include "Geosphere.h"
+#include "Cube.h"
 #include "part.h"
 
 class Fontan : public BaseObject
@@ -23,8 +24,9 @@ protected:
 	{
 		for (auto it = parts.begin(); it != parts.end(); it++)
 		{
-			model.Position = it->Position;
-			glColor3d(it->Color.X, it->Color.Y, it->Color.Z);
+			model.Position = Rotations.Transform(it->Position) + Position;
+			model.Rotations = Rotations;
+			glColor4d(it->Color.X, it->Color.Y, it->Color.Z, (double)Transparency / 255);
 			model.Draw(timeSpend);
 		}
 	}
@@ -34,7 +36,7 @@ protected:
 		if (Height <= 0 || Radius <= 0)
 			return;
 		lastCreation += timeSpend;
-		if (parts.size() < partCount && lastCreation > 1000 / CreationSpeed)
+		if ((int)parts.size() < partCount && lastCreation > 1000 / CreationSpeed)
 		{
 			lastCreation = 0;
 			Part p(Gravity);
@@ -46,7 +48,7 @@ protected:
 			float angle = (float)rand() / RAND_MAX * 360;
 			
 			p.Velocity = Rotation(0, 1, 0, angle).ToQuternion().Transform(Vector3(x, y, 0));
-			p.Position = Position + Vector3(0, 1, 0);
+			p.Position = Vector3(0, 0, 0);
 			
 			float r = 0;//(float)rand() / RAND_MAX;
 			float g = 0;//(float)rand() / RAND_MAX;
@@ -59,7 +61,7 @@ protected:
 			it->Update(timeSpend);
 
 		std::sort(parts.begin(), parts.end(), [](Part &a, Part &b) { return a.Position.Y < b.Position.Y; });
-		while (parts.size() > 0 && parts.front().Position.Y < Position.Y)
+		while (parts.size() > 0 && parts.front().Position.Y < 0)
 			parts.erase(parts.begin());
 	}
 public:
@@ -67,9 +69,11 @@ public:
 	float Radius;
 	float Height;
 	int CreationSpeed;
+	short Transparency;
 
 	Fontan(int pCount, float pSize, int creationSpeed, float radius, float height)
-		: partCount(pCount), partSize(pSize), model(2), Radius(radius), Height(height), lastCreation(0), CreationSpeed(creationSpeed)
+		: partCount(pCount), partSize(pSize), model(2), Radius(radius), Height(height), 
+		lastCreation(0), CreationSpeed(creationSpeed), Transparency(255)
 	{
 		model.Scale = Vector3(pSize);
 	}

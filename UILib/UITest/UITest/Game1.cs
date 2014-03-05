@@ -42,6 +42,11 @@ namespace UITest
 		/// </summary>
 		protected override void Initialize()
 		{
+			var font = Content.Load<SpriteFont>("DebugFont");
+			var x = font.MeasureString("ag");
+			var y = font.MeasureString("a");
+			var z = font.MeasureString("g");
+
 			// TODO: Add your initialization logic here
 			this.IsMouseVisible = true;
 			testConteiner = new XmlUIContainer(this, GraphicsDevice, Content, "TestUI.xml");
