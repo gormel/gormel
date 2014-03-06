@@ -38,10 +38,10 @@ public:
 
 		if (!(rot.X == 0 && rot.Y == 0 && rot.Z == 0))
 			glRotated(rot.Angle, rot.X, rot.Y, rot.Z);
-
+		
 		if (!(Scale.X == 0 || Scale.Y == 0 || Scale.Z == 0))
 			glScaled(Scale.X, Scale.Y, Scale.Z);
-		
+
 		draw(timeSpend);
 
 		glPopMatrix();

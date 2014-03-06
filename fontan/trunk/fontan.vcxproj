@@ -63,7 +63,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AlphaBlendScreen.h" />
+    <ClInclude Include="AlphaScreen.h" />
     <ClInclude Include="BaseObject.h" />
+    <ClInclude Include="BlendScreen.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="fontan.h" />
     <ClInclude Include="Geosphere.h" />

@@ -11,12 +11,13 @@ class PrimetivesScreen : public BaseObject
 private:
 	std::vector<Vector3> points;
 	GLenum primetiveType;
+	GLenum mode;
 protected:
 	virtual void draw(long timeSpend) 
 	{
 		glPointSize(5);
 		glLineWidth(5);
-		glPolygonMode(GL_FILL, GL_FRONT);
+		glPolygonMode(GL_FRONT_AND_BACK, mode);
 		glBegin(primetiveType);
 		
 		for (auto v : points)
@@ -29,7 +30,7 @@ protected:
 	virtual void update(long timeSpend) {}
 public:
 	PrimetivesScreen()
-		: primetiveType(GL_POINTS)
+		: primetiveType(GL_POINTS), mode(GL_FILL)
 	{
 	}
 
@@ -43,9 +44,14 @@ public:
 		points.clear();
 	}
 
-	void setPrimetiveType(GLenum type)
+	void SetPrimetiveType(GLenum type)
 	{
 		primetiveType = type;
+	}
+
+	void SetMode(GLenum mode)
+	{
+		this->mode = mode;
 	}
 };
 

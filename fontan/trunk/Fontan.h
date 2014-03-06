@@ -50,9 +50,9 @@ protected:
 			p.Velocity = Rotation(0, 1, 0, angle).ToQuternion().Transform(Vector3(x, y, 0));
 			p.Position = Vector3(0, 0, 0);
 			
-			float r = 0;//(float)rand() / RAND_MAX;
-			float g = 0;//(float)rand() / RAND_MAX;
-			float b = (float)rand() / 2 / RAND_MAX + 0.5;
+			float r = 0.2;//(float)rand() / RAND_MAX;
+			float g = 0.2;//(float)rand() / RAND_MAX;
+			float b = (float)rand() / RAND_MAX / 2 + 0.5;
 			p.Color = Vector3(r, g, b);
 			parts.push_back(p);
 		}
@@ -73,7 +73,7 @@ public:
 
 	Fontan(int pCount, float pSize, int creationSpeed, float radius, float height)
 		: partCount(pCount), partSize(pSize), model(2), Radius(radius), Height(height), 
-		lastCreation(0), CreationSpeed(creationSpeed), Transparency(255)
+		lastCreation(0), CreationSpeed(creationSpeed), Transparency(128)
 	{
 		model.Scale = Vector3(pSize);
 	}

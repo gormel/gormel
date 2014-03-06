@@ -69,46 +69,46 @@ public:
 		
 		Vector3 *newLvl = new Vector3[36];
 		newLvl[0] = v[0];
-		newLvl[1] = v[1];
-		newLvl[2] = v[2];
+		newLvl[1] = v[2];
+		newLvl[2] = v[1];//front
 		newLvl[3] = v[0];
-		newLvl[4] = v[2];
-		newLvl[5] = v[3];
+		newLvl[4] = v[3];
+		newLvl[5] = v[2];
 
-		newLvl[6] = v[1];
+		newLvl[6] = v[4];
 		newLvl[7] = v[0];
-		newLvl[8] = v[4];
+		newLvl[8] = v[1];//left
 		newLvl[9] = v[1];
-		newLvl[10] = v[4];
-		newLvl[11] = v[5];
+		newLvl[10] = v[5];
+		newLvl[11] = v[4];
 
-		newLvl[12] = v[6];
+		newLvl[12] = v[1];
 		newLvl[13] = v[2];
-		newLvl[14] = v[1];
+		newLvl[14] = v[6];//bottom
 		newLvl[15] = v[6];
-		newLvl[16] = v[1];
-		newLvl[17] = v[5];
+		newLvl[16] = v[5];
+		newLvl[17] = v[1];
 
-		newLvl[18] = v[3];
-		newLvl[19] = v[2];
+		newLvl[18] = v[2];
+		newLvl[19] = v[3];
 		newLvl[20] = v[7];
-		newLvl[21] = v[7];
-		newLvl[22] = v[2];
-		newLvl[23] = v[6];
+		newLvl[21] = v[7];//right
+		newLvl[22] = v[6];
+		newLvl[23] = v[2];
 
 		newLvl[24] = v[0];
-		newLvl[25] = v[3];
+		newLvl[25] = v[4];
 		newLvl[26] = v[7];
-		newLvl[27] = v[4];
-		newLvl[28] = v[0];
-		newLvl[29] = v[7];
+		newLvl[27] = v[7];//top
+		newLvl[28] = v[3];
+		newLvl[29] = v[0];
 
 		newLvl[30] = v[4];
-		newLvl[31] = v[7];
-		newLvl[32] = v[5];
-		newLvl[33] = v[7];
-		newLvl[34] = v[6];
-		newLvl[35] = v[5];
+		newLvl[31] = v[5];
+		newLvl[32] = v[6];//back
+		newLvl[33] = v[6];
+		newLvl[34] = v[7];
+		newLvl[35] = v[4];
 
 		int size = 36;
 
@@ -122,7 +122,7 @@ public:
 		vert = newLvl;
 		vertCount = size;
 		initList(newLvl, newLvl, nullptr, size, 
-			GL_FRONT_AND_BACK, GL_FILL, GL_TRIANGLES);
+			GL_FRONT, GL_FILL, GL_TRIANGLES);
 	}
 
 	Geosphere(const Geosphere &obj)
@@ -132,7 +132,7 @@ public:
 		for (int i = 0; i < vertCount; i++)
 			vert[i] = obj.vert[i];
 		initList(vert, vert, nullptr, vertCount, 
-			GL_FRONT_AND_BACK, GL_FILL, GL_TRIANGLES);
+			GL_FRONT, GL_FILL, GL_TRIANGLES);
 	}
 
 	Geosphere &operator =(const Geosphere &obj)
@@ -143,7 +143,7 @@ public:
 		for (int i = 0; i < vertCount; i++)
 			vert[i] = obj.vert[i];
 		initList(vert, vert, nullptr, vertCount, 
-			GL_FRONT_AND_BACK, GL_FILL, GL_TRIANGLES);
+			GL_FRONT, GL_FILL, GL_TRIANGLES);
 		return *this;
 	}
 
@@ -153,7 +153,7 @@ public:
 		vert = lvlUp(vert, vertCount);
 		delete[] a;
 		initList(vert, vert, nullptr, vertCount, 
-				 GL_FRONT_AND_BACK, GL_LINE, GL_TRIANGLES);
+				 GL_FRONT, GL_LINE, GL_TRIANGLES);
 	}
 
 	virtual ~Geosphere()
