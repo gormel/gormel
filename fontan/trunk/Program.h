@@ -49,9 +49,9 @@ protected:
 		if (kb.IsKeyDown('0'))
 			screen.SetPrimetiveType(GL_POLYGON);
 
-		if (kb.IsKeyDown('F'))
+		if (kb.IsKeyDown(VK_OEM_MINUS))
 			screen.SetMode(GL_FILL);
-		if (kb.IsKeyDown('C'))
+		if (kb.IsKeyDown(VK_OEM_PLUS))
 			screen.SetMode(GL_LINE);
 
 
