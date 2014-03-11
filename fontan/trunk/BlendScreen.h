@@ -31,6 +31,8 @@ public:
 	{
 		dfactor = value;
 	}
+
+	virtual ~BlendScreen() {}
 };
 
 #endif

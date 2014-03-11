@@ -1,7 +1,7 @@
 #ifndef my_alphascreen
 #define my_alphascreen
 
-#include "GL/GL.H"
+#include "GL\GL.H"
 #include "AlphaBlendScreen.h"
 
 class AlphaScreen : public AlphaBlendScreen
@@ -26,6 +26,8 @@ public:
 	{
 		alphaFunc = func;
 	}
+
+	virtual ~AlphaScreen() {}
 };
 
 #endif

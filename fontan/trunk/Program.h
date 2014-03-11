@@ -15,11 +15,14 @@
 #include "AlphaScreen.h"
 #include "BlendScreen.h"
 
+#include "Timer.h"
+
 class Program : public BaseObject
 {
 protected:
 	virtual void draw(long timeSpend)
 	{
+		glClearColor(117.0 / 255, 192.0 / 255, 253.0 / 255, 1);
 		screen1.Draw(timeSpend);
 		screen2.Draw(timeSpend);
 	}
@@ -54,12 +57,81 @@ protected:
 		if (kb.IsKeyDown(VK_OEM_PLUS))
 			screen.SetMode(GL_LINE);
 
+		if (kb.IsKeyDown(VK_ADD) && timer1.IsOk())
+		{
+			screen1.Alpha = screen1.Alpha < 1 ? screen1.Alpha + 0.02 : screen1.Alpha;
+			screen2.Alpha = screen2.Alpha < 1 ? screen2.Alpha + 0.02 : screen2.Alpha;
+		}
 
+		if (kb.IsKeyDown(VK_SUBTRACT) && timer1.IsOk())
+		{
+			screen1.Alpha = screen1.Alpha > 0 ? screen1.Alpha - 0.02 : screen1.Alpha;
+			screen2.Alpha = screen2.Alpha > 0 ? screen2.Alpha - 0.02 : screen2.Alpha;
+		}
+
+		if (kb.IsKeyDown(VK_LSHIFT))
+		{
+			if (kb.IsKeyDown('1'))
+				screen1.SetAlphaFunc(GL_ALWAYS);
+			if (kb.IsKeyDown('2'))
+				screen1.SetAlphaFunc(GL_LESS);
+			if (kb.IsKeyDown('3'))
+				screen1.SetAlphaFunc(GL_EQUAL);
+			if (kb.IsKeyDown('4'))
+				screen1.SetAlphaFunc(GL_LEQUAL);
+			if (kb.IsKeyDown('5'))
+				screen1.SetAlphaFunc(GL_GREATER);
+			if (kb.IsKeyDown('6'))
+				screen1.SetAlphaFunc(GL_NOTEQUAL);
+			if (kb.IsKeyDown('7'))
+				screen1.SetAlphaFunc(GL_GEQUAL);
+			if (kb.IsKeyDown('8'))
+				screen1.SetAlphaFunc(GL_NEVER);
+		}
+		else if(kb.IsKeyDown(VK_LCONTROL))
+		{
+			if (kb.IsKeyDown('1'))
+				screen2.SetSfactor(GL_ZERO);
+			if (kb.IsKeyDown('2'))
+				screen2.SetSfactor(GL_ONE);
+			if (kb.IsKeyDown('3'))
+				screen2.SetSfactor(GL_DST_COLOR);
+			if (kb.IsKeyDown('4'))
+				screen2.SetSfactor(GL_ONE_MINUS_DST_COLOR);
+			if (kb.IsKeyDown('5'))
+				screen2.SetSfactor(GL_SRC_ALPHA);
+			if (kb.IsKeyDown('6'))
+				screen2.SetSfactor(GL_ONE_MINUS_SRC_ALPHA);
+			if (kb.IsKeyDown('7'))
+				screen2.SetSfactor(GL_DST_ALPHA);
+			if (kb.IsKeyDown('8'))
+				screen2.SetSfactor(GL_ONE_MINUS_DST_ALPHA);
+		}
+		else if(kb.IsKeyDown(VK_LMENU))
+		{
+			if (kb.IsKeyDown('1'))
+				screen2.SetDfactor(GL_ZERO);
+			if (kb.IsKeyDown('2'))
+				screen2.SetDfactor(GL_ONE);
+			if (kb.IsKeyDown('3'))
+				screen2.SetDfactor(GL_DST_COLOR);
+			if (kb.IsKeyDown('4'))
+				screen2.SetDfactor(GL_ONE_MINUS_DST_COLOR);
+			if (kb.IsKeyDown('5'))
+				screen2.SetDfactor(GL_SRC_ALPHA);
+			if (kb.IsKeyDown('6'))
+				screen2.SetDfactor(GL_ONE_MINUS_SRC_ALPHA);
+			if (kb.IsKeyDown('7'))
+				screen2.SetDfactor(GL_DST_ALPHA);
+			if (kb.IsKeyDown('8'))
+				screen2.SetDfactor(GL_ONE_MINUS_DST_ALPHA);
+		}
 
 		lastKbState = kb;
 
 		screen1.Update(timeSpend);
 		screen2.Update(timeSpend);
+		timer1.Update(timeSpend);
 	}
 private:
 	static Program *inst;
@@ -70,7 +142,10 @@ private:
 	
 	KeyboardState lastKbState;
 
+	Timer timer1;
+
 	Program()
+		: timer1(50)
 	{
 		screen.Position = Vector3(0, 0, -1);
 

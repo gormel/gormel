@@ -53,6 +53,8 @@ public:
 	{
 		this->mode = mode;
 	}
+
+	virtual ~PrimetivesScreen() {}
 };
 
 #endif

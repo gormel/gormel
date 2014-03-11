@@ -2,7 +2,7 @@
 #define my_geosphere
 
 #include <Windows.h>
-#include "gl/GL.H"
+#include "gl\GL.H"
 #include "VertexObject.h"
 
 class Geosphere : public VertexObject
@@ -45,9 +45,9 @@ private:
 		return rv;
 	}
 
-	Vector3 *vert;
 	int vertCount;
 protected:
+	Vector3 *vert;
 	virtual void update(long timeSpend)
 	{
 	}
@@ -121,8 +121,8 @@ public:
 
 		vert = newLvl;
 		vertCount = size;
-		initList(newLvl, newLvl, nullptr, size, 
-			GL_FRONT, GL_FILL, GL_TRIANGLES);
+		initList(vert, vert, nullptr, vertCount, 
+				 GL_FRONT, GL_FILL, GL_TRIANGLES);
 	}
 
 	Geosphere(const Geosphere &obj)
@@ -147,13 +147,13 @@ public:
 		return *this;
 	}
 
-	void LvlUp()
+	virtual void LvlUp()
 	{
 		auto a = vert;
 		vert = lvlUp(vert, vertCount);
 		delete[] a;
 		initList(vert, vert, nullptr, vertCount, 
-				 GL_FRONT, GL_LINE, GL_TRIANGLES);
+				 GL_FRONT, GL_FILL, GL_TRIANGLES);
 	}
 
 	virtual ~Geosphere()

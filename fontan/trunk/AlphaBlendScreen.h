@@ -5,14 +5,16 @@
 #include "BaseObject.h"
 #include "Cube.h"
 #include "Geosphere.h"
+#include "RainbowGeosphere.h"
 #include "MouseState.h"
+#include "RainbowCube.h"
 
 class AlphaBlendScreen : public BaseObject
 {
 protected:
 	virtual void draw(long ellapsedTime)
 	{
-		glColor4d(0.5, 0.4, 0.2, Alpha);
+		model.Alpha = Alpha;
 		model.Position = Position;
 		model.Draw(ellapsedTime);
 	}
@@ -38,7 +40,7 @@ protected:
 		lastMsState = ms;
 	}
 private:
-	Geosphere model;
+	RainbowCube model;
 	
 	MouseState lastMsState;
 	bool dragMode;
@@ -46,11 +48,13 @@ public:
 	double Alpha;
 
 	AlphaBlendScreen()
-		: model(3), Alpha(0.5)
+		: model(), Alpha(0.5)
 	{
 		model.Scale = Vector3(3);
 		dragMode = false;
 	}
+
+	virtual ~AlphaBlendScreen() {}
 };
 
 #endif

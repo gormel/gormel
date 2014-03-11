@@ -1,3 +1,104 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="BaseObject.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Program.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexObject.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Quatarnion.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Rotation.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardState.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseState.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Geosphere.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="AlphaBlendScreen.h">
+      <Filter>Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="AlphaScreen.h">
+      <Filter>Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="BlendScreen.h">
+      <Filter>Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimetivesScreen.h">
+      <Filter>Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="fontan.h">
+      <Filter>Fontan</Filter>
+    </ClInclude>
+    <ClInclude Include="part.h">
+      <Filter>Fontan</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RainbowGeosphere.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RainbowCube.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lib\glu32.dll">
+      <Filter>Lib</Filter>
+    </None>
+    <None Include="lib\glut32.dll">
+      <Filter>Lib</Filter>
+    </None>
+    <None Include="lib\opengl32.dll">
+      <Filter>Lib</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{4a299c64-23cf-4660-8fa6-ab25745146fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{7c5f65f8-2c0d-48b0-9f80-2ae5f6374025}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{d2b819f4-63fc-400e-9fe9-0b0f83c37907}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib">
+      <UniqueIdentifier>{4c15c97f-3a1b-4df2-ba84-addf9f66d308}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{a13ad7a2-6e6f-4ea6-ae3d-0100786f33f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Screens">
+      <UniqueIdentifier>{3bbb8ece-d22e-4df2-a778-6c4bc5d4afce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fontan">
+      <UniqueIdentifier>{47e70d42-c24d-4139-b415-4398409fbfe3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+  </ItemGroup>
 </Project>
