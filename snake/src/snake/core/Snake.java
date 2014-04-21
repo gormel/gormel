@@ -41,23 +41,26 @@ public class Snake {
         turns.add(pos);
         vel = new Vector(1, 0);
     }
-    
-    private void checkTurns() {
-        Vector last = turns.pollLast();
-        Vector subLast = turns.peekLast();
-        if (last.equals(subLast)) {
-            checkTurns();
-        } else {
-            turns.addLast(last);
-        }
-    }
-    
+        
     public void update() {
         Vector first = turns.pollFirst();
         turns.addFirst(first.add(vel));
         
         Vector last = turns.pollLast();
         Vector lastVel = turns.peekLast().sub(last).norm();
+        Vector newLast = last.add(lastVel);
+        if (!last.equals(newLast)) {
+            turns.addLast(newLast);
+        }
+    }
+    
+    public void upgrade(int times) {
+        Vector last = turns.pollLast();
+        Vector lastVel = turns.peekLast().sub(last).norm().mul(times);
         turns.addLast(last.add(lastVel));
+    }
+    
+    public void upgrade() {
+        upgrade(1);
     }
 }

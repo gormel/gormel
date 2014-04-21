@@ -40,4 +40,12 @@ public class Vector {
         double len = Math.sqrt(x * x + y * y);
         return new Vector((int)(x / len), (int)(y / len));
     }
+    
+    public Vector neg() {
+        return new Vector(-x, -y);
+    }
+    
+    public Vector mul(int value) {
+        return new Vector(x * value, y * value);
+    }
 }
