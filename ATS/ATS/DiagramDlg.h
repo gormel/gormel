@@ -11,6 +11,7 @@ class CDiagramDlg : public CDialogEx
 	Station *station;
 	void DrawTomb(int x, int y, int width, int height);
 	void DrawTomb(int offset, int width, double percent);
+	static const int captHeight = 35;
 	HPEN pen;
 	HDC dc;
 public:

@@ -35,10 +35,11 @@ void CDiagramDlg::DrawTomb(int x, int y, int width, int height)
 
 void CDiagramDlg::DrawTomb(int offset, int width, double percent)
 {
-	RECT windowRect;
-	GetWindowRect(&windowRect);
-	int height = windowRect.bottom - windowRect.top;
-	DrawTomb(offset, height, width, (int)(height * percent));
+	CRect rect;
+	this->GetClientRect(&rect);
+	
+	int height = rect.Height() - captHeight;
+	DrawTomb(offset, height, width, (int)(height * percent * 0.9));
 }
 
 BEGIN_MESSAGE_MAP(CDiagramDlg, CDialogEx)
@@ -55,9 +56,9 @@ void CDiagramDlg::OnPaint()
 	dc = ::GetDC(this->GetSafeHwnd());
 	SelectObject(dc, pen);
 	auto phones = station->GetPhonesByCaegory(1);
-	RECT wndRct;
-	GetWindowRect(&wndRct);
-	int width = - wndRct.left + wndRct.right;
+	CRect wndRct;
+	GetClientRect(&wndRct);
+	int width = wndRct.Width();
 	int wid = width / (phones.size() * 2);
 	int offset = wid * 2;
 	auto calls = station->GetCalls();
@@ -73,7 +74,14 @@ void CDiagramDlg::OnPaint()
 	for (auto p : phones)
 	{
 		int now = std::count_if(calls.begin(), calls.end(), [&](Call *c){ return c->GetContainer() == p; });
-		DrawTomb(index++ * offset + offset / 4, wid, (double)now / max);
+		int tombOffset = index++ * offset + offset / 4;
+		DrawTomb(tombOffset, wid, (double)now / max);
+		auto rect = new CRect(CPoint(tombOffset - wid / 4, wndRct.Height() - captHeight + 2), CSize(wid + wid / 2, captHeight));
+		SetBkMode(dc, TRANSPARENT);
+		std::wostringstream str;
+		str << p->GetNumber() << std::endl << " (" << now << ")";
+		DrawTextW(dc, str.str().c_str(), -1, rect, DT_CENTER);
+
 	}
 }
 

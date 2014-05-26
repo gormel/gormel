@@ -31,8 +31,6 @@ private:
 			if (ifs.eof())
 				break;
 			std::getline(ifs, family);
-			if (ifs.eof())
-				break;
 			_class = std::stoi(cl);
 
 			Phone *p;
