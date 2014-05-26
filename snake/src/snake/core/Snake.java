@@ -5,11 +5,8 @@
 package snake.core;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
-import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.DelayQueue;
 import snake.utils.Vector;
 
 /**
@@ -17,7 +14,7 @@ import snake.utils.Vector;
  * @author User
  */
 public class Snake {
-    Deque<Vector> turns = new ArrayDeque<Vector>();
+    Deque<Vector> turns = new ArrayDeque<>();
     
     Vector vel;
     Vector pos;
@@ -35,6 +32,10 @@ public class Snake {
     public void down() {
         turns.add(pos);
         vel = new Vector(0, 1);
+    }
+    
+    public Queue<Vector> getTurns() {
+        return turns;
     }
     
     public void right() {
