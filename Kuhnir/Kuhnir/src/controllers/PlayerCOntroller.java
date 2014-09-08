@@ -24,7 +24,13 @@ public class PlayerCOntroller {
 		return DAOFactory.getFilePlayerDAO().fetchAllPlayers();
 	}
 	
-	public List<Player> selectedPlayers() {
+	public synchronized List<Player> selectedPlayers() {
+		Collections.sort(players, new Comparator<Player>() {
+			@Override
+			public int compare(Player o1, Player o2) {
+				return Integer.compare(o1.score, o2.score);
+			}
+		});
 		return players;
 	}
 	
@@ -33,18 +39,18 @@ public class PlayerCOntroller {
 		return DAOFactory.getFilePlayerDAO().findPlayer(name);
 	}
 	
-	public void selectPlayer(Player p) {
+	public synchronized void selectPlayer(Player p) {
 		if (p == null)
 			return;
 		players.add(p);
 	}
 	
-	public void unselectPlayer(Player p) {
+	public synchronized void unselectPlayer(Player p) {
 		if (players.contains(p))
 			players.remove(p);
 	}
 	
-	private List<Paring> pair() {
+	private synchronized List<Paring> pair() {
 		List<Paring> result = new ArrayList<>();
 		
 		if (players.size() % 2 == 1)
@@ -52,6 +58,8 @@ public class PlayerCOntroller {
 		Collections.sort(players, new Comparator<Player>() {
 			@Override
 			public int compare(Player o1, Player o2) {
+				if (o1.score == o2.score)
+					return Integer.compare(o1.totalScore, o2.totalScore);
 				return Integer.compare(o1.score, o2.score);
 			}		
 		});
@@ -66,9 +74,15 @@ public class PlayerCOntroller {
 		return result;
 	}
 	
-	public List<Paring> getParings(boolean repair) {
+	public synchronized List<Paring> getParings(boolean repair) {
 		if (repair || parings == null)
-			return parings = pair();
+			parings = pair();
+		Collections.sort(parings, new Comparator<Paring>() {
+			@Override
+			public int compare(Paring o1, Paring o2) {
+				return -(o1.player1.score + o1.player2.score - o2.player1.score - o2.player2.score);
+			}
+		});
 		return parings;
 	}
 }

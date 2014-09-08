@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 
 import states.StatePanel;
 import states.process.ProcessState;
+import states.settings.SettingsState;
 import controllers.StateController;
 
 
@@ -44,7 +45,7 @@ public class PrepirStatePanel extends StatePanel {
 	}
 	
 	private void settings_MouceClick(MouseEvent e) {
-		
+		StateController.getInstance().push(new SettingsState());
 	}
 	
 	private void exit_MouseClick(MouseEvent e) {

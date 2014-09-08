@@ -3,12 +3,12 @@ package states.tourresult;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import controllers.PlayerCOntroller;
-import controllers.StateController;
-import dao.Player;
 import states.StatePanel;
 import states.addresult.AddResultState;
 import states.process.ProcessState;
+import controllers.PlayerCOntroller;
+import controllers.StateController;
+import dao.Player;
 
 public class TourResultStatePanel extends StatePanel {
 	private static final long serialVersionUID = 6498423307660393818L;
@@ -55,10 +55,10 @@ public class TourResultStatePanel extends StatePanel {
 	
 	private void end_MouseClick(MouseEvent e) {
 		for (Player p : PlayerCOntroller.getInstance().selectedPlayers()) {
-			p.flushScore();
-			PlayerCOntroller.getInstance().unselectPlayer(p);
+			p.flushTour();
 		}
 		
 		StateController.getInstance().pop();
+		StateController.getInstance().push(new TourResultState());
 	}
 }

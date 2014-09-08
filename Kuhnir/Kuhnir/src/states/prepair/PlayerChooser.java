@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import controllers.PlayerCOntroller;
 import dao.DAOFactory;
@@ -34,8 +35,9 @@ public class PlayerChooser extends JPanel {
 		for (Player p : dao.fetchAllPlayers())
 			avaliableModel.addElement(p);
 		
+		watchScroll = new JScrollPane(watch);
 		setLayout(new BorderLayout());
-		add(watch, BorderLayout.CENTER);
+		add(watchScroll, BorderLayout.CENTER);
 		add(control, BorderLayout.SOUTH);
 		
 		control.setLayout(new BorderLayout());
@@ -94,4 +96,5 @@ public class PlayerChooser extends JPanel {
 	private JPanel buttons = new JPanel(); 
 	private JButton add = new JButton();
 	private JButton remove = new JButton();
+	private JScrollPane watchScroll = new JScrollPane();
 }

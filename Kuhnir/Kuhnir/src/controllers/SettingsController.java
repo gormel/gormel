@@ -40,6 +40,10 @@ public class SettingsController {
 		}
 	}
 	
+	public void load() {
+		loadFromFile();
+	}
+	
 	public void save() {
 		Properties prop = new Properties();
 		prop.setProperty("tourTime", tourTime.toString());
