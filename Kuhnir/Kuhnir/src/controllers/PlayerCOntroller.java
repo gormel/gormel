@@ -28,7 +28,7 @@ public class PlayerCOntroller {
 		Collections.sort(players, new Comparator<Player>() {
 			@Override
 			public int compare(Player o1, Player o2) {
-				return Integer.compare(o1.score, o2.score);
+				return -Integer.compare(o1.score, o2.score);
 			}
 		});
 		return players;
@@ -84,5 +84,14 @@ public class PlayerCOntroller {
 			}
 		});
 		return parings;
+	}
+	
+	public synchronized void updateSelected() {
+		for (Player p : players)
+			DAOFactory.getFilePlayerDAO().UpdatePlayer(p);
+	}
+	
+	public synchronized void unselectAll() {
+		players.clear();
 	}
 }

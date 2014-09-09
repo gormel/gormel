@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import states.StatePanel;
 import states.addresult.AddResultState;
 import states.process.ProcessState;
+import states.tournamentresult.TournamentResultState;
 import controllers.PlayerCOntroller;
 import controllers.StateController;
 import dao.Player;
@@ -59,6 +60,6 @@ public class TourResultStatePanel extends StatePanel {
 		}
 		
 		StateController.getInstance().pop();
-		StateController.getInstance().push(new TourResultState());
+		StateController.getInstance().push(new TournamentResultState());
 	}
 }
