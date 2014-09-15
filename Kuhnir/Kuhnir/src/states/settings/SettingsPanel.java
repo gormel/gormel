@@ -11,10 +11,16 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.joda.time.Period;
+
+import controllers.SettingsController;
 
 public class SettingsPanel extends JPanel {
 	private static final long serialVersionUID = 2445656545415150478L;
+	private static final LocalDateTime startTime = new LocalDateTime(1970, 1, 1, 0, 0);
 	
 	public SettingsPanel() {
 		initComponents();
@@ -26,8 +32,9 @@ public class SettingsPanel extends JPanel {
 		p.setLayout(new BorderLayout());
 		p.add(new JLabel("Tour time"), BorderLayout.WEST);
 		timePicker.setModel(new SpinnerDateModel());
-		timePicker.setEditor(new JSpinner.DateEditor(timePicker, "HH:mm:ss"));
-		timePicker.setValue(new Date());
+		timePicker.setEditor(new JSpinner.DateEditor(timePicker, "KK:mm:ss"));
+		Date d = startTime.plus(SettingsController.getInstance().getTourTime()).toDate();
+		timePicker.setValue(d);
 		timePicker.addChangeListener(new ChangeListener() {
 			
 			@Override
@@ -41,10 +48,8 @@ public class SettingsPanel extends JPanel {
 	
 	private void timePicker_StateChanged(ChangeEvent e) {
 		Date d = (Date)timePicker.getValue();
-		//DateTime dt = new DateTime(d);
-		Period p = new Period(d);
-		//SettingsController.getInstance().setTourTime();
-		p.getDays();
+		LocalDateTime newDateTime = new LocalDateTime(d);
+		SettingsController.getInstance().setTourTime(new Period(startTime, newDateTime));
 	}
 	
 	private JSpinner timePicker = new JSpinner();

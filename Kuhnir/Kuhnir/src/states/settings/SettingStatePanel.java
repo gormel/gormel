@@ -45,6 +45,7 @@ public class SettingStatePanel extends StatePanel {
 	
 	private void cancel_MouseClicked(MouseEvent e) {
 		SettingsController.getInstance().load();
+		StateController.getInstance().pop();
 	}
 	
 	private void ok_MouseClicked(MouseEvent e) {
