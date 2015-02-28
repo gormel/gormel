@@ -1,4 +1,4 @@
-package com.gremkil.trying;
+package com.gremkil.trying.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

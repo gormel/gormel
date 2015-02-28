@@ -2,32 +2,57 @@ package com.gremkil.trying;
 
 import android.annotation.TargetApi;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorEventListener2;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.nio.ByteBuffer;
-import java.util.Arrays;
+import java.nio.Buffer;
 
 public class MainActivity extends Activity {
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+    private SensorManager sensorManager;
+    private Sensor rotationSensor;
+
+    private final float[] sensorValues = new float[5];
+    private final SensorEventListener sensorListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent sensorEvent) {
+            System.arraycopy(sensorEvent.values, 0, sensorValues, 0, sensorValues.length);
+            getGameView().onRotate(sensorValues);
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int i) {}
+    };
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        //test area
-
-        byte[] buff = new byte[] { 1, 2, 3, 4, 5 };
-        ByteBuffer buffer = ByteBuffer.wrap(buff);
-        byte b = buffer.get();
-        short s = buffer.getShort();
-        byte[] arr = Arrays.copyOfRange(buffer.array(), buffer.position(), buffer.capacity());
-
+        sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 		setContentView(R.layout.activity_main);
 	}
 
-	@Override
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sensorManager.registerListener(sensorListener, rotationSensor, SensorManager.SENSOR_DELAY_GAME);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(sensorListener);
+    }
+
+    @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
@@ -50,8 +75,12 @@ public class MainActivity extends Activity {
                     color = Color.WHITE;
                     break;
             }
-            ((GameView) findViewById(R.id.game)).setColor(color);
+            getGameView().setColor(color);
         }
         return super.onMenuItemSelected(featureId, item);
+    }
+
+    private GameView getGameView() {
+        return (GameView) findViewById(R.id.game);
     }
 }

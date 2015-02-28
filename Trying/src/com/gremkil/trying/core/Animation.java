@@ -1,7 +1,6 @@
-package com.gremkil.trying;
+package com.gremkil.trying.core;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 
 public class Animation {
     private Sprite sprite;

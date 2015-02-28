@@ -1,7 +1,6 @@
-package com.gremkil.trying;
+package com.gremkil.trying.core;
 
 import android.graphics.Bitmap;
-import android.media.Image;
 
 import java.util.ArrayList;
 import java.util.List;
