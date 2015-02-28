@@ -1,20 +1,18 @@
 package com.gremkil.trying;
 
 import android.annotation.TargetApi;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.view.MenuItem;
 
-import com.gremkil.server.packages.IsData;
-
-import java.lang.annotation.Annotation;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 public class MainActivity extends Activity {
-
-	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,4 +34,24 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {}
+        else {
+            int color = -1;
+            switch (item.getItemId()) {
+                case R.id.action_green:
+                    color = Color.GREEN;
+                    break;
+                case R.id.action_red:
+                    color = Color.RED;
+                    break;
+                case R.id.action_white:
+                    color = Color.WHITE;
+                    break;
+            }
+            ((GameView) findViewById(R.id.game)).setColor(color);
+        }
+        return super.onMenuItemSelected(featureId, item);
+    }
 }

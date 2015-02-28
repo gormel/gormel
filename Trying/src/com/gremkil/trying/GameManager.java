@@ -1,13 +1,16 @@
 package com.gremkil.trying;
 
 import android.graphics.Canvas;
+import android.util.Log;
 
 public class GameManager extends Thread {
-	
+    public static final long FPS = 60;
+    public static final long NS_PER_FRAME = 1000000000 / FPS;
+
 	GameView view;
 	private boolean running = false;
 	
-	private static long fps = 60;
+	private final static long fps = 60;
 	
 	public GameManager(GameView view) {
 		this.view = view;
@@ -15,24 +18,28 @@ public class GameManager extends Thread {
 	
 	@Override
 	public void run() {
-		long lastTime = System.currentTimeMillis();
-		long time = 0;
+        long time = 0;
 		while (running) {
-			long beforeTime = System.currentTimeMillis();
+			long beforeTime = System.nanoTime();
+            long lastUpdateTime = beforeTime;
 			do {
-				time = System.currentTimeMillis();
+				time = System.nanoTime();
+                long dt = time - lastUpdateTime;
+                if (dt < NS_PER_FRAME / 10) { continue; }
+                if (dt <= 0 || dt > NS_PER_FRAME) {
+                    dt = NS_PER_FRAME;
+                }
 				synchronized (view.getHolder()) {
-					view.onUpdate(time - beforeTime);
-				}
-				beforeTime = time;
-			} while (time - lastTime < 1000 / fps);
+					view.onUpdate(dt / 1000000.0f);
+                }
+				lastUpdateTime = time;
+			} while (time - beforeTime < NS_PER_FRAME);
 			
 			Canvas canvas = view.getHolder().lockCanvas();
 			synchronized (view.getHolder()) {
 				view.onDraw(canvas);
 			}
 			view.getHolder().unlockCanvasAndPost(canvas);
-			
 		}
 	}
 	

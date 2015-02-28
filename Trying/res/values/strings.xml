@@ -3,6 +3,9 @@
 
     <string name="app_name">Trying</string>
     <string name="action_settings">Settings</string>
+    <string name="action_white">White</string>
+    <string name="action_red">Red</string>
+    <string name="action_green">Green</string>
     <string name="hello_world">Hello world!</string>
 
 </resources>
