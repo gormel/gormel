@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,6 +36,7 @@ namespace TraceMe
             Transformation = Matrix4.Identity();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool SameSide(Vector3 p1, Vector3 p2, Vector3 a, Vector3 b)
         {
             var cp1 = (b - a).CrossProduct(p1 - a);

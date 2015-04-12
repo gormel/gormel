@@ -11,6 +11,8 @@ namespace TraceMe
     {
         public static Vector3 Zero { get { return new Vector3(0); } }
         public static Vector3 Forward { get { return new Vector3(0, 0, 1); } }
+        public static Vector3 Up { get { return new Vector3(0, 1, 0); } }
+        public static Vector3 Right { get { return new Vector3(1, 0, 0); } }
 
         public double X;
         public double Y;
@@ -40,7 +42,7 @@ namespace TraceMe
 
         public static Vector3 operator -(Vector3 a, Vector3 b)
         {
-            return a + (-b);
+            return new Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
         }
 
         public double LenghtSq()
@@ -50,7 +52,7 @@ namespace TraceMe
 
         public double Lenght()
         {
-            return Math.Sqrt(LenghtSq());
+            return Math.Sqrt(X * X + Y * Y + Z * Z);
         }
 
         public static Vector3 operator *(double a, Vector3 b)
@@ -60,12 +62,12 @@ namespace TraceMe
 
         public static Vector3 operator *(Vector3 a, double b)
         {
-            return b * a;
+            return new Vector3(b * a.X, b * a.Y, b * a.Z);
         }
 
         public static Vector3 operator /(Vector3 a, double b)
         {
-            return 1 / b * a;
+            return new Vector3(a.X / b, a.Y / b, a.Z / b);
         }
 
         public Vector3 Normalize()

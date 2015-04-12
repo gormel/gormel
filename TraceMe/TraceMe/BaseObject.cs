@@ -11,6 +11,8 @@ namespace TraceMe
     {
         public Color Color { get; set; }
         public double Reflection { get; set; }
+        public double Refraction { get; set; }
+        public double LightDensity { get;set; }
 
         public abstract Hit Intersections(Lay lay);
     }

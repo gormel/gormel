@@ -45,42 +45,32 @@ namespace TraceMe
         public void RenderScene()
         {
             BitmapData bmpData = null;
-            lock (locking)
-            {
-                bmpData = buffer.LockBits(new Rectangle(new Point(), buffer.Size), ImageLockMode.WriteOnly, buffer.PixelFormat);
-            }
+            bmpData = buffer.LockBits(new Rectangle(new Point(), buffer.Size), ImageLockMode.WriteOnly, buffer.PixelFormat);
             int multiplyer = Bitmap.GetPixelFormatSize(bmpData.PixelFormat) / 8;
             var dataArray = new byte[bmpData.Width * bmpData.Height * multiplyer];
+            var bWidth = buffer.Width;
 
             var brush = new SolidBrush(Color.White);
 
             Parallel.ForEach(points, p =>
-                             {
-                                 int x = p.X;
-                                 int y = p.Y;
-                                 Vector3 point = new Vector3(x - ScreenWidth / 2, ScreenHeight / 2 - y, 0);
-                                 Vector3 direction = (point - eye).Normalize();
-                                 Lay lay = new Lay(point, direction);
+            {
+                int x = p.X;
+                int y = p.Y;
+                Vector3 point = new Vector3(x - ScreenWidth / 2, ScreenHeight / 2 - y, 0);
+                Vector3 direction = (point - eye).Normalize();
+                Lay lay = new Lay(point, direction);
 
-                                 Color c = Render(lay);
-                                 lock (locking)
-                                 {
-                                     dataArray[(x + y * buffer.Width) * multiplyer + 0] = c.B;
-                                     dataArray[(x + y * buffer.Width) * multiplyer + 1] = c.G;
-                                     dataArray[(x + y * buffer.Width) * multiplyer + 2] = c.R;
-                                     dataArray[(x + y * buffer.Width) * multiplyer + 3] = c.A;
-                                 }
-
-                                 //lock (locking)
-                                 //{
-                                 //    buffer.SetPixel(x, y, c);
-                                 //}
+                Color c = Render(lay);
+                dataArray[(x + y * bWidth) * multiplyer + 0] = c.B;
+                dataArray[(x + y * bWidth) * multiplyer + 1] = c.G;
+                dataArray[(x + y * bWidth) * multiplyer + 2] = c.R;
+                dataArray[(x + y * bWidth) * multiplyer + 3] = c.A;
             });
 
             Marshal.Copy(dataArray, 0, bmpData.Scan0, dataArray.Length);
+            buffer.UnlockBits(bmpData);
             lock (locking)
             {
-                buffer.UnlockBits(bmpData);
                 Graphics.DrawImage(buffer, 0, 0, Graphics.VisibleClipBounds.Width, Graphics.VisibleClipBounds.Height);
             }
         }
@@ -88,15 +78,15 @@ namespace TraceMe
         private Color Render(Lay lay)
         {
             Color result = FillColor;
-            var hits = Objects.Select(o => o.Intersections(lay));
 
             var min = double.PositiveInfinity;
             Hit hit = null;
-            foreach (var hit_ in hits)
+            for (int i = 0; i < Objects.Count; i++)
             {
+                var hit_ = Objects[i].Intersections(lay);
                 if (hit_ == null)
                     continue;
-                if (hit_.Distance < min && hit_.Distance >= 0)
+                if (hit_.Distance < min && hit_.Distance > 0)
                 {
                     min = hit_.Distance;
                     hit = hit_;
@@ -113,8 +103,7 @@ namespace TraceMe
 
             if (hit.Reflection > 0)
             {
-                double angle = Math.PI - 2 * Math.Acos(lay.Direction.DotProduct(hit.Normal) / lay.Direction.Lenght() / hit.Normal.Lenght());
-                Vector3 newDirection = Matrix4.RorationAround(angle, lay.Direction.CrossProduct(hit.Normal)).Transform(lay.Direction);
+                Vector3 newDirection = lay.Direction - 2 * lay.Direction.DotProduct(hit.Normal) / hit.Normal.LenghtSq() * hit.Normal;
                 Lay reflected = new Lay(hitPoint, newDirection);
                 Color reflectedColor = Render(reflected);
                 double r = result.R + (reflectedColor.R * hit.Reflection);
@@ -135,14 +124,7 @@ namespace TraceMe
         public void Render(int x, int y)
         {
             Vector3 point = new Vector3(x - ScreenWidth / 2, ScreenHeight / 2 - y, 0);
-            double cos = Math.Cos(Fov);
-            double h = ScreenWidth / 2 * Math.Sqrt((1 + cos) / (1 - cos));
-            Vector3 eye = new Vector3(0, 0, -h);
             Vector3 direction = (point - eye).Normalize();
-            //double angleX = (0.25 - x / 2 / ScreenWidth) * Fov;
-            //double angleY = (y / 2 / ScreenHeight - 0.25) * Fov;
-            //Matrix4 rotation = Matrix4.RotationY(angleX) * Matrix4.RotationX(-angleY);
-            //Vector3 direction = rotation.Transform(Vector3.Forward);
             Lay lay = new Lay(point, direction);
 
             Color c = Render(lay);
