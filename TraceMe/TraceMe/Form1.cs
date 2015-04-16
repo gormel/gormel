@@ -19,14 +19,13 @@ namespace TraceMe
         Mesh m;
         Task graph;
         Stopwatch sw = new Stopwatch();
-        Progress<string> titleProgress = new Progress<string>();
+        Progress<string> titleProgress;
 
         CancellationTokenSource tokenSource = new CancellationTokenSource();
 
         public Form1()
         {
             InitializeComponent();
-            InitUserComponents();
         }
 
         private void InitUserComponents()
@@ -49,6 +48,7 @@ namespace TraceMe
 
             this.FormClosing += Form1_FormClosing;
 
+            titleProgress = new Progress<string>();
             titleProgress.ProgressChanged += titleProgress_ProgressChanged;
 
             graph = Task.Run(() => 
@@ -94,6 +94,11 @@ namespace TraceMe
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
             device.Render(e.X, e.Y);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            InitUserComponents();
         }
     }
 }

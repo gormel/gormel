@@ -54,11 +54,8 @@ namespace TraceMe
 
             var brush = new SolidBrush(Color.White);
 
-            Parallel.ForEach(points, p =>
+            Parallel.ForEach(points.Where(p => rnd.Next(5) == 0), p =>
             {
-                if (rnd.Next(100) != 0)
-                    return;
-
                 int x = p.X;
                 int y = p.Y;
                 Vector3 point = new Vector3(x - ScreenWidth / 2, ScreenHeight / 2 - y, 0);
