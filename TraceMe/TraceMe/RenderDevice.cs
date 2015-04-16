@@ -15,6 +15,8 @@ namespace TraceMe
         public List<BaseObject> Objects { get; private set; }
         public Color FillColor { get; set; }
         public double Fov { get; set; }
+        public int Randomizer { get; set; }
+
         private const int depth = 3;
         private Bitmap buffer;
         private Object locking = new object();
@@ -42,6 +44,8 @@ namespace TraceMe
             points = (from x in Enumerable.Range(0, ScreenWidth)
                       from y in Enumerable.Range(0, ScreenHeight)
                       select new Point(x, y)).ToList();
+
+            Randomizer = 0;
         }
 
         public void RenderScene()
@@ -54,7 +58,7 @@ namespace TraceMe
 
             var brush = new SolidBrush(Color.White);
 
-            Parallel.ForEach(points.Where(p => rnd.Next(5) == 0), p =>
+            Parallel.ForEach(points.Where(p => rnd.Next(Randomizer) == 0), p =>
             {
                 int x = p.X;
                 int y = p.Y;
@@ -125,21 +129,6 @@ namespace TraceMe
             }
 
             return result;
-        }
-
-        public void Render(int x, int y)
-        {
-            Vector3 point = new Vector3(x - ScreenWidth / 2, ScreenHeight / 2 - y, 0);
-            Vector3 direction = point - eye;
-            direction.Normalize();
-            Lay lay = new Lay(point, direction);
-
-            Color c = Render(lay, 0);
-
-            lock (locking)
-            {
-                Graphics.FillRectangle(new SolidBrush(c), x, y, 1, 1);
-            }
         }
     }
 }

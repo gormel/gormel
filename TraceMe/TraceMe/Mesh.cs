@@ -53,14 +53,17 @@ namespace TraceMe
         {
             Hit result = null;
             double mint = double.PositiveInfinity;
-            for (int v = 0; v < indices.Length / 3; v += 3)
+            for (int v = 0; v < indices.Length; v += 3)
             {
+                int aind = indices[v + 0];
+                int bind = indices[v + 1];
+                int cind = indices[v + 2];
                 Vector3 a = new Vector3();
                 Vector3 b = new Vector3();
                 Vector3 c = new Vector3();
-                Matrix4.Transform(ref Transformation, ref vertices[v + 0], out a);
-                Matrix4.Transform(ref Transformation, ref vertices[v + 1], out b);
-                Matrix4.Transform(ref Transformation, ref vertices[v + 2], out c);
+                Matrix4.Transform(ref Transformation, ref vertices[aind], out a);
+                Matrix4.Transform(ref Transformation, ref vertices[bind], out b);
+                Matrix4.Transform(ref Transformation, ref vertices[cind], out c);
 
                 Vector3 n = (b - a).CrossProduct(c - a);
                 n.Normalize();
@@ -68,7 +71,7 @@ namespace TraceMe
 
                 double t = -(d + lay.Point.DotProduct(n)) / lay.Direction.DotProduct(n);
 
-                if (t < mint)
+                if (t <= mint)
                 {
                     mint = t;
                     Vector3 i = lay.Point + lay.Direction * t;
@@ -84,9 +87,9 @@ namespace TraceMe
                     if (!(SameSide(ref i, ref a, ref b, ref c) && SameSide(ref i,ref b, ref a, ref c) && SameSide(ref i, ref c, ref a, ref b)))
                         continue;
 
-                    Color ca = colors[v + 0];
-                    Color cb = colors[v + 1];
-                    Color cc = colors[v + 2];
+                    Color ca = colors[aind];
+                    Color cb = colors[bind];
+                    Color cc = colors[cind];
 
                     double da = ai.LenghtSq();
                     double db = bi.LenghtSq();
@@ -98,15 +101,15 @@ namespace TraceMe
                     db /= max;
                     dc /= max;
 
-                    Color color = Color.FromArgb((byte)(ca.R * da + cb.R * db + cc.R * dc),
-                                                  (byte)(ca.G * da + cb.G * db + cc.G * dc),
-                                                  (byte)(ca.B * da + cb.B * db + cc.B * dc));
+                    Color color = Color.FromArgb((byte)(ca.R / da + cb.R / db + cc.R / dc),
+                                                 (byte)(ca.G / da + cb.G / db + cc.G / dc),
+                                                 (byte)(ca.B / da + cb.B / db + cc.B / dc));
 
                     result = new Hit();
                     result.Color = color;
                     result.Distance = t;
                     result.Normal = n;
-                    result.Reflection = reflections[v] * da + reflections[v + 1] * db + reflections[v + 2] * dc;
+                    result.Reflection = reflections[aind] / da + reflections[bind] / db + reflections[cind] / dc;
                 }
 
                 

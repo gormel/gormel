@@ -32,12 +32,13 @@ namespace TraceMe
         {
             DoubleBuffered = true;
             device = new RenderDevice(CreateGraphics(), Width, Height, Math.PI / 4);
+            device.Randomizer = 5;
             device.FillColor = Color.CornflowerBlue;
 
             s = new Sphere(new Vector3(0, 0, 200), 100);
             s.Color = Color.Black;
             s.Reflection = 0.5;
-            device.Objects.Add(s);
+            //device.Objects.Add(s);
 
             Vector3[] vertices = new Vector3[] { new Vector3(100, -100, 150), new Vector3(-100, -100, 150), new Vector3(0, 100, 150) };
             int[] indices = new int[] { 0, 1, 2 };
@@ -45,6 +46,18 @@ namespace TraceMe
             double[] reflections = new double[] { 0, 0, 0 };
             m = new Mesh(vertices, indices, colors, reflections);
             device.Objects.Add(m);
+
+            vertices = new Vector3[] {
+                new Vector3(-200, 200, 300),
+                new Vector3(200, 200, 300),
+                new Vector3(200, -200, 300),
+                new Vector3(-200, -200, 300),
+            };
+            indices = new int[] { 0, 1, 2, 2, 3, 0 };
+            colors = new Color[] { Color.White, Color.White, Color.White, Color.White };
+            reflections = new double[] {0, 1, 1, 0};
+            Mesh background = new Mesh(vertices, indices, colors, reflections);
+            device.Objects.Add(background);
 
             this.FormClosing += Form1_FormClosing;
 
@@ -75,25 +88,15 @@ namespace TraceMe
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            //s.Center = s.Center + Vector3.Forward * 20;
             m.Transformation = m.Transformation * Matrix4.RotationY(-Math.PI / 16);
         }
 
-        //private int areaRadius = 10;
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
-            //for (int x = e.X - areaRadius; x < e.X + areaRadius; x++)
-            //{
-            //    for (int y = e.Y - areaRadius; y < e.Y + areaRadius; y++)
-            //    {
-            //        device.Render(x, y);
-            //    }
-            //}
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
-            device.Render(e.X, e.Y);
         }
 
         private void Form1_Load(object sender, EventArgs e)
