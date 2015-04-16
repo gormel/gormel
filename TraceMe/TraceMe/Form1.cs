@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,8 @@ namespace TraceMe
         Sphere s;
         Mesh m;
         Task graph;
+        Stopwatch sw = new Stopwatch();
+        Progress<string> titleProgress = new Progress<string>();
 
         CancellationTokenSource tokenSource = new CancellationTokenSource();
 
@@ -46,13 +49,23 @@ namespace TraceMe
 
             this.FormClosing += Form1_FormClosing;
 
+            titleProgress.ProgressChanged += titleProgress_ProgressChanged;
+
             graph = Task.Run(() => 
             {
                 while (!tokenSource.Token.IsCancellationRequested)
                 {
+                    sw.Restart();
                     device.RenderScene();
+                    sw.Stop();
+                    ((IProgress<string>)titleProgress).Report((1 / sw.Elapsed.TotalSeconds).ToString("F2"));
                 }
             });
+        }
+
+        void titleProgress_ProgressChanged(object sender, string e)
+        {
+            Text = e;
         }
 
         void Form1_FormClosing(object sender, FormClosingEventArgs e)
