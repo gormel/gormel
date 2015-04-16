@@ -113,7 +113,7 @@ namespace TraceMe
 
             if (hit.Reflection > 0)
             {
-                Vector3 newDirection = lay.Direction - 2 * lay.Direction.DotProduct(hit.Normal) / hit.Normal.LenghtSq() * hit.Normal;
+                Vector3 newDirection = lay.Direction - 2 * lay.Direction.Dot(hit.Normal) / hit.Normal.LenghtSq() * hit.Normal;
                 Lay reflected = new Lay(hitPoint, newDirection);
                 Color reflectedColor = Render(reflected, d + 1);
                 //double r = result.R + (reflectedColor.R * hit.Reflection);

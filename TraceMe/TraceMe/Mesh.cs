@@ -44,9 +44,9 @@ namespace TraceMe
             Vector3 ba = b - a;
             Vector3 p1a = p1 - a;
             Vector3 p2a = p2 - a;
-            Vector3.CrossProduct(ref ba, ref p1a, out cp1);
-            Vector3.CrossProduct(ref ba, ref p2a, out cp2);
-            return cp1.DotProduct(cp2) >= 0;
+            Vector3.Cross(ref ba, ref p1a, out cp1);
+            Vector3.Cross(ref ba, ref p2a, out cp2);
+            return cp1.Dot(cp2) >= 0;
         }
 
         public override Hit Intersections(Lay lay)
@@ -67,19 +67,14 @@ namespace TraceMe
 
                 Vector3 n = (b - a).CrossProduct(c - a);
                 n.Normalize();
-                double d = -n.DotProduct(a);
+                double d = -n.Dot(a);
 
-                double t = -(d + lay.Point.DotProduct(n)) / lay.Direction.DotProduct(n);
+                double t = -(d + lay.Point.Dot(n)) / lay.Direction.Dot(n);
 
                 if (t <= mint)
                 {
                     mint = t;
                     Vector3 i = lay.Point + lay.Direction * t;
-                    Vector3 ai = a - i;
-                    Vector3 bi = b - i;
-                    Vector3 ci = c - i;
-                    Vector3 ac = a - c;
-                    Vector3 bc = b - c;
 
                     //if ((ai.CrossProduct(bi) + bi.CrossProduct(ci) + ci.CrossProduct(ai)).LenghtSq() > ac.CrossProduct(bc).LenghtSq())
                     //    continue;
@@ -87,13 +82,24 @@ namespace TraceMe
                     if (!(SameSide(ref i, ref a, ref b, ref c) && SameSide(ref i,ref b, ref a, ref c) && SameSide(ref i, ref c, ref a, ref b)))
                         continue;
 
+                    Vector3 v0 = b - a;
+                    Vector3 v1 = c - a;
+                    Vector3 v2 = i - a;
+
+                    double d00 = v0.Dot(v0);
+                    double d01 = v0.Dot(v1);
+                    double d11 = v1.Dot(v1);
+                    double d20 = v2.Dot(v0);
+                    double d21 = v2.Dot(v1);
+                    double denum = d00 * d11 - d01 * 01;
+
                     Color ca = colors[aind];
                     Color cb = colors[bind];
                     Color cc = colors[cind];
 
-                    double da = ai.LenghtSq();
-                    double db = bi.LenghtSq();
-                    double dc = ci.LenghtSq();
+                    double db = (d11 * d20 - d01 * d01) / denum;
+                    double dc = (d00 * d21 - d01 * d20) / denum;
+                    double da = 1 - db - dc;
 
                     double max = Math.Max(da, Math.Max(db, dc));
 
@@ -109,7 +115,7 @@ namespace TraceMe
                     result.Color = color;
                     result.Distance = t;
                     result.Normal = n;
-                    result.Reflection = reflections[aind] / da + reflections[bind] / db + reflections[cind] / dc;
+                    result.Reflection = reflections[aind] * da + reflections[bind] * db + reflections[cind] * dc;
                 }
 
                 

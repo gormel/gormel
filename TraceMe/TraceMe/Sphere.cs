@@ -28,7 +28,7 @@ namespace TraceMe
         public override Hit Intersections(Lay lay)
         {
             double a = lay.Direction.LenghtSq();
-            double b = 2 * (lay.Point - Center).DotProduct(lay.Direction);
+            double b = 2 * (lay.Point - Center).Dot(lay.Direction);
             double c = (lay.Point - Center).LenghtSq() - Radius * Radius;
             double d = b * b - 4 * a * c;
             if (d < 0)
