@@ -116,16 +116,22 @@ namespace TraceMe
                 Vector3 newDirection = lay.Direction - 2 * lay.Direction.DotProduct(hit.Normal) / hit.Normal.LenghtSq() * hit.Normal;
                 Lay reflected = new Lay(hitPoint, newDirection);
                 Color reflectedColor = Render(reflected, d + 1);
-                double r = result.R + (reflectedColor.R * hit.Reflection);
-                double g = result.G + (reflectedColor.G * hit.Reflection);
-                double b = result.B + (reflectedColor.B * hit.Reflection);
+                //double r = result.R + (reflectedColor.R * hit.Reflection);
+                //double g = result.G + (reflectedColor.G * hit.Reflection);
+                //double b = result.B + (reflectedColor.B * hit.Reflection);
 
-                var max = Math.Max(r, Math.Max(g, b));
-                r /= max;
-                g /= max;
-                b /= max;
+                //var max = Math.Max(r, Math.Max(g, b));
+                //r /= max;
+                //g /= max;
+                //b /= max;
 
-                result = Color.FromArgb((byte)(255 * r), (byte)(255 * g), (byte)(255 * b));
+                //result = Color.FromArgb((byte)(255 * r), (byte)(255 * g), (byte)(255 * b));
+
+                double r = Math.Sqrt(((1 - hit.Reflection) * (double)result.R * (double)result.R + hit.Reflection * (double)reflectedColor.R * (double)reflectedColor.R) / 2);
+                double g = Math.Sqrt(((1 - hit.Reflection) * (double)result.G * (double)result.G + hit.Reflection * (double)reflectedColor.G * (double)reflectedColor.G) / 2);
+                double b = Math.Sqrt(((1 - hit.Reflection) * (double)result.B * (double)result.B + hit.Reflection * (double)reflectedColor.B * (double)reflectedColor.B) / 2);
+
+                result = Color.FromArgb((byte)r, (byte)g, (byte)b);
             }
 
             return result;

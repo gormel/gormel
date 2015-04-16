@@ -101,9 +101,9 @@ namespace TraceMe
                     db /= max;
                     dc /= max;
 
-                    Color color = Color.FromArgb((byte)(ca.R / da + cb.R / db + cc.R / dc),
-                                                 (byte)(ca.G / da + cb.G / db + cc.G / dc),
-                                                 (byte)(ca.B / da + cb.B / db + cc.B / dc));
+                    Color color = Color.FromArgb((byte)(ca.R * da + cb.R * db + cc.R * dc),
+                                                 (byte)(ca.G * da + cb.G * db + cc.G * dc),
+                                                 (byte)(ca.B * da + cb.B * db + cc.B * dc));
 
                     result = new Hit();
                     result.Color = color;
