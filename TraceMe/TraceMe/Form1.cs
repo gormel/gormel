@@ -16,7 +16,10 @@ namespace TraceMe
         RenderDevice device;
         Sphere s;
         Mesh m;
-        Thread graph;
+        Task graph;
+
+        CancellationTokenSource tokenSource = new CancellationTokenSource();
+
         public Form1()
         {
             InitializeComponent();
@@ -30,32 +33,31 @@ namespace TraceMe
             device.FillColor = Color.CornflowerBlue;
 
             s = new Sphere(new Vector3(0, 0, 200), 100);
-            s.Color = Color.Yellow;
+            s.Color = Color.Black;
             s.Reflection = 0.5;
             device.Objects.Add(s);
 
             Vector3[] vertices = new Vector3[] { new Vector3(100, -100, 150), new Vector3(-100, -100, 150), new Vector3(0, 100, 150) };
             int[] indices = new int[] { 0, 1, 2 };
-            Color[] colors = new Color[] { Color.Red, Color.Green, Color.Blue };
+            Color[] colors = new Color[] { Color.FromArgb(128, Color.Red), Color.FromArgb(128, Color.Green), Color.FromArgb(128, Color.Blue) };
             double[] reflections = new double[] { 0, 0, 0 };
             m = new Mesh(vertices, indices, colors, reflections);
             device.Objects.Add(m);
 
             this.FormClosing += Form1_FormClosing;
 
-            graph = new Thread(() => 
+            graph = Task.Run(() => 
             {
-                while (true)
+                while (!tokenSource.Token.IsCancellationRequested)
                 {
                     device.RenderScene();
                 }
             });
-            graph.Start();
         }
 
         void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            graph.Interrupt();
+            tokenSource.Cancel();
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)

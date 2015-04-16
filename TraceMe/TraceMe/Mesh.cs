@@ -10,7 +10,7 @@ namespace TraceMe
 {
     public class Mesh : BaseObject
     {
-        public Matrix4 Transformation { get; set; }
+        public Matrix4 Transformation;
         private Vector3[] vertices;
         private int[] indices;
         private Color[] colors;
@@ -37,10 +37,15 @@ namespace TraceMe
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private bool SameSide(Vector3 p1, Vector3 p2, Vector3 a, Vector3 b)
+        private bool SameSide(ref Vector3 p1, ref Vector3 p2, ref Vector3 a, ref Vector3 b)
         {
-            var cp1 = (b - a).CrossProduct(p1 - a);
-            var cp2 = (b - a).CrossProduct(p2 - a);
+            Vector3 cp1 = new Vector3();
+            Vector3 cp2 = new Vector3();
+            Vector3 ba = b - a;
+            Vector3 p1a = p1 - a;
+            Vector3 p2a = p2 - a;
+            Vector3.CrossProduct(ref ba, ref p1a, out cp1);
+            Vector3.CrossProduct(ref ba, ref p2a, out cp2);
             return cp1.DotProduct(cp2) >= 0;
         }
 
@@ -50,11 +55,15 @@ namespace TraceMe
             double mint = double.PositiveInfinity;
             for (int v = 0; v < indices.Length / 3; v += 3)
             {
-                Vector3 a = Transformation.Transform(vertices[v + 0]);
-                Vector3 b = Transformation.Transform(vertices[v + 1]);
-                Vector3 c = Transformation.Transform(vertices[v + 2]);
+                Vector3 a = new Vector3();
+                Vector3 b = new Vector3();
+                Vector3 c = new Vector3();
+                Matrix4.Transform(ref Transformation, ref vertices[v + 0], out a);
+                Matrix4.Transform(ref Transformation, ref vertices[v + 1], out b);
+                Matrix4.Transform(ref Transformation, ref vertices[v + 2], out c);
 
-                Vector3 n = (b - a).CrossProduct(c - a).Normalize();
+                Vector3 n = (b - a).CrossProduct(c - a);
+                n.Normalize();
                 double d = -n.DotProduct(a);
 
                 double t = -(d + lay.Point.DotProduct(n)) / lay.Direction.DotProduct(n);
@@ -72,7 +81,7 @@ namespace TraceMe
                     //if ((ai.CrossProduct(bi) + bi.CrossProduct(ci) + ci.CrossProduct(ai)).LenghtSq() > ac.CrossProduct(bc).LenghtSq())
                     //    continue;
 
-                    if (!(SameSide(i, a, b, c) && SameSide(i, b, a, c) && SameSide(i, c, a, b)))
+                    if (!(SameSide(ref i, ref a, ref b, ref c) && SameSide(ref i,ref b, ref a, ref c) && SameSide(ref i, ref c, ref a, ref b)))
                         continue;
 
                     Color ca = colors[v + 0];

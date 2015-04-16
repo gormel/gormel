@@ -15,7 +15,7 @@ namespace TraceMe
         public List<BaseObject> Objects { get; private set; }
         public Color FillColor { get; set; }
         public double Fov { get; set; }
-        private int depth = 3;
+        private const int depth = 3;
         private Bitmap buffer;
         private Object locking = new object();
         private List<Point> points = new List<Point>();
@@ -23,6 +23,8 @@ namespace TraceMe
 
         public int ScreenWidth { get; set; }
         public int ScreenHeight { get; set; }
+
+        Random rnd = new Random();
 
         public RenderDevice(Graphics g, int sWidth, int sHeight, double fov)
         {
@@ -54,13 +56,17 @@ namespace TraceMe
 
             Parallel.ForEach(points, p =>
             {
+                if (rnd.Next(100) != 0)
+                    return;
+
                 int x = p.X;
                 int y = p.Y;
                 Vector3 point = new Vector3(x - ScreenWidth / 2, ScreenHeight / 2 - y, 0);
-                Vector3 direction = (point - eye).Normalize();
+                Vector3 direction = point - eye;
+                direction.Normalize();
                 Lay lay = new Lay(point, direction);
 
-                Color c = Render(lay);
+                Color c = Render(lay, 0);
                 dataArray[(x + y * bWidth) * multiplyer + 0] = c.B;
                 dataArray[(x + y * bWidth) * multiplyer + 1] = c.G;
                 dataArray[(x + y * bWidth) * multiplyer + 2] = c.R;
@@ -75,9 +81,12 @@ namespace TraceMe
             }
         }
 
-        private Color Render(Lay lay)
+        private Color Render(Lay lay, int d)
         {
             Color result = FillColor;
+
+            if (d >= depth)
+                return result;
 
             var min = double.PositiveInfinity;
             Hit hit = null;
@@ -99,13 +108,13 @@ namespace TraceMe
 
             result = hit.Color;
 
-            Vector3 hitPoint = lay.Point + lay.Direction.Normalize() * hit.Distance;
+            Vector3 hitPoint = lay.Point + lay.Direction * hit.Distance;
 
             if (hit.Reflection > 0)
             {
                 Vector3 newDirection = lay.Direction - 2 * lay.Direction.DotProduct(hit.Normal) / hit.Normal.LenghtSq() * hit.Normal;
                 Lay reflected = new Lay(hitPoint, newDirection);
-                Color reflectedColor = Render(reflected);
+                Color reflectedColor = Render(reflected, d + 1);
                 double r = result.R + (reflectedColor.R * hit.Reflection);
                 double g = result.G + (reflectedColor.G * hit.Reflection);
                 double b = result.B + (reflectedColor.B * hit.Reflection);
@@ -124,10 +133,11 @@ namespace TraceMe
         public void Render(int x, int y)
         {
             Vector3 point = new Vector3(x - ScreenWidth / 2, ScreenHeight / 2 - y, 0);
-            Vector3 direction = (point - eye).Normalize();
+            Vector3 direction = point - eye;
+            direction.Normalize();
             Lay lay = new Lay(point, direction);
 
-            Color c = Render(lay);
+            Color c = Render(lay, 0);
 
             lock (locking)
             {

@@ -12,6 +12,11 @@ namespace TraceMe
         public Vector3 Center { get; set; }
         public double Radius { get; set; }
         public Color Color { get; set; }
+        public double Reflection { get; set; }
+        public double Refraction { get; set; }
+        public double LightDensity { get; set; }
+
+        private Random rnd = new Random();
 
         public Sphere(Vector3 c, double r)
         {
@@ -36,8 +41,14 @@ namespace TraceMe
             hit.Color = Color;
             hit.Distance = Math.Min(t1, t2);
             Vector3 hitPoint = lay.Point + lay.Direction * hit.Distance;
-            hit.Normal = (hitPoint - Center).Normalize();
-            hit.Reflection = base.Reflection;
+
+            double dx = (rnd.NextDouble() - 0.5) / 10;
+            double dz = (rnd.NextDouble() - 0.5) / 10;
+            double dy = (rnd.NextDouble() - 0.5) / 10;
+
+            hit.Normal = hitPoint - Center + new Vector3(dx, dy, dz);
+            hit.Normal.Normalize();
+            hit.Reflection = Reflection;
 
             return hit;
         }

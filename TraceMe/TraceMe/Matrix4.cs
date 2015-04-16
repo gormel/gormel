@@ -157,6 +157,13 @@ namespace TraceMe
                                0, 0, 0, 1);
         }
 
+        public static void Transform(ref Matrix4 m, ref Vector3 v, out Vector3 r)
+        {
+            r = new Vector3(v.X * m.m00 + v.Y * m.m01 + v.Z * m.m02 + m.m03,
+                            v.X * m.m10 + v.Y * m.m11 + v.Z * m.m12 + m.m13,
+                            v.X * m.m20 + v.Y * m.m21 + v.Z * m.m22 + m.m23);
+        }
+
         public static Matrix4 Translation(Vector3 v)
         {
             return new Matrix4(  1,   0,   0, 0,
@@ -165,13 +172,13 @@ namespace TraceMe
                                v.X, v.Y, v.Z, 1);
         }
 
-        public Vector3 Transform(Vector3 v)
-        {
-            Vector3 result = new Vector3(v.X * m00 + v.Y * m01 + v.Z * m02 + m03,
-                                         v.X * m10 + v.Y * m11 + v.Z * m12 + m13,
-                                         v.X * m20 + v.Y * m21 + v.Z * m22 + m23);
-            return result;
-        }
+        //public Vector3 Transform(Vector3 v)
+        //{
+        //    Vector3 result = new Vector3(v.X * m00 + v.Y * m01 + v.Z * m02 + m03,
+        //                                 v.X * m10 + v.Y * m11 + v.Z * m12 + m13,
+        //                                 v.X * m20 + v.Y * m21 + v.Z * m22 + m23);
+        //    return result;
+        //}
 
         public Vector3 GetTransform()
         {
