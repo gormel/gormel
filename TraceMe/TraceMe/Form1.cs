@@ -21,7 +21,7 @@ namespace TraceMe
         Stopwatch sw = new Stopwatch();
         Progress<string> titleProgress;
 
-        CancellationTokenSource tokenSource = new CancellationTokenSource();
+        CancellationTokenSource tokenSource;
 
         public Form1()
         {
@@ -64,6 +64,19 @@ namespace TraceMe
             titleProgress = new Progress<string>();
             titleProgress.ProgressChanged += titleProgress_ProgressChanged;
 
+            RestartRendering();
+        }
+
+        async void RestartRendering()
+        {
+            if (graph != null)
+            {
+                tokenSource.Cancel();
+                await graph;
+            }
+
+            tokenSource = new CancellationTokenSource();
+
             graph = Task.Run(() => 
             {
                 while (!tokenSource.Token.IsCancellationRequested)
@@ -88,7 +101,12 @@ namespace TraceMe
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            m.Transformation = m.Transformation * Matrix4.RotationY(-Math.PI / 16);
+            if (e.KeyCode == Keys.F2)
+                m.Transformation = m.Transformation * Matrix4.RotationY(-Math.PI / 16);
+            if (e.KeyCode == Keys.S)
+                tokenSource.Cancel();
+            if (e.KeyCode == Keys.R)
+                RestartRendering();
         }
 
         private void Form1_MouseMove(object sender, MouseEventArgs e)
@@ -97,6 +115,7 @@ namespace TraceMe
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
+            Color c = device.Render(e.X, e.Y);
         }
 
         private void Form1_Load(object sender, EventArgs e)

@@ -62,12 +62,7 @@ namespace TraceMe
             {
                 int x = p.X;
                 int y = p.Y;
-                Vector3 point = new Vector3(x - ScreenWidth / 2, ScreenHeight / 2 - y, 0);
-                Vector3 direction = point - eye;
-                direction.Normalize();
-                Lay lay = new Lay(point, direction);
-
-                Color c = Render(lay, 0);
+                Color c = Render(x, y);
                 dataArray[(x + y * bWidth) * multiplyer + 0] = c.B;
                 dataArray[(x + y * bWidth) * multiplyer + 1] = c.G;
                 dataArray[(x + y * bWidth) * multiplyer + 2] = c.R;
@@ -80,6 +75,17 @@ namespace TraceMe
             {
                 Graphics.DrawImage(buffer, 0, 0, Graphics.VisibleClipBounds.Width, Graphics.VisibleClipBounds.Height);
             }
+        }
+
+        public Color Render(int x, int y)
+        {
+            Vector3 point = new Vector3(x - ScreenWidth / 2, ScreenHeight / 2 - y, 0);
+            Vector3 direction = point - eye;
+            direction.Normalize();
+            Lay lay = new Lay(point, direction);
+
+            Color c = Render(lay, 0);
+            return c;
         }
 
         private Color Render(Lay lay, int d)

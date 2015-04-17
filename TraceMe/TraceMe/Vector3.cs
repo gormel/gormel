@@ -85,7 +85,7 @@ namespace TraceMe
             Z /= l;
         }
 
-        public Vector3 CrossProduct(Vector3 v)
+        public Vector3 Cross(Vector3 v)
         {
             return new Vector3(Y * v.Z - Z * v.Y,
                                Z * v.X - X * v.Z,

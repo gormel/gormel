@@ -65,7 +65,7 @@ namespace TraceMe
                 Matrix4.Transform(ref Transformation, ref vertices[bind], out b);
                 Matrix4.Transform(ref Transformation, ref vertices[cind], out c);
 
-                Vector3 n = (b - a).CrossProduct(c - a);
+                Vector3 n = (b - a).Cross(c - a);
                 n.Normalize();
                 double d = -n.Dot(a);
 
@@ -82,30 +82,34 @@ namespace TraceMe
                     if (!(SameSide(ref i, ref a, ref b, ref c) && SameSide(ref i,ref b, ref a, ref c) && SameSide(ref i, ref c, ref a, ref b)))
                         continue;
 
-                    Vector3 v0 = b - a;
-                    Vector3 v1 = c - a;
-                    Vector3 v2 = i - a;
+                    //Vector3 v0 = b - a;
+                    //Vector3 v1 = c - a;
+                    //Vector3 v2 = i - a;
 
-                    double d00 = v0.Dot(v0);
-                    double d01 = v0.Dot(v1);
-                    double d11 = v1.Dot(v1);
-                    double d20 = v2.Dot(v0);
-                    double d21 = v2.Dot(v1);
-                    double denum = d00 * d11 - d01 * 01;
+                    //double d00 = v0.Dot(v0);
+                    //double d01 = v0.Dot(v1);
+                    //double d11 = v1.Dot(v1);
+                    //double d20 = v2.Dot(v0);
+                    //double d21 = v2.Dot(v1);
+                    //double denum = d00 * d11 - d01 * 01;
+                    
+                    //double db = (d11 * d20 - d01 * d21) / denum;
+                    //double dc = (d00 * d21 - d01 * d20) / denum;
+                    //double da = 1 - db - dc;
+
+                    double da = (i - b).Cross(i - c).LenghtSq();
+                    double db = (i - a).Cross(i - c).LenghtSq();
+                    double dc = (i - a).Cross(i - b).LenghtSq();
+
+                    double s = da + db + dc;
+                    da /= s;
+                    db /= s;
+                    dc /= s;
+                    
 
                     Color ca = colors[aind];
                     Color cb = colors[bind];
                     Color cc = colors[cind];
-
-                    double db = (d11 * d20 - d01 * d01) / denum;
-                    double dc = (d00 * d21 - d01 * d20) / denum;
-                    double da = 1 - db - dc;
-
-                    double max = Math.Max(da, Math.Max(db, dc));
-
-                    da /= max;
-                    db /= max;
-                    dc /= max;
 
                     Color color = Color.FromArgb((byte)(ca.R * da + cb.R * db + cc.R * dc),
                                                  (byte)(ca.G * da + cb.G * db + cc.G * dc),
