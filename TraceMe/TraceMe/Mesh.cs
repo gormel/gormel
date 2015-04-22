@@ -71,58 +71,39 @@ namespace TraceMe
 
                 double t = -(d + lay.Point.Dot(n)) / lay.Direction.Dot(n);
 
-                if (t <= mint)
-                {
-                    mint = t;
-                    Vector3 i = lay.Point + lay.Direction * t;
+                Vector3 i = lay.Point + lay.Direction * t;
 
-                    //if ((ai.CrossProduct(bi) + bi.CrossProduct(ci) + ci.CrossProduct(ai)).LenghtSq() > ac.CrossProduct(bc).LenghtSq())
-                    //    continue;
+                if (!(SameSide(ref i, ref a, ref b, ref c) && SameSide(ref i,ref b, ref a, ref c) && SameSide(ref i, ref c, ref a, ref b)))
+                    continue;
 
-                    if (!(SameSide(ref i, ref a, ref b, ref c) && SameSide(ref i,ref b, ref a, ref c) && SameSide(ref i, ref c, ref a, ref b)))
-                        continue;
+                if (t > mint || t < 0)
+                    continue;
 
-                    //Vector3 v0 = b - a;
-                    //Vector3 v1 = c - a;
-                    //Vector3 v2 = i - a;
+                mint = t;
 
-                    //double d00 = v0.Dot(v0);
-                    //double d01 = v0.Dot(v1);
-                    //double d11 = v1.Dot(v1);
-                    //double d20 = v2.Dot(v0);
-                    //double d21 = v2.Dot(v1);
-                    //double denum = d00 * d11 - d01 * 01;
-                    
-                    //double db = (d11 * d20 - d01 * d21) / denum;
-                    //double dc = (d00 * d21 - d01 * d20) / denum;
-                    //double da = 1 - db - dc;
+                double da = (i - b).Cross(i - c).Lenght();
+                double db = (i - a).Cross(i - c).Lenght();
+                double dc = (i - a).Cross(i - b).Lenght();
 
-                    double da = (i - b).Cross(i - c).LenghtSq();
-                    double db = (i - a).Cross(i - c).LenghtSq();
-                    double dc = (i - a).Cross(i - b).LenghtSq();
-
-                    double s = da + db + dc;
-                    da /= s;
-                    db /= s;
-                    dc /= s;
+                double s = da + db + dc;
+                da /= s;
+                db /= s;
+                dc /= s;
                     
 
-                    Color ca = colors[aind];
-                    Color cb = colors[bind];
-                    Color cc = colors[cind];
+                Color ca = colors[aind];
+                Color cb = colors[bind];
+                Color cc = colors[cind];
 
-                    Color color = Color.FromArgb((byte)(ca.R * da + cb.R * db + cc.R * dc),
-                                                 (byte)(ca.G * da + cb.G * db + cc.G * dc),
-                                                 (byte)(ca.B * da + cb.B * db + cc.B * dc));
+                Color color = Color.FromArgb((byte)(ca.R * da + cb.R * db + cc.R * dc),
+                                                (byte)(ca.G * da + cb.G * db + cc.G * dc),
+                                                (byte)(ca.B * da + cb.B * db + cc.B * dc));
 
-                    result = new Hit();
-                    result.Color = color;
-                    result.Distance = t;
-                    result.Normal = n;
-                    result.Reflection = reflections[aind] * da + reflections[bind] * db + reflections[cind] * dc;
-                }
-
-                
+                result = new Hit();
+                result.Color = color;
+                result.Distance = t;
+                result.Normal = n;
+                result.Reflection = reflections[aind] * da + reflections[bind] * db + reflections[cind] * dc;
             }
 
             return result;

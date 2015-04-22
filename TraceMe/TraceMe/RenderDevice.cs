@@ -19,6 +19,7 @@ namespace TraceMe
 
         private const int depth = 3;
         private Bitmap buffer;
+        private Graphics bufferGraphisc;
         private Object locking = new object();
         private List<Point> points = new List<Point>();
         private Vector3 eye;
@@ -35,7 +36,12 @@ namespace TraceMe
             Fov = fov;
             Graphics = g;
             Objects = new List<BaseObject>();
+
             buffer = new Bitmap(ScreenWidth, ScreenHeight);
+            multiplyer = Bitmap.GetPixelFormatSize(buffer.PixelFormat) / 8;
+            dataArray = new byte[buffer.Width * buffer.Height * multiplyer];
+
+            bufferGraphisc = Graphics.FromImage(buffer);
 
             double cos = Math.Cos(Fov);
             double h = ScreenWidth / 2 * Math.Sqrt((1 + cos) / (1 - cos));
@@ -48,15 +54,20 @@ namespace TraceMe
             Randomizer = 0;
         }
 
+        int multiplyer;
+        byte[] dataArray;
         public void RenderScene()
         {
-            BitmapData bmpData = null;
-            bmpData = buffer.LockBits(new Rectangle(new Point(), buffer.Size), ImageLockMode.WriteOnly, buffer.PixelFormat);
-            int multiplyer = Bitmap.GetPixelFormatSize(bmpData.PixelFormat) / 8;
-            var dataArray = new byte[bmpData.Width * bmpData.Height * multiplyer];
             var bWidth = buffer.Width;
 
             var brush = new SolidBrush(Color.White);
+            for (int i = 0; i < dataArray.Length / multiplyer; i++)
+            {
+                dataArray[i * multiplyer + 0] = FillColor.B;
+                dataArray[i * multiplyer + 1] = FillColor.G;
+                dataArray[i * multiplyer + 2] = FillColor.R;
+                dataArray[i * multiplyer + 3] = FillColor.A;
+            }
 
             Parallel.ForEach(points.Where(p => rnd.Next(Randomizer) == 0), p =>
             {
@@ -69,6 +80,8 @@ namespace TraceMe
                 dataArray[(x + y * bWidth) * multiplyer + 3] = c.A;
             });
 
+            BitmapData bmpData = null;
+            bmpData = buffer.LockBits(new Rectangle(new Point(), buffer.Size), ImageLockMode.WriteOnly, buffer.PixelFormat);
             Marshal.Copy(dataArray, 0, bmpData.Scan0, dataArray.Length);
             buffer.UnlockBits(bmpData);
             lock (locking)
@@ -102,7 +115,7 @@ namespace TraceMe
                 var hit_ = Objects[i].Intersections(lay);
                 if (hit_ == null)
                     continue;
-                if (hit_.Distance < min && hit_.Distance > 0)
+                if (hit_.Distance < min && hit_.Distance >= 0)
                 {
                     min = hit_.Distance;
                     hit = hit_;

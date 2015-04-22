@@ -15,11 +15,14 @@ namespace TraceMe
     public partial class Form1 : Form
     {
         RenderDevice device;
-        Sphere s;
-        Mesh m;
+
+        Mesh cube;
+
         Task graph;
         Stopwatch sw = new Stopwatch();
         Progress<string> titleProgress;
+
+        object locking = new object();
 
         CancellationTokenSource tokenSource;
 
@@ -32,32 +35,33 @@ namespace TraceMe
         {
             DoubleBuffered = true;
             device = new RenderDevice(CreateGraphics(), Width, Height, Math.PI / 4);
-            device.Randomizer = 5;
+            device.Randomizer = 10;
             device.FillColor = Color.CornflowerBlue;
 
-            s = new Sphere(new Vector3(0, 0, 200), 100);
-            s.Color = Color.Black;
-            s.Reflection = 0.5;
-            //device.Objects.Add(s);
-
-            Vector3[] vertices = new Vector3[] { new Vector3(100, -100, 150), new Vector3(-100, -100, 150), new Vector3(0, 100, 150) };
-            int[] indices = new int[] { 0, 1, 2 };
-            Color[] colors = new Color[] { Color.FromArgb(128, Color.Red), Color.FromArgb(128, Color.Green), Color.FromArgb(128, Color.Blue) };
-            double[] reflections = new double[] { 0, 0, 0 };
-            m = new Mesh(vertices, indices, colors, reflections);
-            device.Objects.Add(m);
-
-            vertices = new Vector3[] {
-                new Vector3(-200, 200, 300),
-                new Vector3(200, 200, 300),
-                new Vector3(200, -200, 300),
-                new Vector3(-200, -200, 300),
+            Vector3[] vertices = new Vector3[] 
+            {
+                new Vector3(-100, -100, -100),
+                new Vector3(-100, -100, 100),
+                new Vector3(-100, 100, -100),
+                new Vector3(-100, 100, 100),
+                new Vector3(100, -100, -100),
+                new Vector3(100, -100, 100),
+                new Vector3(100, 100, -100),
+                new Vector3(100, 100, 100),
             };
-            indices = new int[] { 0, 1, 2, 2, 3, 0 };
-            colors = new Color[] { Color.White, Color.White, Color.White, Color.White };
-            reflections = new double[] {0, 1, 1, 0};
-            Mesh background = new Mesh(vertices, indices, colors, reflections);
-            device.Objects.Add(background);
+            int[] indices = new int[] { 
+                0, 1, 3, 3, 2, 0, 
+                0, 2, 6, 6, 4, 0, 
+                0, 1, 5, 5, 4, 0, 
+                4, 5, 7, 7, 6, 4, 
+                1, 3, 7, 7, 5, 1, 
+                3, 7, 6, 6, 2, 3 };
+            Color[] colors = new Color[] { Color.Black, Color.Blue, Color.Green, Color.Cyan, Color.Red, Color.Magenta, Color.Yellow, Color.White };
+            double[] reflections = new double[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+
+            cube = new Mesh(vertices, indices, colors, reflections);
+            cube.Transformation = cube.Transformation * Matrix4.Translation(new Vector3(-100, -100, 100));
+            device.Objects.Add(cube);
 
             this.FormClosing += Form1_FormClosing;
 
@@ -101,12 +105,18 @@ namespace TraceMe
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F2)
-                m.Transformation = m.Transformation * Matrix4.RotationY(-Math.PI / 16);
-            if (e.KeyCode == Keys.S)
-                tokenSource.Cancel();
-            if (e.KeyCode == Keys.R)
-                RestartRendering();
+            lock(locking) 
+            {
+                if (e.KeyCode == Keys.F2)
+                {
+                    Vector3 t = cube.Transformation.GetTranslation();
+                    cube.Transformation = Matrix4.Translation(t) * Matrix4.RotationY(Math.PI / 16) * Matrix4.Translation(-t) * cube.Transformation;
+                }
+                if (e.KeyCode == Keys.S)
+                    tokenSource.Cancel();
+                if (e.KeyCode == Keys.R)
+                    RestartRendering();
+            }
         }
 
         private void Form1_MouseMove(object sender, MouseEventArgs e)

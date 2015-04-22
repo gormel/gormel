@@ -166,10 +166,10 @@ namespace TraceMe
 
         public static Matrix4 Translation(Vector3 v)
         {
-            return new Matrix4(  1,   0,   0, 0,
-                                 0,   1,   0, 0,
-                                 0,   0,   1, 0,
-                               v.X, v.Y, v.Z, 1);
+            return new Matrix4(  1,   0,   0, v.X,
+                                 0,   1,   0, v.Y,
+                                 0,   0,   1, v.Z,
+                                 0,   0,   0,   1);
         }
 
         //public Vector3 Transform(Vector3 v)
@@ -180,9 +180,9 @@ namespace TraceMe
         //    return result;
         //}
 
-        public Vector3 GetTransform()
+        public Vector3 GetTranslation()
         {
-            return new Vector3(m30, m31, m32);
+            return new Vector3(m03, m13, m23);
         }
     }
 }
