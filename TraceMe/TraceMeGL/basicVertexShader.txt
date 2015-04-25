@@ -1,0 +1,17 @@
+﻿#version 330
+
+//out vec3 pos;
+layout(location = 0) in vec3 vPosition;
+
+//uniform vec3 eyePos;
+//uniform vec4 cColor;
+
+//varying vec3 eyePosition;
+//varying vec4 clearColor;
+
+void main()
+{
+	//eyePosition = eyePos;
+	//clearColor = cColor;
+	gl_Position = vec4(vPosition, 1);
+}

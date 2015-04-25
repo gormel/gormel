@@ -1,0 +1,22 @@
+﻿#version 330
+
+struct Foo
+{
+	vec4 a;
+	vec4 b;
+};
+
+layout(std140) uniform Bar { Foo foos[]; };
+
+out vec4 color_;
+
+vec3 color(vec2 pos)
+{
+	return vec3(foos[1].a.yx, 0);
+}
+
+void main()
+{
+	color_ = vec4(color(gl_FragCoord.xy), 1.0);
+	//color_ = vec4(1, 0, 0, 1);
+}
