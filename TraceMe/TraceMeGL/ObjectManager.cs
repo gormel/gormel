@@ -142,6 +142,30 @@ vec4 Render(Lay lay)
 		return result;
 	Hit lastHit = minHit;
 	
+	for (int i = 0; i < RENDER_DEPTH; i++)
+	{{
+		if (lastHit.reflection > 0)
+		{{
+			min = 1.0 / 0.0;
+			minHit = Hit(-1.0, result, vec3(0, 0, 0), 0);
+
+			{3}
+
+			if (minHit.t <= 0)
+			{{
+				break;
+			}}
+			
+			vec3 intersection = lastLay.point + lastLay.dir * lastHit.t;
+			lastLay = Lay(intersection, reflect(lastLay.dir, lastHit.normal));
+
+			lastHit.color = shuffle(minHit.color, lastHit.color, lastHit.reflection);
+			lastHit.t = minHit.t;
+			lastHit.normal = minHit.normal;
+			lastHit.reflection = minHit.reflection;
+		}}
+	}}
+
 	return lastHit.color;
 }}
 
@@ -156,10 +180,10 @@ void main()
 }}
 
 
-		",	 structDefs.Count > 0 ? structDefs.Aggregate((a, b) => a + b) : "", 
+		",	 structDefs.Count > 0 ? structDefs.Aggregate((a, b) => a + '\n' + b) : "", 
 			 arrDefs.Count > 0 ? arrDefs.Aggregate((a, b) => a + b)		  : "", 
-			 intersectDefs.Count > 0 ? intersectDefs.Aggregate((a, b) => a + b) : "", 
-			 renderCycles.Count > 0 ? renderCycles.Aggregate((a, b) => a + b) : "",
+			 intersectDefs.Count > 0 ? intersectDefs.Aggregate((a, b) => a + b) : "",
+			 renderCycles.Count > 0 ? renderCycles.Aggregate((a, b) => a + '\n' + b) : "",
 			 arrayLengths.Count > 0 ? arrayLengths.Aggregate((a, b) => a + b) : "");
 
 			//Shader compilation
@@ -262,6 +286,12 @@ void main()
 					{
 						case "float":
 							GL.Uniform1(i.Value, x.Length, x.Cast<float>().ToArray());
+							break;
+						case "int":
+							GL.Uniform1(i.Value, x.Length, x.Cast<int>().ToArray());
+							break;
+						case "vec2":
+							GL.Uniform2(i.Value, x.Length, x.Cast<Vector2>().Select(v => new[] { v.X, v.Y }).SelectMany(a => a).ToArray());
 							break;
 						case "vec3":
 							GL.Uniform3(i.Value, x.Length, x.Cast<Vector3>().Select(v => new[] { v.X, v.Y, v.Z }).SelectMany(a => a).ToArray());

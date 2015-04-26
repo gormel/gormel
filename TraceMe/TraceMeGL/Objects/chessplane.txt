@@ -1,0 +1,17 @@
+﻿Hit result = Hit(-1, vec4(0, 0, 0, 0), vec3(0, 1, 0), obj.reflection);
+
+result.t = -(obj.d + lay.point.y) / lay.dir.y;
+
+vec3 intersection = lay.point + result.t * lay.dir;
+
+float m1 = mod(intersection.x, obj.sqWidth * 2);
+float m2 = mod(intersection.y, obj.sqHeight * 2);
+
+result.color = obj.color2;
+if (m1 < obj.sqWidth && m2 < obj.sqHeight ||
+	m1 > obj.sqWidth && m2 > obj.sqHeight)
+{
+	result.color = obj.color1;
+}
+
+return result;

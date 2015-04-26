@@ -52,6 +52,7 @@
     <Compile Include="IntersectionAttribute.cs" />
     <Compile Include="ObjectManager.cs" />
     <Compile Include="ObjectStorage.cs" />
+    <Compile Include="Objects\ChessPlane.cs" />
     <Compile Include="Objects\Sphere.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -90,6 +91,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Objects\chessplane.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Objects\sphere.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
