@@ -13,12 +13,6 @@ namespace TraceMeGL
 {
 	public class ObjectManager
 	{
-		private class ArrayIndexCombination
-		{
-			//public int index;
-			public List<object> data;
-		}
-
 		private class TypeIndicesInfo
 		{
 			public int bufferUBO = -1;
@@ -35,7 +29,7 @@ namespace TraceMeGL
 
 		public ShaderProgram Program { get; private set; }
 
-		private Dictionary<Type, ArrayIndexCombination> objects = new Dictionary<Type, ArrayIndexCombination>();
+		private Dictionary<Type, List<object>> objects = new Dictionary<Type, List<object>>();
 		private Dictionary<Type, TypeIndicesInfo> bufferIndices = new Dictionary<Type, TypeIndicesInfo>();
 
 		private Dictionary<Type, string> typeToGLSL = new Dictionary<Type, string>()
@@ -276,23 +270,25 @@ void main()
 			heightLocation = GL.GetUniformLocation(Program.ID, "height");
 		}
 
-		public T CreateObject<T>() where T : class
+        private List<object> GetObjectsOf(Type type)
+        {
+            List<object> objectArray = null;
+            if (!objects.TryGetValue(type, out objectArray))
+            {
+                objectArray = new List<object>();
+                objects.Add(type, objectArray);
+            }
+            return objectArray;
+        }
+
+		public T CreateObject<T>(T init = null) where T : class, new()
 		{
-			Type type = typeof(T);
-			ArrayIndexCombination objectArray = null;
-			if (!objects.TryGetValue(type, out objectArray))
-			{
-				objectArray = new ArrayIndexCombination() { data = new List<object>() };
-				objects.Add(type, objectArray);
-			}
+            var objectArray = GetObjectsOf(typeof(T));
 
-			//objectArray.index++;
-			//if (objectArray.index >= objectArray.data.Length - 1)
-			//	objectArray.data = Extend<T>((T[])objectArray.data);
+            T item = init == null ? new T() : init;
+			objectArray.Add(item);
 
-			objectArray.data.Add(Activator.CreateInstance<T>());
-
-			return (T)objectArray.data.Last();
+			return item;
 		}
 
 		private T[] Extend<T>(T[] data)
@@ -322,7 +318,7 @@ void main()
 			{
 				//int bufferUBO = bufferIndices[p.Key].bufferUBO;
 				//int bufferIndex = bufferIndices[p.Key].bufferIndex;
-				GL.Uniform1(bufferIndices[p.Key].arrayLengthLocation, p.Value.data.Count);
+				GL.Uniform1(bufferIndices[p.Key].arrayLengthLocation, p.Value.Count);
 				//GL.BindBuffer(BufferTarget.UniformBuffer, bufferUBO);
 				//GL.BufferData(BufferTarget.UniformBuffer, (IntPtr)(Marshal.SizeOf(p.Key) * p.Value.data.Length), (IntPtr)null, BufferUsageHint.StreamDraw);
 				//GL.BindBufferRange(BufferRangeTarget.UniformBuffer, bufferIndex, bufferUBO, (IntPtr)0, (IntPtr)(Marshal.SizeOf(p.Key) * p.Value.data.Length));
@@ -335,7 +331,7 @@ void main()
 
 				foreach (var i in bufferIndices[p.Key].fieldArrayIndices)
 				{
-					var x = p.Value.data.Select(o => i.Key.GetValue(o)).ToArray();
+					var x = p.Value.Select(o => i.Key.GetValue(o)).ToArray();
 					switch (typeToGLSL[i.Key.FieldType])
 					{
 						case "float":
