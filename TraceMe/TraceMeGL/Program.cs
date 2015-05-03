@@ -38,22 +38,22 @@ namespace TraceMeGL
 					var cc = Color.CornflowerBlue;
 					ObjectManager.Instance.Value.SetClearColor(new Vector4(cc.R / 255f, cc.G / 255f, cc.B / 255f, cc.A / 255f));
 
-					sphere = ObjectManager.Instance.Value.CreateObject<Sphere>();
-					sphere = new Sphere() { color = new Vector4(1, 0, 0, 1), position = new Vector3(0, 0, 100), radius = 10, reflection = 0.5f };
+					sphere = ObjectManager.Instance.Value.CreateObject<Sphere>(
+                        new Sphere() { color = new Vector4(1, 0, 0, 1), position = new Vector3(0, 0, 100), radius = 10, reflection = 0.5f });
 
-					another = ObjectManager.Instance.Value.CreateObject<Sphere>();
-					another = new Sphere() { color = new Vector4(0, 1, 0, 1), position = new Vector3(5, 0, 100), radius = 10, reflection = 0.5f };
+					another = ObjectManager.Instance.Value.CreateObject<Sphere>(
+					    new Sphere() { color = new Vector4(0, 1, 0, 1), position = new Vector3(5, 0, 100), radius = 10, reflection = 0.5f });
 
-					another = ObjectManager.Instance.Value.CreateObject<Sphere>();
-					another = new Sphere() { color = new Vector4(0, 0, 1, 1), position = new Vector3(-5, 0, 100), radius = 10, reflection = 0.5f };
+					another = ObjectManager.Instance.Value.CreateObject<Sphere>(
+					    new Sphere() { color = new Vector4(0, 0, 1, 1), position = new Vector3(-5, 0, 100), radius = 10, reflection = 0.5f });
 
-					var chess = ObjectManager.Instance.Value.CreateObject<ChessPlane>();
-					chess = new ChessPlane() { color1 = new Vector4(1, 1, 0, 0), color2 = new Vector4(0, 1, 1, 0),
-														d = 5, reflection = 0.5f, sqHeight = 2f, sqWidth = 2f };
+					var chess = ObjectManager.Instance.Value.CreateObject<ChessPlane>(
+					    new ChessPlane() { color1 = new Vector4(1, 1, 0, 0), color2 = new Vector4(0, 1, 1, 0),
+														d = 5, reflection = 0.5f, sqHeight = 2f, sqWidth = 2f });
 
-					trgl = ObjectManager.Instance.Value.CreateObject<Triangle>();
-					trgl = new Triangle() { a = new Vector3(-5, 0, 50), b = new Vector3(5, 0, 50), c = new Vector3(0, 10, 50), ca = new Vector4(1, 0, 0, 0),
-													  cb = new Vector4(0, 1, 0, 0), cc = new Vector4(0, 0, 1, 0)};
+					trgl = ObjectManager.Instance.Value.CreateObject<Triangle>(
+					    new Triangle() { a = new Vector3(-5, 0, 50), b = new Vector3(5, 0, 50), c = new Vector3(0, 10, 50), ca = new Vector4(1, 0, 0, 0),
+													  cb = new Vector4(0, 1, 0, 0), cc = new Vector4(0, 0, 1, 0)});
 
 					game.VSync = VSyncMode.On;
 				};
