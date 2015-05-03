@@ -4,14 +4,18 @@ result.t = -(obj.d + lay.point.y) / lay.dir.y;
 
 vec3 intersection = lay.point + result.t * lay.dir;
 
-float m1 = mod(intersection.x, obj.sqWidth * 2);
-float m2 = mod(intersection.y, obj.sqHeight * 2);
+float m1 = mod(intersection.x, obj.sqWidth * 2.0f);
+float m2 = mod(intersection.z, obj.sqHeight * 2.0f);
 
-result.color = obj.color2;
+//result.color = obj.color2;
 if (m1 < obj.sqWidth && m2 < obj.sqHeight ||
 	m1 > obj.sqWidth && m2 > obj.sqHeight)
 {
 	result.color = obj.color1;
+}
+else
+{
+	result.color = obj.color2;
 }
 
 return result;

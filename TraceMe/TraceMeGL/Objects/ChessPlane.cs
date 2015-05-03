@@ -11,7 +11,7 @@ namespace TraceMeGL.Objects
 	[Serializable]
 	[StructLayout(LayoutKind.Sequential)]
 	[Intersection(FileName = "Objects/chessplane.txt")]
-	public struct ChessPlane
+	public class ChessPlane
 	{
 		public float reflection;
 		public float d;

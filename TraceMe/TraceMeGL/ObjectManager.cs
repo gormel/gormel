@@ -15,8 +15,8 @@ namespace TraceMeGL
 	{
 		private class ArrayIndexCombination
 		{
-			public int index;
-			public Array data;
+			//public int index;
+			public List<object> data;
 		}
 
 		private class TypeIndicesInfo
@@ -85,7 +85,7 @@ namespace TraceMeGL
 {{
 	{0} obj = {0}({1});
 	Hit hit = Intersection_{0}(obj, lastLay); 
-	if (hit.t < min && hit.t > 0) 
+	if (hit.t < min && hit.t > eps) 
 	{{
 		min = hit.t; minHit = hit;
 	}} 
@@ -93,6 +93,9 @@ namespace TraceMeGL
 				arrayLengths.Add(string.Format("uniform int {0}_arr_length = -1;\n", u.type.Name));
 			}
 			string pixelText = string.Format(@"#version 330
+precision highp float;
+
+const float eps = 0.001f;
 
 struct Hit
 {{
@@ -108,17 +111,34 @@ struct Lay
 	vec3 dir;
 }};
 
+struct Command
+{{
+	bool render;
+	bool reflect;
+	bool refract;
+}};
+
 {0}
 
-const int MAX_OBJECT_ARRAY_SIZE = 100;
+const int MAX_OBJECT_ARRAY_SIZE = 10;
 const int RENDER_DEPTH = 3;
 
 {1}
 
 uniform vec3 eyePosition;
-uniform vec4 clearColor = vrc4(0, 1, 1, 1);
+uniform vec4 clearColor = vec4(0, 1, 1, 1);
 uniform int width;
 uniform int height;
+
+bool SameSide(vec3 p1, vec3 p2, vec3 a, vec3 b)
+{{
+	vec3 ba = b - a;
+	vec3 p1a = p1 - a;
+	vec3 p2a = p2 - a;
+	vec3 cp1 = cross(ba, p1a);
+	vec3 cp2 = cross(ba, p2a);
+	return dot(cp1, cp2) >= eps;
+}}
 
 {4}
 
@@ -126,47 +146,81 @@ uniform int height;
 
 vec4 shuffle(vec4 a, vec4 b, float r)
 {{
-	return sqrt(((1 - r) * a.xyzw * a.xyzw + r * b.xyzw * b.xyzw ) / 2);
+	return sqrt(((1 - r) * a.xyzw * a.xyzw + r * b.xyzw * b.xyzw ));
 }}
 
-vec4 Render(Lay lay)
+Hit Render(Lay lay)
 {{
 	Lay lastLay = lay;
 	vec4 result = clearColor;
-	float min = 1.0 / 0.0;
+
+	float min = 1.0f / 0.0f;
 	Hit minHit = Hit(-1.0, result, vec3(0, 0, 0), 0);
 
 {3}
 
-	if (minHit.t < 0.0)
-		return result;
+	if (minHit.t <= eps)
+		return Hit(1.0 / 0.0f, clearColor, vec3(0, 0, 0), 0);
 	Hit lastHit = minHit;
+
+	return lastHit;
+}}
+
+vec3 myRfl(vec3 dir, vec3 n)
+{{
+	return dir - 2 * dot(dir, n) * n;
+}}
+
+const int STACK_DEPTH = 20;
+vec4 RecurseRender(Lay startLay)
+{{
+	Hit hits[STACK_DEPTH];
+	Lay lays[STACK_DEPTH];
+	Command acts[STACK_DEPTH]; //true - hits, false - lays;
+	int topHits = 0;
+	int topLays = 0;
+	int topActs = 0;
+
+	lays[topLays++] = startLay;
+	acts[topActs++] = Command(true, false, false);
 	
-	for (int i = 0; i < RENDER_DEPTH; i++)
+	while (topActs > 0)
 	{{
-		if (lastHit.reflection > 0)
+		Command act = acts[--topActs];
+		if (act.render)
 		{{
-			min = 1.0 / 0.0;
-			minHit = Hit(-1.0, result, vec3(0, 0, 0), 0);
-
-			{3}
-
-			if (minHit.t <= 0)
-			{{
-				break;
+			Lay currentLay = lays[--topLays];
+			Hit hit = Render(currentLay);
+			hits[topHits++] = hit;
+			if (topHits < STACK_DEPTH - 2)
+			{{ 
+				Command combin = Command(false, false, false);
+				if (hit.reflection > 0)
+				{{
+					vec3 intersection = currentLay.point + hit.t * currentLay.dir;
+					hit.normal = normalize(hit.normal);
+					Lay newLay = Lay(intersection, myRfl(currentLay.dir, hit.normal));
+					lays[topLays++] = newLay;
+					combin.reflect = true;
+				}}
+				acts[topActs++] = combin;
+				if (combin.reflect)
+					acts[topActs++] = Command(true, false, false);
+				if (combin.refract)
+					acts[topActs++] = Command(true, false, false);
 			}}
-			
-			vec3 intersection = lastLay.point + lastLay.dir * lastHit.t;
-			lastLay = Lay(intersection, reflect(lastLay.dir, lastHit.normal));
-
-			lastHit.color = shuffle(minHit.color, lastHit.color, lastHit.reflection);
-			lastHit.t = minHit.t;
-			lastHit.normal = minHit.normal;
-			lastHit.reflection = minHit.reflection;
+		}}
+		else
+		{{
+			Hit base = Hit(1.0 / 0, vec4(0, 0, 0, 0), vec3(0, 0, 0), 0);
+			Hit refl = act.reflect ? hits[--topHits] : base;
+			Hit refr = act.refract ? hits[--topHits] : base;
+			base = hits[--topHits];
+			Hit result = Hit(base.t, shuffle(shuffle(base.color, refl.color, base.reflection), refr.color, 0.0f), base.normal, base.reflection);
+			hits[topHits++] = result;
 		}}
 	}}
-
-	return lastHit.color;
+	return hits[0].color;	
 }}
 
 varying out vec4 resultColor;
@@ -175,7 +229,7 @@ void main()
 	vec3 point = vec3(gl_FragCoord.x / width * 2 - 1, (gl_FragCoord.y * 2 - height) / width, 0);
 	vec3 dir = normalize(point - eyePosition);
 	Lay lay = Lay(point, dir);
-	resultColor = Render(lay);
+	resultColor = RecurseRender(lay);
 	//resultColor = clearColor;
 }}
 
@@ -222,23 +276,23 @@ void main()
 			heightLocation = GL.GetUniformLocation(Program.ID, "height");
 		}
 
-		public Holder<T> CreateObject<T>() where T : struct
+		public T CreateObject<T>() where T : class
 		{
 			Type type = typeof(T);
 			ArrayIndexCombination objectArray = null;
 			if (!objects.TryGetValue(type, out objectArray))
 			{
-				var createdData = new T[4];
-				objectArray = new ArrayIndexCombination() { index = -1, data = createdData };
+				objectArray = new ArrayIndexCombination() { data = new List<object>() };
 				objects.Add(type, objectArray);
 			}
 
-			objectArray.index++;
-			if (objectArray.index >= objectArray.data.Length - 1)
-				objectArray.data = Extend<T>((T[])objectArray.data);
+			//objectArray.index++;
+			//if (objectArray.index >= objectArray.data.Length - 1)
+			//	objectArray.data = Extend<T>((T[])objectArray.data);
 
-			Holder<T> result = new Holder<T>((T[])objectArray.data, objectArray.index);
-			return result;
+			objectArray.data.Add(Activator.CreateInstance<T>());
+
+			return (T)objectArray.data.Last();
 		}
 
 		private T[] Extend<T>(T[] data)
@@ -268,7 +322,7 @@ void main()
 			{
 				//int bufferUBO = bufferIndices[p.Key].bufferUBO;
 				//int bufferIndex = bufferIndices[p.Key].bufferIndex;
-				GL.Uniform1(bufferIndices[p.Key].arrayLengthLocation, p.Value.index + 1);
+				GL.Uniform1(bufferIndices[p.Key].arrayLengthLocation, p.Value.data.Count);
 				//GL.BindBuffer(BufferTarget.UniformBuffer, bufferUBO);
 				//GL.BufferData(BufferTarget.UniformBuffer, (IntPtr)(Marshal.SizeOf(p.Key) * p.Value.data.Length), (IntPtr)null, BufferUsageHint.StreamDraw);
 				//GL.BindBufferRange(BufferRangeTarget.UniformBuffer, bufferIndex, bufferUBO, (IntPtr)0, (IntPtr)(Marshal.SizeOf(p.Key) * p.Value.data.Length));
@@ -281,7 +335,7 @@ void main()
 
 				foreach (var i in bufferIndices[p.Key].fieldArrayIndices)
 				{
-					var x = p.Value.data.Cast<object>().Select(o => i.Key.GetValue(o)).ToArray();
+					var x = p.Value.data.Select(o => i.Key.GetValue(o)).ToArray();
 					switch (typeToGLSL[i.Key.FieldType])
 					{
 						case "float":
@@ -321,6 +375,11 @@ void main()
 		{
 			GL.UseProgram(Program.ID);
 			GL.Uniform4(clearColorLocation, color);
+		}
+
+		public void Remove<T>(T holder)
+		{
+
 		}
 	}
 }

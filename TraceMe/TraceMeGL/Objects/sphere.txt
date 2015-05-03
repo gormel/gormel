@@ -1,6 +1,4 @@
-﻿
-
-Hit hit = Hit(-1, vec4(0, 0, 0, 1), vec3(0, 0, 0), obj.reflection);
+﻿Hit hit = Hit(-1, vec4(0, 0, 0, 1), vec3(0, 0, 0), obj.reflection);
 
 float a = length(lay.dir) * length(lay.dir);
 float b = 2 * dot((lay.point - obj.position), (lay.dir));
@@ -28,7 +26,6 @@ vec3 hitPoint = lay.point + lay.dir * hit.t;
 
 hit.normal = normalize(hitPoint - obj.position);
 hit.reflection = obj.reflection;
-
-//hit.Reflection = Reflection;
+//hit.color = vec4(abs(hit.normal), 0);
 
 return hit;

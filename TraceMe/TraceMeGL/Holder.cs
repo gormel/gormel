@@ -6,25 +6,32 @@ using System.Threading.Tasks;
 
 namespace TraceMeGL
 {
-	public struct Holder<T> where T : struct
-	{
-		T[] data;
-		int index;
+	//public struct Holder<T> where T : struct
+	//{
+	//	public delegate void ModifyFunc(ref T obj);
 
-		public Holder(T[] data, int index)
-		{
-			this.data = data;
-			this.index = index;
-		}
+	//	T[] data;
+	//	internal int index;
 
-		//public void Delete()
-		//{
-		//	Array.Copy(data, index + 1, data, index, data.Length - index - 1);
-		//}
+	//	public Holder(T[] data, int index)
+	//	{
+	//		this.data = data;
+	//		this.index = index;
+	//	}
 
-		public void Modify(Func<T, T> func)
-		{
-			data[index] = func(data[index]);
-		}
-	}
+	//	//public void Delete()
+	//	//{
+	//	//	Array.Copy(data, index + 1, data, index, data.Length - index - 1);
+	//	//}
+
+	//	public void Modify(ModifyFunc func)
+	//	{
+	//		func(ref data[index]);
+	//	}
+
+	//	public void Modify(Func<T, T> func)
+	//	{
+	//		data[index] = func(data[index]);
+	//	}
+	//}
 }
