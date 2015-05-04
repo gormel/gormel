@@ -20,5 +20,9 @@ namespace TraceMeGL
 		public Vector4 ca;
 		public Vector4 cb;
 		public Vector4 cc;
+
+		public float ra;
+		public float rb;
+		public float rc;
 	}
 }

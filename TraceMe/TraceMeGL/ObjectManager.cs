@@ -270,22 +270,22 @@ void main()
 			heightLocation = GL.GetUniformLocation(Program.ID, "height");
 		}
 
-        private List<object> GetObjectsOf(Type type)
-        {
-            List<object> objectArray = null;
-            if (!objects.TryGetValue(type, out objectArray))
-            {
-                objectArray = new List<object>();
-                objects.Add(type, objectArray);
-            }
-            return objectArray;
-        }
+		private List<object> GetObjectsOf(Type type)
+		{
+			List<object> objectArray = null;
+			if (!objects.TryGetValue(type, out objectArray))
+			{
+				objectArray = new List<object>();
+				objects.Add(type, objectArray);
+			}
+			return objectArray;
+		}
 
 		public T CreateObject<T>(T init = null) where T : class, new()
 		{
-            var objectArray = GetObjectsOf(typeof(T));
+			var objectArray = GetObjectsOf(typeof(T));
 
-            T item = init == null ? new T() : init;
+			T item = init == null ? new T() : init;
 			objectArray.Add(item);
 
 			return item;
@@ -373,9 +373,11 @@ void main()
 			GL.Uniform4(clearColorLocation, color);
 		}
 
-		public void Remove<T>(T holder)
+		public void Remove<T>(T obj)
 		{
-
+			if (!objects.ContainsKey(typeof(T)))
+				return;
+			objects[typeof(T)].Remove(obj);
 		}
 	}
 }

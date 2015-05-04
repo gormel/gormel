@@ -9,21 +9,53 @@ namespace TraceMeGL
 {
 	public class Mesh
 	{
-		private Vector3[] vertices;
-		private Vector4[] colors;
-		private int[] indices;
-		public Mesh(Vector3[] vertices, int[] indices, Vector4[] colors)
+		private List<Triangle> triangles;
+
+		public Matrix4 Transformations { get; set; }
+
+		public Mesh(Vector3[] vertices, int[] indices, Vector4[] colors, float[] reflections)
 		{
+			Transformations = Matrix4.Identity;
 
-			this.vertices = new Vector3[vertices.Length];
-			this.indices = new int[indices.Length];
-			this.colors = new Vector4[colors.Length];
-			//this.reflections = new double[reflections.Length];
+			for (int i = 0; i < indices.Length; i += 3)
+			{
+				Vector3 a = vertices[indices[i] + 0];
+				Vector3 b = vertices[indices[i] + 1];
+				Vector3 c = vertices[indices[i] + 2];
 
-			//Array.Copy(reflections, this.reflections, reflections.Length);
-			Array.Copy(vertices, this.vertices, vertices.Length);
-			Array.Copy(indices, this.indices, indices.Length);
-			Array.Copy(colors, colors, colors.Length);
+				Vector4 ca = colors[indices[i] + 0];
+				Vector4 cb = colors[indices[i] + 1];
+				Vector4 cc = colors[indices[i] + 2];
+
+				float ra = reflections[indices[i] + 0];
+				float rb = reflections[indices[i] + 1];
+				float rc = reflections[indices[i] + 2];
+
+				Triangle t = ObjectManager.Instance.Value.CreateObject<Triangle>();
+				t.a = a;
+				t.b = b;
+				t.c = c;
+
+				t.ca = ca;
+				t.cb = cb;
+				t.cc = cc;
+
+				t.ra = ra;
+				t.rb = rb;
+				t.rc = rc;
+
+				triangles.Add(t);
+			}
+		}
+
+		public void FlushTransforms()
+		{
+			foreach (var t in triangles)
+			{
+				t.a = Vector3.Transform(t.a, Transformations);
+				t.b = Vector3.Transform(t.b, Transformations);
+				t.c = Vector3.Transform(t.c, Transformations);
+			}
 		}
 	}
 }

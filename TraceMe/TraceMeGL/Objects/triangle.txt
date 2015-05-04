@@ -24,6 +24,6 @@ vec4 color = obj.ca * da + obj.cb * db + obj.cc * dc;
 result.color = color;
 result.t = t;
 result.normal = n;
-result.reflection = 0.0f;
+result.reflection = obj.ra * da + obj.rb * db + obj.rc * dc;
 
 return result;
