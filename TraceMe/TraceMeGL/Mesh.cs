@@ -9,7 +9,7 @@ namespace TraceMeGL
 {
 	public class Mesh
 	{
-		private List<Triangle> triangles;
+		private List<Triangle> triangles = new List<Triangle>();
 
 		public Matrix4 Transformations { get; set; }
 
