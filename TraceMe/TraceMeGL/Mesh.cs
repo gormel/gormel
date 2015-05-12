@@ -1,6 +1,7 @@
 ﻿using OpenTK;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,6 +57,41 @@ namespace TraceMeGL
 				t.b = Vector3.Transform(t.b, Transformations);
 				t.c = Vector3.Transform(t.c, Transformations);
 			}
+		}
+
+		public static Mesh LoadFromObj(Stream fileStream)
+		{
+			using (var reader = new StreamReader(fileStream))
+			{
+				while (!reader.EndOfStream)
+				{
+					string s = reader.ReadLine();
+					if (s.StartsWith("#"))
+						continue;
+					if (s.StartsWith("v "))
+					{
+						//vertex
+						var splitted = s.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+						var v1 = Convert.ToDouble(splitted[1]);
+						var v2 = Convert.ToDouble(splitted[2]);
+						var v3 = Convert.ToDouble(splitted[2]);
+
+						Vector3 vertex = new Vector3((float)v1, (float)v2, (float)v3);
+					}
+
+					if (s.StartsWith("vt "))
+					{
+						//tex coord
+					}
+
+					if (s.StartsWith("f "))
+					{
+						//index
+					}
+				}
+			}
+			return null;
 		}
 	}
 }
